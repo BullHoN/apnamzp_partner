@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".ui.home.homeFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:paddingHorizontal="12dp"
+            android:id="@+id/orders_filter"
+            app:singleLine="true"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:chipSpacingHorizontal="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/all_filter"
+                android:text="All"
+                style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/preparing_filter"
+                android:text="Preparing"
+                android:checked="true"
+                style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/ready_filter"
+                android:text="Ready"
+                style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/completed_filter"
+                android:text="Completed"
+                style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_items_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/orders_filter"
+            android:layout_marginTop="12dp"
+            android:paddingHorizontal="8dp"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_orders" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,80 @@
+package com.avit.apnamzp.ui.home;
+
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+
+import com.avit.apnamzp.R;
+import com.avit.apnamzp.databinding.FragmentHomeBinding;
+import com.avit.apnamzp.models.orders.OrderItem;
+import com.google.android.material.chip.ChipGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class homeFragment extends Fragment {
+
+    private FragmentHomeBinding binding;
+    private homeFragmentViewModel viewModel;
+    private String TAG = "homeFragment";
+    private OrdersAdapter ordersAdapter;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        binding = FragmentHomeBinding.inflate(inflater,container,false);
+        viewModel = new ViewModelProvider(this).get(homeFragmentViewModel.class);
+
+        View root = binding.getRoot();
+
+        ordersAdapter = new OrdersAdapter(getContext(),new ArrayList<>());
+        binding.orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
+        binding.orderItemsRecyclerView.setAdapter(ordersAdapter);
+
+        viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",1,1);
+        viewModel.getOrderItemsMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<OrderItem>>() {
+            @Override
+            public void onChanged(List<OrderItem> orderItems) {
+                ordersAdapter.replaceItems(orderItems);
+                binding.progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // chipgroup
+       binding.ordersFilter.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(ChipGroup group, int checkedId) {
+
+               binding.progressBar.setVisibility(View.VISIBLE);
+               if(checkedId == R.id.all_filter){
+                   Log.i(TAG, "onCheckedChanged: " + "ALL");
+               }
+               else if(checkedId == R.id.preparing_filter){
+                   Log.i(TAG, "onCheckedChanged: " + "Preparing");
+                   viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",1,1);
+               }
+               else if(checkedId == R.id.ready_filter){
+                   Log.i(TAG, "onCheckedChanged: " + "Ready");
+                   viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",2,1);
+               }
+               else if(checkedId == R.id.completed_filter){
+                   Log.i(TAG, "onCheckedChanged: " + "Completed");
+                   viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",3,1);
+               }
+           }
+       });
+
+        return root;
+    }
+}

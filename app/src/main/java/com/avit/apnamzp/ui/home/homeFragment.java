@@ -17,12 +17,21 @@ import android.widget.CompoundButton;
 import com.avit.apnamzp.R;
 import com.avit.apnamzp.databinding.FragmentHomeBinding;
 import com.avit.apnamzp.models.orders.OrderItem;
+import com.avit.apnamzp.network.NetworkApi;
+import com.avit.apnamzp.network.RetrofitClient;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class homeFragment extends Fragment {
+import es.dmoral.toasty.Toasty;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+public class homeFragment extends Fragment implements OrdersAdapter.NextStepInterface {
 
     private FragmentHomeBinding binding;
     private homeFragmentViewModel viewModel;
@@ -38,7 +47,7 @@ public class homeFragment extends Fragment {
 
         View root = binding.getRoot();
 
-        ordersAdapter = new OrdersAdapter(getContext(),new ArrayList<>());
+        ordersAdapter = new OrdersAdapter(getContext(),new ArrayList<>(),this);
         binding.orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
         binding.orderItemsRecyclerView.setAdapter(ordersAdapter);
 
@@ -77,4 +86,28 @@ public class homeFragment extends Fragment {
 
         return root;
     }
+
+    @Override
+    public void updateOrderStatus(String orderId, int newOrderStatus) {
+        Log.i(TAG, "updateOrderStatus: " + orderId + " " + newOrderStatus);
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        Call<ResponseBody> call = networkApi.updateOrderStatus(orderId,newOrderStatus);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_LONG);
+            }
+        });
+
+    }
+
 }

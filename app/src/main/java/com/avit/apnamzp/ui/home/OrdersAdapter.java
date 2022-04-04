@@ -1,9 +1,13 @@
 package com.avit.apnamzp.ui.home;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +23,19 @@ import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>{
 
-
+    public interface NextStepInterface {
+        void updateOrderStatus(String orderId, int newOrderStatus);
+    }
 
     private Context context;
     private List<OrderItem> orderItemList;
     private String TAG = "OrderItems";
+    private NextStepInterface nextStepInterface;
 
-    public OrdersAdapter(Context context, List<OrderItem> orderItemList) {
+    public OrdersAdapter(Context context, List<OrderItem> orderItemList, NextStepInterface nextStepInterface) {
         this.context = context;
         this.orderItemList = orderItemList;
+        this.nextStepInterface = nextStepInterface;
     }
 
     @NonNull
@@ -38,7 +46,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrdersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrdersViewHolder holder,int position) {
         OrderItem curr = orderItemList.get(position);
         OrderItemsAdapter orderItemsAdapter = new OrderItemsAdapter(curr.getOrderItems(),context);
 
@@ -47,6 +55,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
 //        1 -> preparing, 2 -> ready, 3 -> delivered
         // TODO: Change Button Text
+        holder.orderNextActionButton.setVisibility(View.VISIBLE);
         if(curr.getOrderStatus() == 1){
             holder.orderDeliveryStatus.setText("Preparing");
             holder.orderNextActionButton.setText("order ready");
@@ -77,6 +86,32 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         holder.orderTotalPrice.setText("Total Amount: ₹" + curr.getBillingDetails().getTotalPay());
 
+        holder.orderNextActionButton.setCheckable(true);
+        holder.orderNextActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextStepInterface.updateOrderStatus(curr.get_id(),curr.getOrderStatus()+1);
+                orderItemList.remove(position);
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.moreActionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context,view);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        Log.i(TAG, "onMenuItemClick: " + menuItem.getItemId());
+                        return false;
+                    }
+                });
+                popupMenu.inflate(R.menu.more_actions_menu);
+                popupMenu.show();
+            }
+        });
+
     }
 
     public void replaceItems(List<OrderItem> newItems){
@@ -96,6 +131,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         public TextView orderId, orderDeliveryType, orderDeliveryStatus, orderTotalPrice, orderPaymentStatus
                 , orderArrivalTime;
         public MaterialButton orderNextActionButton;
+        public ImageButton moreActionsButton;
 
         public OrdersViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,6 +144,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             orderDeliveryStatus = itemView.findViewById(R.id.order_delivery_status);
 
             orderNextActionButton = itemView.findViewById(R.id.order_next_action_button);
+            moreActionsButton = itemView.findViewById(R.id.more_action_button);
 
         }
     }

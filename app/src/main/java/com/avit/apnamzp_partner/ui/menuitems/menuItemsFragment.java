@@ -1,4 +1,4 @@
-package com.avit.apnamzp.ui.menuitems;
+package com.avit.apnamzp_partner.ui.menuitems;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.avit.apnamzp.R;
+import com.avit.apnamzp_partner.R;
 
 /**
  * A simple {@link Fragment} subclass.

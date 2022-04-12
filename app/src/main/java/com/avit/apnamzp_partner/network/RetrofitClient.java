@@ -1,4 +1,4 @@
-package com.avit.apnamzp.network;
+package com.avit.apnamzp_partner.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

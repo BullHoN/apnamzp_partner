@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.avit.apnamzp.ui.home.homeFragment"
+        android:name="com.avit.apnamzp_partner.ui.home.homeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/menuItemsFragment"
-        android:name="com.avit.apnamzp.ui.menuitems.menuItemsFragment"
+        android:name="com.avit.apnamzp_partner.ui.menuitems.menuItemsFragment"
         android:label="fragment_menu_items"
         tools:layout="@layout/fragment_menu_items" />
 </navigation>

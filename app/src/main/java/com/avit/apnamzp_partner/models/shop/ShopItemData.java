@@ -1,4 +1,4 @@
-package com.avit.apnamzp.models.shop;
+package com.avit.apnamzp_partner.models.shop;
 
 import java.util.List;
 

@@ -1,16 +1,14 @@
-package com.avit.apnamzp.ui.home;
+package com.avit.apnamzp_partner.ui.home;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.avit.apnamzp.models.orders.OrderItem;
-import com.avit.apnamzp.network.NetworkApi;
-import com.avit.apnamzp.network.RetrofitClient;
+import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.network.NetworkApi;
+import com.avit.apnamzp_partner.network.RetrofitClient;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.avit.apnamzp;
+package com.avit.apnamzp_partner;
 
 import androidx.appcompat.app.AppCompatActivity;
 

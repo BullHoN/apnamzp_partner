@@ -1,6 +1,6 @@
-package com.avit.apnamzp.network;
+package com.avit.apnamzp_partner.network;
 
-import com.avit.apnamzp.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.orders.OrderItem;
 
 import java.util.List;
 

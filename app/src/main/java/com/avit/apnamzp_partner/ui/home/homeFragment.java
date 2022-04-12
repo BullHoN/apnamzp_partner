@@ -1,4 +1,4 @@
-package com.avit.apnamzp.ui.home;
+package com.avit.apnamzp_partner.ui.home;
 
 import android.os.Bundle;
 
@@ -12,13 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
-import com.avit.apnamzp.R;
-import com.avit.apnamzp.databinding.FragmentHomeBinding;
-import com.avit.apnamzp.models.orders.OrderItem;
-import com.avit.apnamzp.network.NetworkApi;
-import com.avit.apnamzp.network.RetrofitClient;
+import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.databinding.FragmentHomeBinding;
+import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.network.NetworkApi;
+import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;

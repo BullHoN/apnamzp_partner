@@ -1,4 +1,4 @@
-package com.avit.apnamzp.ui.home;
+package com.avit.apnamzp_partner.ui.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.avit.apnamzp.R;
-import com.avit.apnamzp.models.shop.ShopItemData;
-import com.avit.apnamzp.models.shop.ShopPricingData;
+import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.models.shop.ShopItemData;
+import com.avit.apnamzp_partner.models.shop.ShopPricingData;
 
 import java.util.List;
 

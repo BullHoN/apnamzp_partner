@@ -1,4 +1,4 @@
-package com.avit.apnamzp.models.shop;
+package com.avit.apnamzp_partner.models.shop;
 
 public class ShopPricingData {
     private String type;

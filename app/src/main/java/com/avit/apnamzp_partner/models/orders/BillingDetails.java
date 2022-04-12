@@ -1,4 +1,4 @@
-package com.avit.apnamzp.models.orders;
+package com.avit.apnamzp_partner.models.orders;
 
 public class BillingDetails {
     private int  deliveryCharge, itemTotal, offerDiscountedAmount, totalDiscount, totalTaxesAndPackingCharge, totalPay;

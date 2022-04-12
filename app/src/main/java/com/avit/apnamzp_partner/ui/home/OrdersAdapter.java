@@ -1,4 +1,4 @@
-package com.avit.apnamzp.ui.home;
+package com.avit.apnamzp_partner.ui.home;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.avit.apnamzp.R;
-import com.avit.apnamzp.models.orders.OrderItem;
+import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;

@@ -1,6 +1,6 @@
-package com.avit.apnamzp.models.orders;
+package com.avit.apnamzp_partner.models.orders;
 
-import com.avit.apnamzp.models.shop.ShopItemData;
+import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;

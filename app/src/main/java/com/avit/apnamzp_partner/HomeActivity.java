@@ -37,6 +37,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Intent intent = new Intent(getApplicationContext(),OrderNotification.class);
+        startActivity(intent);
+
         // Set a Toolbar to replace the ActionBar.
 //        toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

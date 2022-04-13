@@ -14,5 +14,6 @@
     <color name="primaryTextColor">#FFFFFF</color>
     <color name="secondaryTextColor">#727272</color>
     <color name="success">#4CAF50</color>
+    <color name="failure">#F44336</color>
 
 </resources>

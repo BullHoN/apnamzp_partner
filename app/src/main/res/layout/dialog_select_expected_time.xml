@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="12dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:text="Choose Expected Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/order_time_options"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        app:singleLine="false"
+        app:singleSelection="true"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/min10"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:text="10 minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/min15"
+            android:text="15 minutes"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/min20"
+            android:text="20 minutes"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/min30"
+            android:text="30 minutes"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/min40"
+            android:text="40 minutes"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/min60"
+            android:text="60 minutes"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/morethan60"
+            android:text="more than 1 hour"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+
+</LinearLayout>

@@ -20,4 +20,7 @@ public interface NetworkApi {
     @POST("/partner/order/updateStatus")
     Call<ResponseBody> updateOrderStatus(@Query("orderId") String orderId, @Query("orderStatus") int orderStatus);
 
+    @POST("/login")
+    Call<ResponseBody> login(@Query("phoneNo") String phoneNo,@Query("password") String password);
+
 }

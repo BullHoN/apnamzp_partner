@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.utils.NotificationUtil;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
@@ -54,10 +55,11 @@ public class OrderNotification extends AppCompatActivity {
         rejectOrderButton = findViewById(R.id.reject_order_button);
 
         // PLay alert sound
-        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.new_order);
-        mediaPlayer.setLooping(true);
+//        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.new_order);
+//        mediaPlayer.setLooping(true);
 //        mediaPlayer.start();
 
+        NotificationUtil.stopSound();
 
         waitTimeProgressBar.setMax(60*5);
 

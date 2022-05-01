@@ -3,11 +3,16 @@ package com.avit.apnamzp_partner.utils;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Build;
+
+import com.avit.apnamzp_partner.R;
 
 import java.util.List;
 
 public class NotificationUtil {
+
+    private static MediaPlayer mediaPlayer;
 
     // method checks if the app is in background or not
     public static boolean isAppIsInBackground(Context context) {
@@ -33,6 +38,21 @@ public class NotificationUtil {
         }
 
         return isInBackground;
+    }
+
+    public static void playSound(Context context){
+        if(mediaPlayer == null){
+            mediaPlayer = MediaPlayer.create(context, R.raw.new_order);
+            mediaPlayer.setLooping(true);
+        }
+
+        mediaPlayer.start();
+    }
+
+    public static void stopSound(){
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+        }
     }
 
 }

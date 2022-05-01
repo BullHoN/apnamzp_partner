@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ApnaMZPPartner"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".auth.AuthActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.order_notification.OrderNotification"
             android:exported="false" />
 

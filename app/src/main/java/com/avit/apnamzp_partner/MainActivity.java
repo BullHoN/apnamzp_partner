@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.avit.apnamzp_partner.auth.AuthActivity;
+import com.avit.apnamzp_partner.db.LocalDB;
+import com.avit.apnamzp_partner.models.user.ShopPartner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,9 +16,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Authentication
-        Intent homeActivity = new Intent(getApplicationContext(), AuthActivity.class);
-        startActivity(homeActivity);
+        ShopPartner shopPartner = LocalDB.getPartnerDetails(getApplicationContext());
+
+        if(shopPartner == null){
+            Intent authActivity = new Intent(getApplicationContext(), AuthActivity.class);
+            startActivity(authActivity);
+        }
+        else {
+            Intent homeActivity = new Intent(getApplicationContext(),HomeActivity.class);
+            startActivity(homeActivity);
+        }
+
+        finish();
 
     }
 }

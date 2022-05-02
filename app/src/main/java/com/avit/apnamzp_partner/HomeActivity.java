@@ -16,11 +16,23 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.avit.apnamzp_partner.db.LocalDB;
+import com.avit.apnamzp_partner.models.user.ShopPartner;
+import com.avit.apnamzp_partner.network.NetworkApi;
+import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.net.NetPermission;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -62,6 +74,13 @@ public class HomeActivity extends AppCompatActivity {
                         String token = task.getResult();
                         Log.i("NotificationService", "onComplete: " + token);
 
+                        ShopPartner shopPartner = LocalDB.getPartnerDetails(getApplicationContext());
+                        if(shopPartner.getFcmId() == null || shopPartner.getFcmId() != token){
+                            shopPartner.setFcmId(token);
+                            LocalDB.savePartnerDetails(getApplicationContext(),shopPartner);
+                            updateFCMID(shopPartner);
+                        }
+
                     }
                 });
 
@@ -78,6 +97,25 @@ public class HomeActivity extends AppCompatActivity {
         intentFilter = new IntentFilter();
         intentFilter.addAction("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION");
 
+
+    }
+
+    private void updateFCMID(ShopPartner shopPartner) {
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<ResponseBody> call = networkApi.updateFcmToken(shopPartner);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i(TAG, "onResponse: FCM ID TAG UPDATED");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error while updating fcmID",t);
+            }
+        });
 
     }
 

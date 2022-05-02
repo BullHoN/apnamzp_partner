@@ -52,6 +52,7 @@
                         android:layout_height="3dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/order_items_recycler_view"
                         android:layout_width="match_parent"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_order_items"

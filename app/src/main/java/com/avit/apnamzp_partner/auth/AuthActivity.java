@@ -12,7 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.avit.apnamzp_partner.HomeActivity;
 import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.db.LocalDB;
+import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.utils.ValidateInput;
@@ -86,6 +89,13 @@ public class AuthActivity extends AppCompatActivity {
                 Toasty.success(getApplicationContext(),"Login Successfull",Toasty.LENGTH_SHORT)
                         .show();
                 // SAVE IN SHARED PRWF
+                ShopPartner shopPartner = new ShopPartner(phoneNo);
+                LocalDB.savePartnerDetails(getApplicationContext(),shopPartner);
+
+                Intent homeActivity = new Intent(getApplicationContext(),HomeActivity.class);
+                startActivity(homeActivity);
+
+                finish();
             }
 
             @Override

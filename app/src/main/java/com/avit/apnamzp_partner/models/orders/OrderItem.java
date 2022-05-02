@@ -51,6 +51,13 @@ public class OrderItem {
         this.orderType = orderType;
     }
 
+    public OrderItem(int itemTotal, List<ShopItemData> orderItems, String userId, String _id) {
+        this.itemTotal = itemTotal;
+        this.orderItems = orderItems;
+        this.userId = userId;
+        this._id = _id;
+    }
+
     public int getItemTotal() {
         return itemTotal;
     }

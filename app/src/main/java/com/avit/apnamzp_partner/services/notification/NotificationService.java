@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -36,34 +37,65 @@ public class NotificationService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        Log.i(TAG, "onMessageReceived: ");
+        String notificationType = remoteMessage.getData().get("type");
+        Log.i(TAG, "onMessageReceived: " + notificationType);
+
+
         notificationManager = NotificationManagerCompat.from(getApplicationContext());
         createNotificationChannels();
 
-        handleNotification();
+        if(notificationType.equals("new_order")){
+            String orderItems = remoteMessage.getData().get("orderItems");
+            String orderId = remoteMessage.getData().get("_id");
+            String userId = remoteMessage.getData().get("userId");
+            String totalAmount = remoteMessage.getData().get("totalAmount");
+
+            Log.i(TAG, "onMessageReceived: " + orderItems);
+            Log.i(TAG, "onMessageReceived: " + orderId);
+            Log.i(TAG, "onMessageReceived: " + userId);
+
+            handleNewOrderNotification(orderItems,orderId,userId,totalAmount);
+
+        }
+
+
+
     }
 
-    private void handleNotification(){
+    private void handleNewOrderNotification(String orderItems,String orderId,String userId,String totalAmount){
         if(!NotificationUtil.isAppIsInBackground(getApplicationContext())){
             Log.i(TAG, "handleNotification: in Foreground");
 
             NotificationUtil.playSound(getApplicationContext());
             Intent intent = new Intent();
             intent.setAction("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION");
-            sendBroadcast(intent);
+
+            intent.putExtra("orderItems",orderItems);
+            intent.putExtra("orderId",orderId);
+            intent.putExtra("userId",userId);
+            intent.putExtra("totalAmount",totalAmount);
+
+            getApplicationContext().sendBroadcast(intent);
 
         }
         else {
             Log.i(TAG, "handleNotification: in Background");
-            showOrderNotification();
+            showOrderNotification(orderItems,orderId,userId,totalAmount);
         }
     }
 
-    private void showOrderNotification(){
+    private void showOrderNotification(String orderItems,String orderId,String userId,String totalAmount){
         // TODO: set this up
 
         Intent notificationIntent = new Intent(getApplicationContext(), OrderNotification.class);
+        notificationIntent.putExtra("orderItems",orderItems);
+        notificationIntent.putExtra("orderId",orderId);
+        notificationIntent.putExtra("userId",userId);
+        notificationIntent.putExtra("totalAmount",totalAmount);
+
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this,1,notificationIntent,0);
+
 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ORDER_ID)
                 .setContentTitle("Order title")

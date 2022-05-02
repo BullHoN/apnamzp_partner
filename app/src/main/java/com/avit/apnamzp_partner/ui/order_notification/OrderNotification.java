@@ -6,6 +6,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -17,22 +19,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.orders.OrderItemsJsonConversion;
+import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
 public class OrderNotification extends AppCompatActivity {
 
-    private MediaPlayer mediaPlayer;
     private long waitTime = 1000 * 60 * 5;
     private CircularProgressIndicator waitTimeProgressBar;
     private LinearLayout acceptOrderButton,rejectOrderButton;
@@ -40,6 +46,9 @@ public class OrderNotification extends AppCompatActivity {
     private int minutes = 4;
     private int seconds = 60;
     private String TAG = "OrderNotifications";
+    private Gson gson;
+    private ShopItemData[] orderItems;
+    private String userId,orderId,totalPay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +63,24 @@ public class OrderNotification extends AppCompatActivity {
         acceptOrderButton = findViewById(R.id.accept_order_button);
         rejectOrderButton = findViewById(R.id.reject_order_button);
 
-        // PLay alert sound
-//        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.new_order);
-//        mediaPlayer.setLooping(true);
-//        mediaPlayer.start();
-
         NotificationUtil.stopSound();
+
+        gson = new Gson();
+        userId = getIntent().getStringExtra("userId");
+        orderId = getIntent().getStringExtra("orderId");
+        totalPay = getIntent().getStringExtra("totalAmount");
+        orderItems = gson.fromJson(getIntent().getStringExtra("orderItems"), ShopItemData[].class);
+
+        Log.i(TAG, "onCreate: " + getIntent().getStringExtra("orderItems"));
+        Log.i(TAG, "onCreate: " + orderItems);
+        Log.i(TAG, "onCreate: " + userId);
+        Log.i(TAG, "onCreate: " + orderId);
+
+        RecyclerView orderItemsRecyclerView = findViewById(R.id.order_items_recycler_view);
+        orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+
+        OrderNotificationItemsAdapter orderNotificationItemsAdapter = new OrderNotificationItemsAdapter(orderItems,getApplicationContext());
+        orderItemsRecyclerView.setAdapter(orderNotificationItemsAdapter);
 
         waitTimeProgressBar.setMax(60*5);
 
@@ -99,6 +120,7 @@ public class OrderNotification extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(ChipGroup group, int checkedId) {
                         Log.i(TAG, "onCheckedChanged: ");
+                        // TODO: Accept the order
                         dialog.dismiss();
                     }
                 });
@@ -136,6 +158,14 @@ public class OrderNotification extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void acceptOrder(){
+
+    }
+
+    private void rejectOrder(){
 
     }
 

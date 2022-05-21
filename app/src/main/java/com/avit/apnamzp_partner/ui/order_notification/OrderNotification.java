@@ -19,9 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.orders.OrderItemsJsonConversion;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
+import com.avit.apnamzp_partner.network.NetworkApi;
+import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -36,6 +39,10 @@ import java.util.Date;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class OrderNotification extends AppCompatActivity {
 
@@ -58,6 +65,7 @@ public class OrderNotification extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("NEW ORDER ARRIVED");
 
+        TextView totalPriceView = findViewById(R.id.order_total_price);
         waitTimeProgressBar = findViewById(R.id.remaining_time_progress_bar);
         reamingTimeTextview = findViewById(R.id.remaining_time);
         acceptOrderButton = findViewById(R.id.accept_order_button);
@@ -70,6 +78,8 @@ public class OrderNotification extends AppCompatActivity {
         orderId = getIntent().getStringExtra("orderId");
         totalPay = getIntent().getStringExtra("totalAmount");
         orderItems = gson.fromJson(getIntent().getStringExtra("orderItems"), ShopItemData[].class);
+
+        totalPriceView.setText("Total ₹" + totalPay);
 
         Log.i(TAG, "onCreate: " + getIntent().getStringExtra("orderItems"));
         Log.i(TAG, "onCreate: " + orderItems);
@@ -121,6 +131,39 @@ public class OrderNotification extends AppCompatActivity {
                     public void onCheckedChanged(ChipGroup group, int checkedId) {
                         Log.i(TAG, "onCheckedChanged: ");
                         // TODO: Accept the order
+
+                        String reason;
+                        switch (checkedId){
+                            case R.id.min10: {
+                                reason = "10min";
+                                break;
+                            }
+                            case R.id.min15: {
+                                reason = "15min";
+                                break;
+                            }
+                            case R.id.min20: {
+                                reason = "20min";
+                                break;
+                            }
+                            case R.id.min30: {
+                                reason = "30min";
+                                break;
+                            }
+                            case R.id.min40: {
+                                reason = "40min";
+                                break;
+                            }
+                            case R.id.min60: {
+                                reason = "60min";
+                                break;
+                            }
+                            default: {
+                                reason = "above 60min";
+                            }
+                        }
+
+                        acceptOrder(reason);
                         dialog.dismiss();
                     }
                 });
@@ -152,6 +195,8 @@ public class OrderNotification extends AppCompatActivity {
                                     .show();
                             return;
                         }
+
+                        rejectOrder(reason);
                         dialog.dismiss();
                     }
                 });
@@ -161,12 +206,55 @@ public class OrderNotification extends AppCompatActivity {
 
     }
 
-    private void acceptOrder(){
+    private void acceptOrder(String exptectedTime){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<NetworkResponse> call = networkApi.acceptOrder(orderId,userId,exptectedTime);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                NetworkResponse networkResponse = response.body();
+                if(networkResponse.getStatus()){
+                    Toasty.success(getApplicationContext(),"Order Accepted Successfully",Toasty.LENGTH_SHORT)
+                            .show();
+                }
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getApplicationContext(),"Some error occured",Toasty.LENGTH_SHORT)
+                        .show();
+                Log.e(TAG, "onFailure: accepting orders", t);
+            }
+        });
 
     }
 
-    private void rejectOrder(){
+    private void rejectOrder(String cancelReason){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
+        Call<NetworkResponse> call = networkApi.rejectOrder(orderId,userId,cancelReason);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                NetworkResponse networkResponse = response.body();
+                if(networkResponse.getStatus()){
+                    Toasty.success(getApplicationContext(),"Order Rejected",Toasty.LENGTH_SHORT)
+                            .show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getApplicationContext(),"Some error occured",Toasty.LENGTH_SHORT)
+                        .show();
+                Log.e(TAG, "onFailure: rejecting orders", t);
+            }
+        });
     }
 
     @Override

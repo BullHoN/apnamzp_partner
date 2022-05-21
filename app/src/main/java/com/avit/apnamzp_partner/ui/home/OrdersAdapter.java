@@ -90,7 +90,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         holder.orderNextActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nextStepInterface.updateOrderStatus(curr.get_id(),curr.getOrderStatus()+1);
+
+                int orderStatus = curr.getOrderStatus()+1;
+
+                if(curr.getOrderStatus() == 2){
+                    orderStatus = 4;
+                }
+
+                nextStepInterface.updateOrderStatus(curr.get_id(),orderStatus);
                 orderItemList.remove(position);
                 notifyDataSetChanged();
             }

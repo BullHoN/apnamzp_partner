@@ -65,6 +65,7 @@
                         android:layout_height="3dp" />
 
                     <TextView
+                        android:id="@+id/order_total_price"
                         android:textColor="@color/primaryColor"
                         android:fontFamily="@font/roboto_bold"
                         android:textSize="18sp"

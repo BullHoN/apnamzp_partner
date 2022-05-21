@@ -1,13 +1,13 @@
 package com.avit.apnamzp_partner.models.network;
 
 public class NetworkResponse {
-    private int success;
+    private boolean success;
 
-    public NetworkResponse(int success) {
+    public NetworkResponse(boolean success) {
         this.success = success;
     }
 
-    public int getStatus() {
+    public boolean getStatus() {
         return success;
     }
 }

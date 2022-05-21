@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentHomeBinding;
+import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
@@ -95,6 +96,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         binding.progressBar.setVisibility(View.VISIBLE);
 
         Call<ResponseBody> call = networkApi.updateOrderStatus(orderId,newOrderStatus);
+
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -107,6 +109,28 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             }
         });
 
+        if(newOrderStatus == 4){
+            Call<NetworkResponse> assignDBoy = networkApi.assignDeliveryBoy(orderId,"25.133699","82.564430");
+            assignDBoy.enqueue(new Callback<NetworkResponse>() {
+                @Override
+                public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                    Toasty.error(getContext(),"Please Contact ApnaMzp",Toasty.LENGTH_LONG)
+                            .show();
+                    Log.e(TAG, "onFailure: ", t);
+                }
+            });
+
+        }
+
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

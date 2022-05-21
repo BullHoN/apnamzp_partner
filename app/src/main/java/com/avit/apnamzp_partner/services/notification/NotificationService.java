@@ -48,11 +48,12 @@ public class NotificationService extends FirebaseMessagingService {
             String orderItems = remoteMessage.getData().get("orderItems");
             String orderId = remoteMessage.getData().get("_id");
             String userId = remoteMessage.getData().get("userId");
-            String totalAmount = remoteMessage.getData().get("totalAmount");
+            String totalAmount = remoteMessage.getData().get("totalPay");
 
             Log.i(TAG, "onMessageReceived: " + orderItems);
             Log.i(TAG, "onMessageReceived: " + orderId);
             Log.i(TAG, "onMessageReceived: " + userId);
+            Log.i(TAG, "onMessageReceived: " + totalAmount);
 
             handleNewOrderNotification(orderItems,orderId,userId,totalAmount);
 
@@ -92,9 +93,10 @@ public class NotificationService extends FirebaseMessagingService {
         notificationIntent.putExtra("orderId",orderId);
         notificationIntent.putExtra("userId",userId);
         notificationIntent.putExtra("totalAmount",totalAmount);
+        notificationIntent.setAction("com.avit.apnamzppartner_newNotificationBackgroundAction");
 
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,1,notificationIntent,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ORDER_ID)

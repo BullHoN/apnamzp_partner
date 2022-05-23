@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.avit.apnamzp_partner.HomeActivity;
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
@@ -64,11 +65,11 @@ public class NotificationService extends FirebaseMessagingService {
     }
 
     private void handleNewOrderNotification(String orderItems,String orderId,String userId,String totalAmount){
-        if(!NotificationUtil.isAppIsInBackground(getApplicationContext())){
-            Log.i(TAG, "handleNotification: in Foreground");
 
             NotificationUtil.playSound(getApplicationContext());
-            Intent intent = new Intent();
+            Intent intent = new Intent(getApplicationContext(),OrderNotification.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.setAction("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION");
 
             intent.putExtra("orderItems",orderItems);
@@ -76,13 +77,36 @@ public class NotificationService extends FirebaseMessagingService {
             intent.putExtra("userId",userId);
             intent.putExtra("totalAmount",totalAmount);
 
-            getApplicationContext().sendBroadcast(intent);
+            startActivity(intent);
 
-        }
-        else {
-            Log.i(TAG, "handleNotification: in Background");
-            showOrderNotification(orderItems,orderId,userId,totalAmount);
-        }
+//            getApplicationContext().sendBroadcast(intent);
+
+
+//        if(!NotificationUtil.isAppIsInBackground(getApplicationContext())){
+//            Log.i(TAG, "handleNotification: in Foreground");
+//
+//            NotificationUtil.playSound(getApplicationContext());
+//            Intent intent = new Intent();
+//            intent.setAction("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION");
+//
+//            intent.putExtra("orderItems",orderItems);
+//            intent.putExtra("orderId",orderId);
+//            intent.putExtra("userId",userId);
+//            intent.putExtra("totalAmount",totalAmount);
+//
+//            getApplicationContext().sendBroadcast(intent);
+//
+//        }
+//        else {
+//            Log.i(TAG, "handleNotification: in Background");
+//
+//            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            startActivity(intent);
+//
+//            showOrderNotification(orderItems,orderId,userId,totalAmount);
+//        }
     }
 
     private void showOrderNotification(String orderItems,String orderId,String userId,String totalAmount){

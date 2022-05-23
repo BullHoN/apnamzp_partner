@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
+    android:isScrollContainer="true"
     tools:context=".ui.home.homeFragment">
 
     <RelativeLayout
@@ -53,6 +54,7 @@
         </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:isScrollContainer="false"
             android:id="@+id/order_items_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

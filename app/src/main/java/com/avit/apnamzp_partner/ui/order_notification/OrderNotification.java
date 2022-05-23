@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.avit.apnamzp_partner.MainActivity;
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
@@ -61,6 +63,12 @@ public class OrderNotification extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_notification);
+
+        if(!getIntent().getAction().equals("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION")){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("NEW ORDER ARRIVED");
@@ -111,6 +119,7 @@ public class OrderNotification extends AppCompatActivity {
             @Override
             public void onFinish() {
                 // TODO: Cancel Order
+                rejectOrder("Shop Didn't Respond");
                 Log.i(TAG, "onFinish: cancel order");
             }
         }.start();

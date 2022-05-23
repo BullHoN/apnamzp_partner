@@ -1,5 +1,6 @@
 package com.avit.apnamzp_partner.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.orders.OrderStatus;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;
@@ -46,7 +48,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrdersViewHolder holder,int position) {
+    public void onBindViewHolder(@NonNull OrdersViewHolder holder, @SuppressLint("RecyclerView") int position) {
         OrderItem curr = orderItemList.get(position);
         OrderItemsAdapter orderItemsAdapter = new OrderItemsAdapter(curr.getOrderItems(),context);
 
@@ -56,15 +58,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 //        1 -> preparing, 2 -> ready, 3 -> delivered
         // TODO: Change Button Text
         holder.orderNextActionButton.setVisibility(View.VISIBLE);
-        if(curr.getOrderStatus() == 1){
+        if(curr.getOrderStatus() == OrderStatus.ORDER_PREPARING){
             holder.orderDeliveryStatus.setText("Preparing");
             holder.orderNextActionButton.setText("order ready");
         }
-        else if(curr.getOrderStatus() == 2){
+        else if(curr.getOrderStatus() == OrderStatus.ORDER_READY){
             holder.orderDeliveryStatus.setText("Ready");
             holder.orderNextActionButton.setText("send for delivery");
         }
-        else if(curr.getOrderStatus() == 3){
+        else if(curr.getOrderStatus() == OrderStatus.ORDER_COMPLETED){
             holder.orderDeliveryStatus.setText("Completed");
             holder.orderNextActionButton.setVisibility(View.GONE);
         }

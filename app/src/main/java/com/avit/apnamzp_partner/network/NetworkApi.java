@@ -27,8 +27,8 @@ public interface NetworkApi {
     @POST("/partner/assignDeliveryBoy")
     Call<NetworkResponse> assignDeliveryBoy(@Query("orderId") String orderId,@Query("latitude") String latitude,@Query("longitude") String longitude);
 
-    @POST("/login")
-    Call<ResponseBody> login(@Query("phoneNo") String phoneNo,@Query("password") String password);
+    @GET("/login")
+    Call<ShopPartner> login(@Query("phoneNo") String phoneNo,@Query("password") String password,@Query("user_type") String userType);
 
     @POST("/user_routes/updateFCM")
     Call<ResponseBody> updateFcmToken(@Body ShopPartner shopPartner);

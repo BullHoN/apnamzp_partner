@@ -82,15 +82,14 @@ public class AuthActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Call<ResponseBody> call = networkApi.login(phoneNo,password);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<ShopPartner> call = networkApi.login(phoneNo,password,"partner");
+        call.enqueue(new Callback<ShopPartner>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ShopPartner> call, Response<ShopPartner> response) {
                 Toasty.success(getApplicationContext(),"Login Successfull",Toasty.LENGTH_SHORT)
                         .show();
-                // SAVE IN SHARED PRWF
-                ShopPartner shopPartner = new ShopPartner(phoneNo);
-                LocalDB.savePartnerDetails(getApplicationContext(),shopPartner);
+                // SAVE IN SHARED PREF
+                LocalDB.savePartnerDetails(getApplicationContext(),response.body());
 
                 Intent homeActivity = new Intent(getApplicationContext(),HomeActivity.class);
                 startActivity(homeActivity);
@@ -99,7 +98,7 @@ public class AuthActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ShopPartner> call, Throwable t) {
                 Toasty.error(getApplicationContext(),t.getMessage(),Toasty.LENGTH_LONG)
                         .show();
             }

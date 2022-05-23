@@ -2,6 +2,7 @@ package com.avit.apnamzp_partner.ui.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,8 +16,11 @@ import android.view.ViewGroup;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentHomeBinding;
+import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.orders.OrderStatus;
+import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.google.android.material.chip.ChipGroup;
@@ -51,7 +55,9 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         binding.orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
         binding.orderItemsRecyclerView.setAdapter(ordersAdapter);
 
-        viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",1,1);
+        ShopPartner shopPartner = LocalDB.getPartnerDetails(getContext());
+
+        viewModel.getOrders(getContext(),shopPartner.getShopId(), shopPartner.getShopType(), OrderStatus.ORDER_PREPARING,1);
         viewModel.getOrderItemsMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<OrderItem>>() {
             @Override
             public void onChanged(List<OrderItem> orderItems) {
@@ -66,20 +72,23 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
            public void onCheckedChanged(ChipGroup group, int checkedId) {
 
                binding.progressBar.setVisibility(View.VISIBLE);
+               ShopPartner shopPartner =  LocalDB.getPartnerDetails(getContext());
+
                if(checkedId == R.id.all_filter){
                    Log.i(TAG, "onCheckedChanged: " + "ALL");
                }
                else if(checkedId == R.id.preparing_filter){
                    Log.i(TAG, "onCheckedChanged: " + "Preparing");
-                   viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",1,1);
+                   viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), OrderStatus.ORDER_PREPARING,1);
                }
                else if(checkedId == R.id.ready_filter){
                    Log.i(TAG, "onCheckedChanged: " + "Ready");
-                   viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",2,1);
+                   viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(),OrderStatus.ORDER_READY,1);
                }
                else if(checkedId == R.id.completed_filter){
                    Log.i(TAG, "onCheckedChanged: " + "Completed");
-                   viewModel.getOrders(getContext(),"6174fea0dbb0b2e38f7de2ad","Pure Vegetarian Resturants",3,1);
+                   // TODO: do something about the pagination
+                   viewModel.getOrders(getContext(),shopPartner.getShopId(),shopPartner.getShopType(),OrderStatus.ORDER_COMPLETED,1);
                }
            }
        });

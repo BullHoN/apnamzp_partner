@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.menuitems.menuItemsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" >
 
-</FrameLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/heading"
+            android:orientation="vertical" >
+
+            <TextView
+                android:textSize="22sp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginTop="12dp"
+                android:layout_centerHorizontal="true"
+                android:text="Categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_marginTop="5dp"
+                android:background="@color/primaryColor"
+                android:layout_width="match_parent"
+                android:layout_height="3dp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categories_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/heading"
+            android:layout_marginTop="12dp"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_menu_items_categories" />
+
+    </RelativeLayout>
+
+</ScrollView>

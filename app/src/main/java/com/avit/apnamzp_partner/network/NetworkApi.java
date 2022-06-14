@@ -2,6 +2,7 @@ package com.avit.apnamzp_partner.network;
 
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
@@ -39,6 +41,7 @@ public interface NetworkApi {
     @GET("/partner/reject_order")
     Call<NetworkResponse> rejectOrder(@Query("order_id") String order_id,@Query("user_id") String user_id,@Query("cancel_reason") String cancelReason);
 
-
+    @GET("/partner/getShopItems/{itemsId}")
+    Call<List<ShopCategoryData>> getShopData(@Path("itemsId") String itemsId);
 
 }

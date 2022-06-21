@@ -58,6 +58,22 @@ public class OrderItem {
         this._id = _id;
     }
 
+    public int getTotalReceivingAmount(){
+        if(!isShopOfferApplied()){
+            return billingDetails.getItemTotal() + billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount();
+        }
+        else {
+            return  billingDetails.getItemTotal() +  billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount() - billingDetails.getOfferDiscountedAmount();
+        }
+    }
+
+    public boolean isShopOfferApplied(){
+        if(offerCode == null) return false;
+        if(offerCode.contains("APNAMZP")) return false;
+        return true;
+    }
+
+
     public int getItemTotal() {
         return itemTotal;
     }

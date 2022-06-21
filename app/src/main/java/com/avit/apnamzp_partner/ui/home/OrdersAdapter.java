@@ -81,12 +81,20 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             holder.orderDeliveryType.setText("Takeaway");
         }
 
+        Log.i(TAG, "onBindViewHolder: " + curr.isShopOfferApplied());
+        Log.i(TAG, "onBindViewHolder: " + curr.getOfferCode());
+
+        if(curr.isShopOfferApplied()){
+            holder.appliedOfferView.setVisibility(View.VISIBLE);
+            holder.appliedOfferView.setText(curr.getOfferCode());
+        }
+
         // TODO: DO SOMETHING ABOUT ONLINE DELIVERY SYSTEM
         SimpleDateFormat localDate = new SimpleDateFormat("hh:mm a");
         String time = localDate.format(curr.getCreatedAt());
         holder.orderArrivalTime.setText(time);
 
-        holder.orderTotalPrice.setText("Total Amount: ₹" + curr.getBillingDetails().getTotalPay());
+        holder.orderTotalPrice.setText("Total Amount: ₹" + curr.getTotalReceivingAmount());
 
         holder.orderNextActionButton.setCheckable(true);
         holder.orderNextActionButton.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +146,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         public RecyclerView ordersItemRecyclerView;
         public TextView orderId, orderDeliveryType, orderDeliveryStatus, orderTotalPrice, orderPaymentStatus
-                , orderArrivalTime;
+                , orderArrivalTime, appliedOfferView;
         public MaterialButton orderNextActionButton;
         public ImageButton moreActionsButton;
 
@@ -151,6 +159,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             orderArrivalTime = itemView.findViewById(R.id.order_arrival_time);
             orderTotalPrice = itemView.findViewById(R.id.order_total_price);
             orderDeliveryStatus = itemView.findViewById(R.id.order_delivery_status);
+            appliedOfferView = itemView.findViewById(R.id.applied_offer);
 
             orderNextActionButton = itemView.findViewById(R.id.order_next_action_button);
             moreActionsButton = itemView.findViewById(R.id.more_action_button);

@@ -70,6 +70,7 @@ public class NotificationService extends FirebaseMessagingService {
             Intent intent = new Intent(getApplicationContext(),OrderNotification.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             intent.setAction("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION");
 
             intent.putExtra("orderItems",orderItems);

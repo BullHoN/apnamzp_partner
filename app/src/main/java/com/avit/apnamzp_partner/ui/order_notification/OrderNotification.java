@@ -58,6 +58,7 @@ public class OrderNotification extends AppCompatActivity {
     private Gson gson;
     private ShopItemData[] orderItems;
     private String userId,orderId,totalPay;
+    private CountDownTimer cancelOrderTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,12 @@ public class OrderNotification extends AppCompatActivity {
         setContentView(R.layout.activity_order_notification);
 
         if(!getIntent().getAction().equals("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION")){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        if(getIntent() == null || !getIntent().hasExtra("userId")){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
@@ -102,7 +109,7 @@ public class OrderNotification extends AppCompatActivity {
 
         waitTimeProgressBar.setMax(60*5);
 
-        new CountDownTimer(waitTime,waitTime/(5*60)){
+         cancelOrderTimer = new CountDownTimer(waitTime,waitTime/(5*60)){
 
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -118,7 +125,7 @@ public class OrderNotification extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                // TODO: Cancel Order
+                // Cancel Order
                 rejectOrder("Shop Didn't Respond");
                 Log.i(TAG, "onFinish: cancel order");
             }
@@ -227,6 +234,7 @@ public class OrderNotification extends AppCompatActivity {
                 if(networkResponse.getStatus()){
                     Toasty.success(getApplicationContext(),"Order Accepted Successfully",Toasty.LENGTH_SHORT)
                             .show();
+                    cancelOrderTimer.cancel();
                 }
                 finish();
             }
@@ -253,6 +261,7 @@ public class OrderNotification extends AppCompatActivity {
                 if(networkResponse.getStatus()){
                     Toasty.success(getApplicationContext(),"Order Rejected",Toasty.LENGTH_SHORT)
                             .show();
+                    cancelOrderTimer.cancel();
                     finish();
                 }
             }

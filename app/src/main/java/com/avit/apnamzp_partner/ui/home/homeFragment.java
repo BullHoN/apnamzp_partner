@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +138,17 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
 
         }
 
+    }
+
+    @Override
+    public void openOrderDetailsFragment(OrderItem orderItem) {
+        Gson gson = new Gson();
+        String orderItemsString = gson.toJson(orderItem);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("orderItem",orderItemsString);
+
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_orderDetailsFragment,bundle);
     }
 
     @Override

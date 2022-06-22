@@ -9,10 +9,19 @@
         android:id="@+id/homeFragment"
         android:name="com.avit.apnamzp_partner.ui.home.homeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/menuItemsFragment"
         android:name="com.avit.apnamzp_partner.ui.menuitems.menuItemsFragment"
         android:label="fragment_menu_items"
         tools:layout="@layout/fragment_menu_items" />
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="com.avit.apnamzp_partner.ui.orderdetails.OrderDetailsFragment"
+        android:label="fragment_order_details"
+        tools:layout="@layout/fragment_order_details" />
 </navigation>

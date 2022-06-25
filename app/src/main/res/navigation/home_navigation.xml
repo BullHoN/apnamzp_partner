@@ -18,10 +18,19 @@
         android:id="@+id/menuItemsFragment"
         android:name="com.avit.apnamzp_partner.ui.menuitems.menuItemsFragment"
         android:label="fragment_menu_items"
-        tools:layout="@layout/fragment_menu_items" />
+        tools:layout="@layout/fragment_menu_items" >
+        <action
+            android:id="@+id/action_menuItemsFragment_to_categoryItemsFragment"
+            app:destination="@id/categoryItemsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.avit.apnamzp_partner.ui.orderdetails.OrderDetailsFragment"
         android:label="fragment_order_details"
         tools:layout="@layout/fragment_order_details" />
+    <fragment
+        android:id="@+id/categoryItemsFragment"
+        android:name="com.avit.apnamzp_partner.ui.categoryitems.CategoryItemsFragment"
+        android:label="fragment_category_items"
+        tools:layout="@layout/fragment_category_items" />
 </navigation>

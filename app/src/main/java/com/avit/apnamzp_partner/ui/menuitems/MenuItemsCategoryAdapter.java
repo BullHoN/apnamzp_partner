@@ -17,12 +17,18 @@ import java.util.List;
 
 public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCategoryAdapter.MenuItemsCategoriesViewHolder>{
 
+    public interface CategoriesActions {
+        void openCategoryMenuItems(ShopCategoryData shopCategoryData);
+    }
+
     private List<ShopCategoryData> shopCategoryData;
     private Context context;
+    private CategoriesActions categoriesActions;
 
-    public MenuItemsCategoryAdapter(List<ShopCategoryData> shopCategoryData, Context context) {
+    public MenuItemsCategoryAdapter(List<ShopCategoryData> shopCategoryData, Context context, CategoriesActions categoriesActions) {
         this.shopCategoryData = shopCategoryData;
         this.context = context;
+        this.categoriesActions = categoriesActions;
     }
 
     @NonNull
@@ -41,7 +47,7 @@ public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCate
         holder.openMenuItemsForCategoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                categoriesActions.openCategoryMenuItems(curr);
             }
         });
 

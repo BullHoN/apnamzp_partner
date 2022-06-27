@@ -19,6 +19,34 @@ public class ShopItemData {
         this.imageURL = imageURL;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public void setTaxOrPackigingPrice(String taxOrPackigingPrice) {
+        this.taxOrPackigingPrice = taxOrPackigingPrice;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public void setVeg(Boolean veg) {
+        isVeg = veg;
+    }
+
     public Boolean getAvailable() {
         return available;
     }

@@ -9,6 +9,14 @@ public class ShopPricingData {
         this.price = price;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     public String getType() {
         return type;
     }

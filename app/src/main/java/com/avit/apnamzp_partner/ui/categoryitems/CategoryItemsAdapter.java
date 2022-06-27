@@ -20,12 +20,18 @@ import java.util.List;
 
 public class CategoryItemsAdapter extends RecyclerView.Adapter<CategoryItemsAdapter.CategoryItemsViewHolder>{
 
+    public interface CategoryItemsActions {
+        void openEditFragment(ShopItemData shopItemData);
+    }
+
     private List<ShopItemData> shopItemDataList;
     private Context context;
+    private CategoryItemsActions categoryItemsActions;
 
-    public CategoryItemsAdapter(List<ShopItemData> shopItemDataList, Context context) {
+    public CategoryItemsAdapter(List<ShopItemData> shopItemDataList, Context context, CategoryItemsActions categoryItemsActions) {
         this.shopItemDataList = shopItemDataList;
         this.context = context;
+        this.categoryItemsActions = categoryItemsActions;
     }
 
     @NonNull
@@ -64,7 +70,7 @@ public class CategoryItemsAdapter extends RecyclerView.Adapter<CategoryItemsAdap
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: THINK SOMETHIMG ABOUT HOW TO EDIT
+                categoryItemsActions.openEditFragment(curr);
             }
         });
 

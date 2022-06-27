@@ -3,6 +3,7 @@ package com.avit.apnamzp_partner.network;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
+import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 
 import java.util.List;
@@ -43,5 +44,8 @@ public interface NetworkApi {
 
     @GET("/partner/getShopItems/{itemsId}")
     Call<List<ShopCategoryData>> getShopData(@Path("itemsId") String itemsId);
+
+    @POST("/partner/update/menuitem")
+    Call<NetworkResponse> updateMenuItem(@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName, @Body ShopItemData shopItemData);
 
 }

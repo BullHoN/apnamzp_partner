@@ -15,6 +15,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/price_type"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Half" />
@@ -30,10 +31,18 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/price"
+            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="23" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/remove_price"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_baseline_remove_circle_24"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
 </LinearLayout>

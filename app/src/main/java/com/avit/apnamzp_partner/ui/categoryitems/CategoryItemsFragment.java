@@ -41,6 +41,14 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsAdap
         binding.categoryItemsRecyclerview.setAdapter(categoryItemsAdapter);
         binding.categoryItemsRecyclerview.setNestedScrollingEnabled(false);
 
+        binding.addNewMenuItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("categoryName", shopCategoryData.getCategoryName());
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_categoryItemsFragment_to_menuItemFragment,bundle1);
+            }
+        });
 
         return binding.getRoot();
     }

@@ -46,6 +46,6 @@ public interface NetworkApi {
     Call<List<ShopCategoryData>> getShopData(@Path("itemsId") String itemsId);
 
     @POST("/partner/update/menuitem")
-    Call<NetworkResponse> updateMenuItem(@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName, @Body ShopItemData shopItemData);
+    Call<NetworkResponse> updateMenuItem(@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName,@Query("isNewItem") boolean isNewItem,@Body ShopItemData shopItemData);
 
 }

@@ -17,6 +17,7 @@ import com.avit.apnamzp_partner.databinding.FragmentMenuItemBinding;
 import com.avit.apnamzp_partner.databinding.FragmentMenuItemsBinding;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
+import com.avit.apnamzp_partner.models.shop.ShopPricingData;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.bumptech.glide.Glide;
@@ -35,28 +36,29 @@ public class MenuItemFragment extends Fragment {
     private Gson gson;
     private ShopItemData shopItemData;
     private EditablePricingAdapter editablePricingAdapter;
+    private boolean isNewMenuItem;
     private String TAG = "MenuItemFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentMenuItemBinding.inflate(inflater,container,false);
+        binding = FragmentMenuItemBinding.inflate(inflater, container, false);
         gson = new Gson();
 
         Bundle bundle = getArguments();
-        if(bundle != null){
-            String shopItemString = bundle.getString("menuItem");
-            String categoryName = bundle.getString("categoryName");
+        String shopItemString = bundle.getString("menuItem");
+        String categoryName = bundle.getString("categoryName");
 
-            shopItemData = gson.fromJson(shopItemString,ShopItemData.class);
+        if(shopItemString != null) {
+            isNewMenuItem = false;
+            shopItemData = gson.fromJson(shopItemString, ShopItemData.class);
 
-            if(shopItemData.getImageURL() != null && shopItemData.getImageURL().length() > 0){
+            if (shopItemData.getImageURL() != null && shopItemData.getImageURL().length() > 0) {
                 Glide.with(getContext())
                         .load(shopItemData.getImageURL())
                         .into(binding.itemImage);
-            }
-            else {
+            } else {
                 // TODO: Default Image
             }
 
@@ -66,52 +68,83 @@ public class MenuItemFragment extends Fragment {
             binding.itemName.setText(shopItemData.getName());
             binding.itemDiscount.setText(shopItemData.getDiscount());
             binding.itemPackegingCharge.setText(shopItemData.getTaxOrPackigingPrice());
-
-            editablePricingAdapter = new EditablePricingAdapter(getContext(),shopItemData.getPricings());
-            binding.itemPricingRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
-            binding.itemPricingRecyclerview.setAdapter(editablePricingAdapter);
-
-            // Add Listeners for everything
-            binding.isVeg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    shopItemData.setVeg(b);
-                }
-            });
-
-            binding.isAvailable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    shopItemData.setAvailable(b);
-                }
-            });
-
-            binding.saveChangesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    String itemName = binding.itemName.getText().toString();
-                    String discount = binding.itemDiscount.getText().toString();
-                    String packigingCharge = binding.itemPackegingCharge.getText().toString();
-
-                    // TODO: Validation
-
-                    shopItemData.setName(itemName);
-                    shopItemData.setDiscount(discount);
-                    shopItemData.setTaxOrPackigingPrice(packigingCharge);
-
-                    // TODO: GET THIS FROM THE LOCAL STORAGE
-                    String shopMenuItemsId = "6174fea0dbb0b2e38f7de220";
-                    saveChangesToServer(shopMenuItemsId, categoryName);
-                }
-            });
-
         }
+        else {
+            isNewMenuItem = true;
+            shopItemData = new ShopItemData();
+            binding.title.setText("Add New Menu Item");
+            binding.saveChangesButton.setText("Add Item");
+        }
+
+
+        editablePricingAdapter = new EditablePricingAdapter(getContext(), shopItemData.getPricings(), new EditablePricingAdapter.EditablePricingActionsInterface() {
+            @Override
+            public void removePricing(ShopPricingData shopPricingData) {
+                shopItemData.removePricing(shopPricingData);
+                editablePricingAdapter.updateItemsPricingList(shopItemData.getPricings());
+            }
+        });
+        binding.itemPricingRecyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        binding.itemPricingRecyclerview.setAdapter(editablePricingAdapter);
+
+        binding.addPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String priceType = binding.priceType.getText().toString();
+                String price = binding.price.getText().toString();
+
+                // TODO: Validation
+
+                shopItemData.addPricing(priceType,price);
+                editablePricingAdapter.updateItemsPricingList(shopItemData.getPricings());
+
+                binding.priceType.setText("");
+                binding.price.setText("");
+
+            }
+        });
+
+        // Add Listeners for everything
+        binding.isVeg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                shopItemData.setVeg(b);
+            }
+        });
+
+        binding.isAvailable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                shopItemData.setAvailable(b);
+            }
+        });
+
+        binding.saveChangesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String itemName = binding.itemName.getText().toString();
+                String discount = binding.itemDiscount.getText().toString();
+                String packigingCharge = binding.itemPackegingCharge.getText().toString();
+
+                // TODO: Validation
+
+                shopItemData.setName(itemName);
+                shopItemData.setDiscount(discount);
+                shopItemData.setTaxOrPackigingPrice(packigingCharge);
+
+                // TODO: GET THIS FROM THE LOCAL STORAGE
+                String shopMenuItemsId = "6174fea0dbb0b2e38f7de220";
+                saveChangesToServer(shopMenuItemsId, categoryName);
+            }
+        });
+
+
 
         return binding.getRoot();
     }
 
-    private void saveChangesToServer(String shopMenuItemsId, String categoryName){
+    private void saveChangesToServer(String shopMenuItemsId, String categoryName) {
 
         Log.i(TAG, "saveChangesToServer: " + shopMenuItemsId);
         Log.i(TAG, "saveChangesToServer: " + categoryName);
@@ -120,17 +153,17 @@ public class MenuItemFragment extends Fragment {
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Call<NetworkResponse> call = networkApi.updateMenuItem(shopMenuItemsId, categoryName, shopItemData);
+        Call<NetworkResponse> call = networkApi.updateMenuItem(shopMenuItemsId, categoryName,isNewMenuItem ,shopItemData);
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
-                Toasty.success(getContext(),"Updated Successfully",Toasty.LENGTH_SHORT)
+                Toasty.success(getContext(), "Updated Successfully", Toasty.LENGTH_SHORT)
                         .show();
             }
 
             @Override
             public void onFailure(Call<NetworkResponse> call, Throwable t) {
-                Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_SHORT)
+                Toasty.error(getContext(), t.getMessage(), Toasty.LENGTH_SHORT)
                         .show();
                 Log.e(TAG, "onFailure: ", t);
             }

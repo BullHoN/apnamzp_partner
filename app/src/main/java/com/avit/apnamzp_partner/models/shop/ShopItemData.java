@@ -1,5 +1,6 @@
 package com.avit.apnamzp_partner.models.shop;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopItemData {
@@ -13,6 +14,15 @@ public class ShopItemData {
     public Boolean available;
     private Boolean isVeg;
 
+    public ShopItemData(){
+        pricings = new ArrayList<>();
+        discount = "0";
+        taxOrPackigingPrice = "0";
+        imageURL = "";
+        available = false;
+        isVeg = false;
+    }
+
     public ShopItemData(String name, List<ShopPricingData> pricings, String imageURL) {
         this.name = name;
         this.pricings = pricings;
@@ -21,6 +31,14 @@ public class ShopItemData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addPricing(String priceType, String price){
+        pricings.add(new ShopPricingData(priceType,price));
+    }
+
+    public void removePricing(ShopPricingData shopPricingData){
+        pricings.remove(shopPricingData);
     }
 
     public void set_id(String _id) {

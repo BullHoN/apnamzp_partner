@@ -56,4 +56,7 @@ public interface NetworkApi {
     @POST("/partner/update/menuitem")
     Call<NetworkResponse> putMenuItem(@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName,@Query("isNewItem") boolean isNewItem,@Part MultipartBody.Part itemImagePart, @Part("shopItemData") RequestBody shopItemData);
 
+    @POST("/partner/createNewCategory")
+    Call<NetworkResponse> addNewCategory(@Query("shopItemsId") String shopItemsId, @Body ShopCategoryData shopCategoryData);
+
 }

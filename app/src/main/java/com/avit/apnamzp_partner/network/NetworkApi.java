@@ -8,11 +8,15 @@ import com.avit.apnamzp_partner.models.user.ShopPartner;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -47,5 +51,9 @@ public interface NetworkApi {
 
     @POST("/partner/update/menuitem")
     Call<NetworkResponse> updateMenuItem(@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName,@Query("isNewItem") boolean isNewItem,@Body ShopItemData shopItemData);
+
+    @Multipart
+    @POST("/partner/update/menuitem")
+    Call<NetworkResponse> putMenuItem(@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName,@Query("isNewItem") boolean isNewItem,@Part MultipartBody.Part itemImagePart, @Part("shopItemData") RequestBody shopItemData);
 
 }

@@ -1,7 +1,14 @@
 package com.avit.apnamzp_partner.ui.menuitem;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +28,22 @@ import com.avit.apnamzp_partner.models.shop.ShopPricingData;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.bumptech.glide.Glide;
+import com.github.drjacky.imagepicker.ImagePicker;
+import com.github.drjacky.imagepicker.constant.ImageProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+
 import es.dmoral.toasty.Toasty;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Intrinsics;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +56,7 @@ public class MenuItemFragment extends Fragment {
     private ShopItemData shopItemData;
     private EditablePricingAdapter editablePricingAdapter;
     private boolean isNewMenuItem;
+    private ActivityResultLauncher<Intent> itemPickingLauncher;
     private String TAG = "MenuItemFragment";
 
     @Override
@@ -76,6 +96,26 @@ public class MenuItemFragment extends Fragment {
             binding.saveChangesButton.setText("Add Item");
         }
 
+        itemPickingLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Uri imageUri = result.getData().getData();
+                        shopItemData.setImageURL(imageUri.getPath());
+                        // Use the uri to load the image
+                        Glide.with(getContext()).load(imageUri).into(binding.itemImage);
+
+                    } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
+                        // Use ImagePicker.Companion.getError(result.getData()) to show an error
+                        ImagePicker.Companion.getError(result.getData());
+                    }
+                });
+
+        binding.itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickImage();
+            }
+        });
 
         editablePricingAdapter = new EditablePricingAdapter(getContext(), shopItemData.getPricings(), new EditablePricingAdapter.EditablePricingActionsInterface() {
             @Override
@@ -135,13 +175,67 @@ public class MenuItemFragment extends Fragment {
 
                 // TODO: GET THIS FROM THE LOCAL STORAGE
                 String shopMenuItemsId = "6174fea0dbb0b2e38f7de220";
-                saveChangesToServer(shopMenuItemsId, categoryName);
+//                saveChangesToServer(shopMenuItemsId, categoryName);
+                putMenuItemToServer(shopMenuItemsId,categoryName);
             }
         });
 
 
 
         return binding.getRoot();
+    }
+
+    private void pickImage(){
+        ImagePicker.Companion.with(getActivity())
+                .crop()
+                .cropSquare()
+                .maxResultSize(500,500,true)
+                .provider(ImageProvider.BOTH)
+                .createIntentFromDialog((Function1)(new Function1(){
+                    public Object invoke(Object var1) {
+                        this.invoke((Intent) var1);
+                        return Unit.INSTANCE;
+                    }
+
+                    public final void invoke(@NotNull Intent it) {
+                        Intrinsics.checkNotNullParameter(it, "it");
+                        itemPickingLauncher.launch(it);
+                    }
+                }));
+    }
+
+    private void putMenuItemToServer(String shopMenuItemsId, String categoryName){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        MultipartBody.Part imagePart = null;
+        if(shopItemData.getImageURL().contains("http")){
+
+        }
+        else if(shopItemData.getImageURL() != null && shopItemData.getImageURL().length() > 0){
+            File imageFile = new File(shopItemData.getImageURL());
+            RequestBody imageBody = RequestBody.create(MediaType.parse("image/*"), imageFile);
+            imagePart = MultipartBody.Part.createFormData("item_image", imageFile.getName(),imageBody);
+        }
+
+        RequestBody someData = RequestBody.create(MediaType.parse("application/json"),gson.toJson(shopItemData));
+
+        Call<NetworkResponse> call = networkApi.putMenuItem(shopMenuItemsId,categoryName,isNewMenuItem,imagePart,someData);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                Toasty.success(getContext(),"Update Successfull", Toasty.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_LONG)
+                        .show();
+                Log.e(TAG, "onFailure: ", t);
+            }
+        });
+
     }
 
     private void saveChangesToServer(String shopMenuItemsId, String categoryName) {

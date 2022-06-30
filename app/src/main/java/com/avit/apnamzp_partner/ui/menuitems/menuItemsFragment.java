@@ -61,4 +61,10 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
 
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_menuItemsFragment_to_categoryItemsFragment,bundle);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.getCategoriesFromServer("6174fea0dbb0b2e38f7de220");
+    }
 }

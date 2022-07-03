@@ -95,6 +95,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         String time = localDate.format(curr.getCreatedAt());
         holder.orderArrivalTime.setText(time);
 
+
         holder.orderTotalPrice.setText("Total Amount: ₹" + curr.getTotalReceivingAmount());
 
         holder.orderNextActionButton.setCheckable(true);

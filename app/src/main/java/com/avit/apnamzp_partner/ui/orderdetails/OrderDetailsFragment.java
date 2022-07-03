@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentOrderDetailsBinding;
@@ -40,21 +41,29 @@ public class OrderDetailsFragment extends Fragment {
         orderItemsAdapter = new OrderItemsAdapter(orderItem.getOrderItems(),getContext());
         binding.orderItemsRecyclerView.setAdapter(orderItemsAdapter);
 
-        binding.itemsTotal.setText(PrettyStrings.getCostInINR(orderItem.getBillingDetails().getItemTotal()));
-        binding.totalTaxAndPackingCost.setText(PrettyStrings.getCostInINR(orderItem.getBillingDetails().getTotalTaxesAndPackingCharge()));
-        binding.taxPercentage.setText(PrettyStrings.getCostInINR(orderItem.getBillingDetails().getTaxPercentage()));
-        binding.totalDiscount.setText(PrettyStrings.getCostInINR(orderItem.getBillingDetails().getTotalDiscount()));
+        setText(binding.itemsTotal, orderItem.getBillingDetails().getItemTotal(),false);
+        setText(binding.totalTaxAndPackingCost, orderItem.getBillingDetails().getTotalTaxesAndPackingCharge(), false);
+        setText(binding.totalDiscount, orderItem.getBillingDetails().getTotalDiscount(),true);
+
+        binding.taxPercentage.setText(orderItem.getBillingDetails().getTaxPercentage() + "%");
 
         if(orderItem.isShopOfferApplied()){
-            binding.offerDiscountAmount.setText(PrettyStrings.getCostInINR(orderItem.getBillingDetails().getOfferDiscountedAmount()));
+            setText(binding.offerDiscountAmount,orderItem.getBillingDetails().getOfferDiscountedAmount(),true);
             binding.appliedOfferCode.setText(orderItem.getOfferCode());
         }
         else {
-            binding.offerDiscountAmount.setText(PrettyStrings.getCostInINR(0));
+            setText(binding.offerDiscountAmount,0,false);
             binding.appliedOfferCode.setText("No Shop Offer Applied");
         }
 
-        binding.receivingAmount.setText(PrettyStrings.getCostInINR(orderItem.getTotalReceivingAmount()));
+        if(orderItem.isFreeDelivery()){
+            setText(binding.freeDeliveryPrice,orderItem.getBillingDetails().getDeliveryCharge(),true);
+        }
+        else {
+            setText(binding.freeDeliveryPrice,0,false);
+        }
+
+        setText(binding.receivingAmount,orderItem.getTotalReceivingAmount(),false);
 
         // order details
         if(orderItem.getAssignedDeliveryBoy() == null || orderItem.getSpecialInstructions().length() == 0){
@@ -84,4 +93,25 @@ public class OrderDetailsFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+    void setText(TextView view, String value, boolean negative){
+        view.setText(PrettyStrings.getCostInINR(value));
+        if(!negative){
+            view.setTextColor(getResources().getColor(R.color.successColor));
+        }
+        else {
+            view.setTextColor(getResources().getColor(R.color.errorColor));
+        }
+    }
+
+    void setText(TextView view, int value, boolean negative){
+        view.setText(PrettyStrings.getCostInINR(value));
+        if(!negative){
+            view.setTextColor(getResources().getColor(R.color.successColor));
+        }
+        else {
+            view.setTextColor(getResources().getColor(R.color.errorColor));
+        }
+    }
+
 }

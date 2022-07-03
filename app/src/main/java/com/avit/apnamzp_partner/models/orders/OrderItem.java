@@ -81,17 +81,32 @@ public class OrderItem {
         this._id = _id;
     }
 
+    public boolean isFreeDelivery(){
+        if(getBillingDetails().getItemTotal() >= getBillingDetails().getFreeDeliveryPrice()){
+            return true;
+        }
+
+        return false;
+    }
+
     public String getAssignedDeliveryBoy() {
         return assignedDeliveryBoy;
     }
 
     public int getTotalReceivingAmount(){
+        int totalReceivingAmount = 0;
         if(!isShopOfferApplied()){
-            return billingDetails.getItemTotal() + billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount();
+            totalReceivingAmount =  billingDetails.getItemTotal() + billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount();
         }
         else {
-            return  billingDetails.getItemTotal() +  billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount() - billingDetails.getOfferDiscountedAmount();
+            totalReceivingAmount =  billingDetails.getItemTotal() +  billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount() - billingDetails.getOfferDiscountedAmount();
         }
+
+        if(isFreeDelivery()){
+            totalReceivingAmount -= billingDetails.getDeliveryCharge();
+        }
+
+        return  totalReceivingAmount;
     }
 
     public boolean isShopOfferApplied(){

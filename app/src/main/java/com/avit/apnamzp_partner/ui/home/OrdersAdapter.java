@@ -90,7 +90,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             holder.appliedOfferView.setText(curr.getOfferCode());
         }
 
-        // TODO: DO SOMETHING ABOUT ONLINE DELIVERY SYSTEM
         SimpleDateFormat localDate = new SimpleDateFormat("hh:mm a");
         String time = localDate.format(curr.getCreatedAt());
         holder.orderArrivalTime.setText(time);

@@ -120,24 +120,6 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             }
         });
 
-        if(newOrderStatus == 4){
-            Call<NetworkResponse> assignDBoy = networkApi.assignDeliveryBoy(orderId,"25.133699","82.564430");
-            assignDBoy.enqueue(new Callback<NetworkResponse>() {
-                @Override
-                public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<NetworkResponse> call, Throwable t) {
-                    Toasty.error(getContext(),"Please Contact ApnaMzp",Toasty.LENGTH_LONG)
-                            .show();
-                    Log.e(TAG, "onFailure: ", t);
-                }
-            });
-
-        }
-
     }
 
     @Override

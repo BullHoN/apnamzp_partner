@@ -6,6 +6,7 @@ public class ShopPartner {
     private String shopId;
     private String shopType;
 
+
     public ShopPartner(String phoneNo) {
         this.phoneNo = phoneNo;
         this.fcmId = null;

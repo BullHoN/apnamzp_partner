@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
+
         <item
             android:checked="true"
             android:id="@+id/homeFragment"
@@ -15,5 +16,11 @@
             android:id="@+id/dashboardFragment2"
             android:icon="@drawable/ic_launcher_background"
             android:title="Dashboard" />
+
+        <item
+            android:id="@+id/manageFragment"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="Manage Shop" />
+
     </group>
 </menu>

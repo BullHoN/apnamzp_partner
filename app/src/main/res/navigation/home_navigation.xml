@@ -47,4 +47,9 @@
         android:name="com.avit.apnamzp_partner.ui.dashboard.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/manageFragment"
+        android:name="com.avit.apnamzp_partner.ui.manage.ManageFragment"
+        android:label="fragment_manage"
+        tools:layout="@layout/fragment_manage" />
 </navigation>

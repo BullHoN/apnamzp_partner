@@ -1,4 +1,4 @@
-package com.avit.apnamzp_partner.ui.home;
+package com.avit.apnamzp_partner.ui.dashboard;
 
 import android.content.Context;
 import android.util.Log;
@@ -20,27 +20,28 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class homeFragmentViewModel extends ViewModel {
+public class DashboardViewModel extends ViewModel {
 
-    private MutableLiveData<List<OrderItem>> orderItemsMutableLiveData;
-    private String TAG = "homeFragment";
+    private MutableLiveData<List<OrderItem>> mutableOrderItemsLiveData;
+    private String TAG = "DashboardViewModel";
 
-    public homeFragmentViewModel(){
-        orderItemsMutableLiveData = new MutableLiveData<>();
+    public DashboardViewModel(){
+        mutableOrderItemsLiveData = new MutableLiveData<>();
     }
 
-    public void getOrders(Context context,String shopId, String shopCategory, int orderStatus, int pageNumber){
+    public MutableLiveData<List<OrderItem>> getMutableOrderItemsLiveData() {
+        return mutableOrderItemsLiveData;
+    }
+
+    public void getOrders(Context context, String shopId, String shopCategory, int orderStatus,String date, int pageNumber){
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Date todayDate = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        Call<List<OrderItem>> call = networkApi.getAllOrders(shopCategory,shopId,orderStatus,simpleDateFormat.format(todayDate));
+        Call<List<OrderItem>> call = networkApi.getAllOrders(shopCategory,shopId,orderStatus,date);
         call.enqueue(new Callback<List<OrderItem>>() {
             @Override
             public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {
-                orderItemsMutableLiveData.setValue(response.body());
+                mutableOrderItemsLiveData.setValue(response.body());
             }
 
             @Override
@@ -53,7 +54,4 @@ public class homeFragmentViewModel extends ViewModel {
 
     }
 
-    public MutableLiveData<List<OrderItem>> getOrderItemsMutableLiveData() {
-        return orderItemsMutableLiveData;
-    }
 }

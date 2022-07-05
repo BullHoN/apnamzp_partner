@@ -10,5 +10,10 @@
             android:id="@+id/menuItemsFragment"
             android:icon="@drawable/ic_launcher_background"
             android:title="MenuItems" />
+
+        <item
+            android:id="@+id/dashboardFragment2"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="Dashboard" />
     </group>
 </menu>

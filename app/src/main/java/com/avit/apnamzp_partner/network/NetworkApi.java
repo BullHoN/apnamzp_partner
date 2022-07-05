@@ -6,6 +6,7 @@ import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -21,12 +22,13 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
-    String SERVER_URL = "http://192.168.1.3:5000/";
+    String SERVER_URL = "http://192.168.63.85:5000/";
 //    String SERVER_URL = "http://da22-2401-4900-1f3b-392b-189b-5688-d508-410c.ngrok.io";
 
     @GET("/partner/getOrders")
     Call<List<OrderItem>> getAllOrders(@Query("shopCategory") String shopCategory,
-                                       @Query("shopId") String shopId, @Query("orderStatus") int orderStatus);
+                                       @Query("shopId") String shopId, @Query("orderStatus") int orderStatus,
+                                       @Query("ordersDateString") String ordersDateString);
 
     @POST("/partner/order/updateStatus")
     Call<ResponseBody> updateOrderStatus(@Query("orderId") String orderId, @Query("orderStatus") int orderStatus);

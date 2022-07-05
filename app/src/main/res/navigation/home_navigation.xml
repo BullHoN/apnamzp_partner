@@ -42,4 +42,9 @@
         android:name="com.avit.apnamzp_partner.ui.menuitem.MenuItemFragment"
         android:label="fragment_menu_item"
         tools:layout="@layout/fragment_menu_item" />
+    <fragment
+        android:id="@+id/dashboardFragment2"
+        android:name="com.avit.apnamzp_partner.ui.dashboard.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
 </navigation>

@@ -61,4 +61,8 @@ public interface NetworkApi {
     @POST("/partner/createNewCategory")
     Call<NetworkResponse> addNewCategory(@Query("shopItemsId") String shopItemsId, @Body ShopCategoryData shopCategoryData);
 
+    @Multipart
+    @POST("/partner/update/shopdetails")
+    Call<NetworkResponse> updateShopDetails(@Part MultipartBody.Part bannerImage,@Part("shopData") RequestBody shopData);
+
 }

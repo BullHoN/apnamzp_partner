@@ -146,8 +146,7 @@ public class OrderNotification extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(ChipGroup group, int checkedId) {
                         Log.i(TAG, "onCheckedChanged: ");
-                        // TODO: Accept the order
-
+                        // Accept the order
                         String reason;
                         switch (checkedId) {
                             case R.id.min10: {
@@ -204,7 +203,7 @@ public class OrderNotification extends AppCompatActivity {
                 rejectButtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO reject the upcomming order
+                        // reject the upcomming order
                         String reason = rejectReason.getText().toString();
                         if (reason.length() < 3) { // TODO: proper validation
                             Toasty.error(getApplicationContext(), "Enter Valid Reason", Toasty.LENGTH_LONG)

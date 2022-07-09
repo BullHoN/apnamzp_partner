@@ -12,6 +12,22 @@ public class ShopPartner {
     private String taxPercentage;
     private String name;
     private boolean isOpen;
+    private String shopItemsId;
+
+    public ShopPartner(String phoneNo, String fcmId, String shopId, String shopType, String tagLine, ShopPrices pricingDetails, ShopAddressData addressData, String bannerImage, String taxPercentage, String name, boolean isOpen, String shopItemsId) {
+        this.phoneNo = phoneNo;
+        this.fcmId = fcmId;
+        this.shopId = shopId;
+        this.shopType = shopType;
+        this.tagLine = tagLine;
+        this.pricingDetails = pricingDetails;
+        this.addressData = addressData;
+        this.bannerImage = bannerImage;
+        this.taxPercentage = taxPercentage;
+        this.name = name;
+        this.isOpen = isOpen;
+        this.shopItemsId = shopItemsId;
+    }
 
     public ShopPartner(String phoneNo, String fcmId, String shopId, String shopType, String tagLine, ShopPrices pricingDetails, ShopAddressData addressData, String bannerImage, String taxPercentage, String name, boolean isOpen) {
         this.phoneNo = phoneNo;
@@ -36,6 +52,14 @@ public class ShopPartner {
         this.phoneNo = phoneNo;
         this.shopId = shopId;
         this.shopType = shopType;
+    }
+
+    public void setShopItemsId(String shopItemsId) {
+        this.shopItemsId = shopItemsId;
+    }
+
+    public String getShopItemsId() {
+        return shopItemsId;
     }
 
     public void setOpen(boolean open) {
@@ -72,7 +96,7 @@ public class ShopPartner {
     }
 
     public String getTaxPercentage() {
-        if(taxPercentage == null) return "";
+        if(taxPercentage == null) taxPercentage = "0";
         return taxPercentage;
     }
 

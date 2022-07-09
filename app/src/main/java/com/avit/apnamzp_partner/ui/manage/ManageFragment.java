@@ -78,14 +78,13 @@ public class ManageFragment extends Fragment {
         binding.shopTagline.setText(shopPartner.getTagLine());
 
         if (shopPartner.getPricingDetails() == null){
-            binding.shopMinOrderPrice.setText("");
-            binding.shopMinFreeDeliveryPrice.setText("");
+            binding.shopMinOrderPrice.setText("0");
+            binding.shopMinFreeDeliveryPrice.setText("0");
         }
         else {
             binding.shopMinOrderPrice.setText(shopPartner.getPricingDetails().getMinOrderPrice());
             binding.shopMinFreeDeliveryPrice.setText(shopPartner.getPricingDetails().getMinFreeDeliveryPrice());
         }
-
 
 
         binding.shopTaxPercentage.setText(shopPartner.getTaxPercentage());

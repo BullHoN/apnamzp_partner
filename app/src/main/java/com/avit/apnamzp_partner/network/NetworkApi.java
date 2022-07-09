@@ -4,6 +4,7 @@ import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
+import com.avit.apnamzp_partner.models.user.LoginPostData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 
 import java.util.Date;
@@ -36,8 +37,8 @@ public interface NetworkApi {
     @POST("/partner/assignDeliveryBoy")
     Call<NetworkResponse> assignDeliveryBoy(@Query("orderId") String orderId,@Query("latitude") String latitude,@Query("longitude") String longitude);
 
-    @GET("/login")
-    Call<ShopPartner> login(@Query("phoneNo") String phoneNo,@Query("password") String password,@Query("user_type") String userType);
+    @POST("/partner/login")
+    Call<NetworkResponse> login(@Body LoginPostData loginPostData);
 
     @POST("/user_routes/updateFCM")
     Call<ResponseBody> updateFcmToken(@Body ShopPartner shopPartner);

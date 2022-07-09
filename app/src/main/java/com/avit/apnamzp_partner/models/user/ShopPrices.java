@@ -10,12 +10,12 @@ public class ShopPrices {
     }
 
     public String getMinOrderPrice() {
-        if(minOrderPrice == null) return "";
+        if(minOrderPrice == null) return "0";
         return minOrderPrice;
     }
 
     public String getMinFreeDeliveryPrice() {
-        if(minFreeDeliveryPrice == null) return "";
+        if(minFreeDeliveryPrice == null) return "0";
         return minFreeDeliveryPrice;
     }
 }

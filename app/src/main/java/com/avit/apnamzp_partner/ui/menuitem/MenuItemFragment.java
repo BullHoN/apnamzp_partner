@@ -22,6 +22,7 @@ import android.widget.CompoundButton;
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentMenuItemBinding;
 import com.avit.apnamzp_partner.databinding.FragmentMenuItemsBinding;
+import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.models.shop.ShopPricingData;
@@ -173,8 +174,7 @@ public class MenuItemFragment extends Fragment {
                 shopItemData.setDiscount(discount);
                 shopItemData.setTaxOrPackigingPrice(packigingCharge);
 
-                // TODO: GET THIS FROM THE LOCAL STORAGE
-                String shopMenuItemsId = "6174fea0dbb0b2e38f7de220";
+                String shopMenuItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();
 //                saveChangesToServer(shopMenuItemsId, categoryName);
                 putMenuItemToServer(shopMenuItemsId,categoryName);
             }

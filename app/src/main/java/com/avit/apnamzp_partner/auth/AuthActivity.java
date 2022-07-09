@@ -15,13 +15,18 @@ import android.widget.LinearLayout;
 import com.avit.apnamzp_partner.HomeActivity;
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.db.LocalDB;
+import com.avit.apnamzp_partner.models.network.NetworkResponse;
+import com.avit.apnamzp_partner.models.user.LoginPostData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.utils.ValidateInput;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 
 import es.dmoral.toasty.Toasty;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,11 +36,15 @@ import retrofit2.Retrofit;
 public class AuthActivity extends AppCompatActivity {
 
     private LinearLayout loginButton, registerButton;
+    private Gson gson;
+    private String TAG = "AuthActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        gson = new Gson();
 
         loginButton = findViewById(R.id.login_button);
         registerButton = findViewById(R.id.register_button);
@@ -82,23 +91,32 @@ public class AuthActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Call<ShopPartner> call = networkApi.login(phoneNo,password,"partner");
-        call.enqueue(new Callback<ShopPartner>() {
+        LoginPostData loginPostData = new LoginPostData(phoneNo,password);
+
+        Call<NetworkResponse> call = networkApi.login(loginPostData);
+        call.enqueue(new Callback<NetworkResponse>() {
             @Override
-            public void onResponse(Call<ShopPartner> call, Response<ShopPartner> response) {
-                Toasty.success(getApplicationContext(),"Login Successfull",Toasty.LENGTH_SHORT)
-                        .show();
-                // SAVE IN SHARED PREF
-                LocalDB.savePartnerDetails(getApplicationContext(),response.body());
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
 
-                Intent homeActivity = new Intent(getApplicationContext(),HomeActivity.class);
-                startActivity(homeActivity);
+                if(response.body().isSuccess()){
+                    Log.i(TAG, "onResponse: " + response.body().getData());
+                    ShopPartner shopPartner = gson.fromJson(response.body().getData(),ShopPartner.class);
+                    LocalDB.savePartnerDetails(getApplicationContext(),shopPartner);
 
-                finish();
+                    Intent homeActivity = new Intent(getApplicationContext(),HomeActivity.class);
+                    startActivity(homeActivity);
+
+                    finish();
+                }
+                else {
+                    Toasty.error(getApplicationContext(),response.body().getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                }
+
             }
 
             @Override
-            public void onFailure(Call<ShopPartner> call, Throwable t) {
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
                 Toasty.error(getApplicationContext(),t.getMessage(),Toasty.LENGTH_LONG)
                         .show();
             }

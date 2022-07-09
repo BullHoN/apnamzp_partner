@@ -5,21 +5,21 @@
         <item
             android:checked="true"
             android:id="@+id/homeFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/ic_orders"
             android:title="Orders" />
         <item
             android:id="@+id/menuItemsFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/ic_menu"
             android:title="MenuItems" />
 
         <item
             android:id="@+id/dashboardFragment2"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/ic_dashboard"
             android:title="Dashboard" />
 
         <item
             android:id="@+id/manageFragment"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/ic_manage"
             android:title="Manage Shop" />
 
     </group>

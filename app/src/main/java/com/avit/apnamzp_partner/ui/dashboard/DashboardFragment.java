@@ -61,6 +61,17 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
             @Override
             public void onChanged(List<OrderItem> orderItems) {
                 ordersAdapter.replaceItems(orderItems);
+                binding.loading.setVisibility(View.GONE);
+
+                if(orderItems.size() == 0){
+                    binding.emptyOrdersView.setVisibility(View.VISIBLE);
+                    binding.emptyOrdersView.setAnimation(R.raw.no_orders_animation);
+                    binding.emptyOrdersView.playAnimation();
+                }
+                else {
+                    binding.emptyOrdersView.setVisibility(View.GONE);
+                }
+
             }
         });
 
@@ -78,6 +89,10 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
                 }
 
                 String dateString = year + "-" + monthString + "-" + dateOfMonthString;
+
+                binding.loading.setVisibility(View.VISIBLE);
+                binding.loading.setAnimation(R.raw.searching_orders_animation);
+                binding.loading.playAnimation();
 
                 viewModel.getOrders(getContext(),shopPartner.getShopId(),shopPartner.getShopType(),6,dateString,1);
             }

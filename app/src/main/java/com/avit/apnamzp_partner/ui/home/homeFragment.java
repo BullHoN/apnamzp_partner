@@ -65,6 +65,16 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             public void onChanged(List<OrderItem> orderItems) {
                 ordersAdapter.replaceItems(orderItems);
                 binding.progressBar.setVisibility(View.INVISIBLE);
+
+                if(orderItems.size() == 0){
+                    binding.ordersNotFoundAnimation.setVisibility(View.VISIBLE);
+                    binding.ordersNotFoundAnimation.setAnimation(R.raw.no_orders_animation);
+                    binding.ordersNotFoundAnimation.playAnimation();
+                }
+                else {
+                    binding.ordersNotFoundAnimation.setVisibility(View.GONE);
+                }
+
             }
         });
 

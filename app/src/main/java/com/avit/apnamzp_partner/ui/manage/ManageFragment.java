@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,8 +63,9 @@ public class ManageFragment extends Fragment {
         binding = FragmentManageBinding.inflate(inflater,container,false);
         gson = new Gson();
 
-        // TODO: get & save all the shop data from local storage
         shopPartner = LocalDB.getPartnerDetails(getContext());
+
+        // TODO: Add a get route to get the shop data from server
 
         if(shopPartner.getBannerImage() != null && shopPartner.getBannerImage().length() > 0){
             Glide.with(getContext())
@@ -71,8 +73,7 @@ public class ManageFragment extends Fragment {
                     .into(binding.bannerImage);
         }
 
-
-        binding.shopName.setText("Up63 Cafe");
+        binding.shopName.setText(shopPartner.getName());
         binding.shopType.setText(shopPartner.getShopType());
 
         binding.shopTagline.setText(shopPartner.getTagLine());
@@ -148,6 +149,12 @@ public class ManageFragment extends Fragment {
                 shopPartner.setTaxPercentage(taxPercentage);
 
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
+
+                binding.loading.setVisibility(View.VISIBLE);
+                binding.saveChangesButton.setEnabled(false);
+                binding.loading.setAnimation(R.raw.upload_animation);
+                binding.loading.playAnimation();
+
                 sendDataToServer();
             }
         });
@@ -175,6 +182,10 @@ public class ManageFragment extends Fragment {
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
                 Toasty.success(getContext(),"Update Successfull",Toasty.LENGTH_SHORT)
                         .show();
+
+                binding.loading.setVisibility(View.GONE);
+                binding.saveChangesButton.setEnabled(true);
+
             }
 
             @Override

@@ -54,12 +54,12 @@
         </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:isScrollContainer="false"
             android:id="@+id/order_items_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/orders_filter"
             android:layout_marginTop="12dp"
+            android:isScrollContainer="false"
             android:paddingHorizontal="8dp"
             tools:itemCount="3"
             tools:listitem="@layout/item_orders" />
@@ -69,6 +69,14 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:id="@+id/orders_not_found_animation"
+            app:lottie_loop="true"
+            android:layout_width="250dp"
+            android:layout_height="250dp" />
 
     </RelativeLayout>
 

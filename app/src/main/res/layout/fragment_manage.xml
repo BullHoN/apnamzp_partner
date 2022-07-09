@@ -167,6 +167,7 @@
         </LinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView
+            android:visibility="gone"
             android:id="@+id/loading"
             app:lottie_loop="true"
             android:layout_centerInParent="true"

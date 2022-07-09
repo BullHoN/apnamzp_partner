@@ -176,6 +176,12 @@ public class MenuItemFragment extends Fragment {
 
                 String shopMenuItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();
 //                saveChangesToServer(shopMenuItemsId, categoryName);
+
+                binding.loading.setVisibility(View.VISIBLE);
+                binding.saveChangesButton.setEnabled(false);
+                binding.loading.setAnimation(R.raw.upload_animation);
+                binding.loading.playAnimation();
+
                 putMenuItemToServer(shopMenuItemsId,categoryName);
             }
         });
@@ -226,6 +232,8 @@ public class MenuItemFragment extends Fragment {
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
                 Toasty.success(getContext(),"Update Successfull", Toasty.LENGTH_SHORT)
                         .show();
+                binding.loading.setVisibility(View.GONE);
+                binding.saveChangesButton.setEnabled(true);
             }
 
             @Override

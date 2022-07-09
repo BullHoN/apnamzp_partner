@@ -52,6 +52,9 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
         MenuItemsCategoryAdapter adapter = new MenuItemsCategoryAdapter(new ArrayList<>(),getContext(),this);
         binding.categoriesRecyclerview.setAdapter(adapter);
 
+        binding.loading.setVisibility(View.VISIBLE);
+        binding.loading.setAnimation(R.raw.categories_loading_animation);
+        binding.loading.playAnimation();
 
         shopItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();
         viewModel.getCategoriesFromServer(shopItemsId);
@@ -59,6 +62,7 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
         viewModel.getShopCategoryDataMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<ShopCategoryData>>() {
             @Override
             public void onChanged(List<ShopCategoryData> shopCategoryData) {
+                binding.loading.setVisibility(View.GONE);
                 adapter.updateItems(shopCategoryData);
             }
         });

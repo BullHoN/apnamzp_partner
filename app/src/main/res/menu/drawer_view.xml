@@ -22,5 +22,10 @@
             android:icon="@drawable/ic_manage"
             android:title="Manage Shop" />
 
+        <item
+            android:id="@+id/offersFragment"
+            android:icon="@drawable/ic_manage"
+            android:title="Offers" />
+
     </group>
 </menu>

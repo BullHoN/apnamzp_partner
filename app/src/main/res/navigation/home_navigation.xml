@@ -52,4 +52,18 @@
         android:name="com.avit.apnamzp_partner.ui.manage.ManageFragment"
         android:label="fragment_manage"
         tools:layout="@layout/fragment_manage" />
+    <fragment
+        android:id="@+id/offersFragment"
+        android:name="com.avit.apnamzp_partner.ui.offers.OffersFragment"
+        android:label="fragment_offers"
+        tools:layout="@layout/fragment_offers" >
+        <action
+            android:id="@+id/action_offersFragment_to_offerFragment"
+            app:destination="@id/offerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/offerFragment"
+        android:name="com.avit.apnamzp_partner.ui.offer.OfferFragment"
+        android:label="fragment_offer"
+        tools:layout="@layout/fragment_offer" />
 </navigation>

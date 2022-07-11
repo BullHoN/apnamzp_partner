@@ -1,6 +1,7 @@
 package com.avit.apnamzp_partner.network;
 
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
+import com.avit.apnamzp_partner.models.offer.OfferItem;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
@@ -65,5 +66,11 @@ public interface NetworkApi {
     @Multipart
     @POST("/partner/update/shopdetails")
     Call<NetworkResponse> updateShopDetails(@Part MultipartBody.Part bannerImage,@Part("shopData") RequestBody shopData);
+
+    @GET("/partner/offers")
+    Call<List<OfferItem>> getOffers(@Query("shopName") String shopName);
+
+    @POST("/partner/offers")
+    Call<NetworkResponse> putOffer(@Body OfferItem offerItem);
 
 }

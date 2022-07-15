@@ -15,10 +15,17 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.avit.apnamzp_partner.HomeActivity;
 import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.db.LocalDB;
+import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class NotificationService extends FirebaseMessagingService {
 
@@ -55,6 +62,13 @@ public class NotificationService extends FirebaseMessagingService {
             Log.i(TAG, "onMessageReceived: " + orderId);
             Log.i(TAG, "onMessageReceived: " + userId);
             Log.i(TAG, "onMessageReceived: " + totalAmount);
+
+            Gson gson = new Gson();
+            ShopItemData orderItemsArray[] = gson.fromJson(orderItems,ShopItemData[].class);
+            List<ShopItemData> orderItemsList = Arrays.asList(orderItemsArray);
+
+            OrderItem actionNeededOrderItem = new OrderItem(Integer.valueOf(totalAmount),orderItemsList,userId,orderId);
+            LocalDB.saveActionNeededOrder(getApplicationContext(),actionNeededOrderItem, "add");
 
             handleNewOrderNotification(orderItems,orderId,userId,totalAmount);
 

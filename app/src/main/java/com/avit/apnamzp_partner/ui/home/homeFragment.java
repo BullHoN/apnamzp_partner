@@ -1,5 +1,8 @@
 package com.avit.apnamzp_partner.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,11 +13,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
+import com.avit.apnamzp_partner.HomeActivity;
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentHomeBinding;
 import com.avit.apnamzp_partner.db.LocalDB;
@@ -24,10 +30,12 @@ import com.avit.apnamzp_partner.models.orders.OrderStatus;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
 import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -43,6 +51,8 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
     private homeFragmentViewModel viewModel;
     private String TAG = "homeFragment";
     private OrdersAdapter ordersAdapter;
+    private Gson gson;
+    private List<OrderItem> actionNeededOrders;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +60,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
 
         binding = FragmentHomeBinding.inflate(inflater,container,false);
         viewModel = new ViewModelProvider(this).get(homeFragmentViewModel.class);
+        gson = new Gson();
 
         View root = binding.getRoot();
 
@@ -105,7 +116,117 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
            }
        });
 
+       // ACTION NEEDED ORDERS
+        actionNeededOrders = LocalDB.getActionNeededOrders(getContext());
+        Log.i(TAG, "onCreateView: " + gson.toJson(actionNeededOrders));
+
+        if(actionNeededOrders.size() == 0){
+            binding.actionNeededContainer.setVisibility(View.GONE);
+        }
+        else {
+            binding.alertActionOrdersAnimation.setAnimation(R.raw.alert_animation);
+            binding.alertActionOrdersAnimation.playAnimation();
+
+            rejectAllPendingOrder();
+        }
+
+        binding.actionNeededContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAllActionRequiredOrders();
+            }
+        });
+
         return root;
+    }
+
+    private void showAllActionRequiredOrders(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Action Needed Orders");
+
+        String orderIds[] = new String[actionNeededOrders.size()];
+        for(int i=0;i<actionNeededOrders.size();i++){
+            orderIds[i] = actionNeededOrders.get(i).get_id();
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,orderIds);
+        builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(getContext(), OrderNotification.class);
+                intent.setAction("com.avit.apnamzp_partner.NEW_ORDER_NOTIFICATION");
+
+                OrderItem actionNeededOrderItemShowPage = actionNeededOrders.get(i);
+
+                Log.i(TAG, "onClick: " + actionNeededOrderItemShowPage.getItemTotal());
+
+                intent.putExtra("userId", actionNeededOrderItemShowPage.getUserId());
+                intent.putExtra("orderId", actionNeededOrderItemShowPage.get_id());
+                intent.putExtra("totalAmount", String.valueOf(actionNeededOrderItemShowPage.getItemTotal()));
+                intent.putExtra("orderItems", gson.toJson(actionNeededOrderItemShowPage.getOrderItems()));
+
+
+                startActivity(intent);
+
+            }
+        });
+
+        builder.show();
+
+    }
+
+
+
+    private void rejectAllPendingOrder(){
+        long waitTime = 1000 * 60 * 2;
+        for(OrderItem  orderItem : actionNeededOrders){
+            CountDownTimer countDownTimer =  new CountDownTimer(waitTime, waitTime / 2) {
+                @Override
+                public void onTick(long l) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    rejectOrder("Shop Didn't Responded",orderItem);
+                }
+            }.start();
+        }
+    }
+
+    private void rejectOrder(String cancelReason,OrderItem orderItem) {
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<NetworkResponse> call = networkApi.rejectOrder(orderItem.get_id(), orderItem.getUserId(), cancelReason);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                NetworkResponse networkResponse = response.body();
+                if (networkResponse.getStatus()) {
+                    Toasty.error(getContext(), "Order " + orderItem.get_id() + "was rejected due to inactivity", Toasty.LENGTH_SHORT)
+                            .show();
+
+                    Log.i(TAG, "onResponse: Order Rejected" );
+
+                    binding.actionNeededContainer.setVisibility(View.GONE);
+                    removeActionNeededOrder(orderItem);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getContext(), "Some error occured", Toasty.LENGTH_SHORT)
+                        .show();
+                Log.e(TAG, "onFailure: rejecting orders", t);
+            }
+        });
+    }
+
+    private void removeActionNeededOrder(OrderItem orderItem){
+        LocalDB.saveActionNeededOrder(getContext(),orderItem,"remove");
     }
 
     @Override

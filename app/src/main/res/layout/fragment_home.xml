@@ -12,7 +12,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/actionNeededContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/failure"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Urgent Action Needed On Orders"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/alert_action_orders_animation"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:lottie_loop="true" />
+
+        </LinearLayout>
+
         <com.google.android.material.chip.ChipGroup
+            android:layout_below="@id/actionNeededContainer"
             android:paddingHorizontal="12dp"
             android:id="@+id/orders_filter"
             app:singleLine="true"

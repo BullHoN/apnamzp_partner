@@ -66,12 +66,12 @@ public class OrderDetailsFragment extends Fragment {
         setText(binding.receivingAmount,orderItem.getTotalReceivingAmount(),false);
 
         // order details
-        if(orderItem.getAssignedDeliveryBoy() == null || orderItem.getSpecialInstructions().length() == 0){
-            binding.specialInstruction.setText("No Special Instructions");
-        }
-        else {
-            binding.specialInstruction.setText(orderItem.getSpecialInstructions());
-        }
+//        if(orderItem.getAssignedDeliveryBoy() == null || orderItem.getSpecialInstructions().length() == 0){
+//            binding.specialInstruction.setText("No Special Instructions");
+//        }
+//        else {
+//            binding.specialInstruction.setText(orderItem.getSpecialInstructions());
+//        }
 
         if(orderItem.getBillingDetails().getDeliveryService()){
             binding.orderDeliveryType.setText("Delivery Service");

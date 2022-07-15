@@ -19,8 +19,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.avit.apnamzp_partner.HomeActivity;
 import com.avit.apnamzp_partner.MainActivity;
 import com.avit.apnamzp_partner.R;
+import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.orders.OrderItemsJsonConversion;
@@ -37,6 +39,7 @@ import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -85,8 +88,6 @@ public class OrderNotification extends AppCompatActivity {
         reamingTimeTextview = findViewById(R.id.remaining_time);
         acceptOrderButton = findViewById(R.id.accept_order_button);
         rejectOrderButton = findViewById(R.id.reject_order_button);
-
-        NotificationUtil.stopSound();
 
         gson = new Gson();
         userId = getIntent().getStringExtra("userId");
@@ -179,6 +180,7 @@ public class OrderNotification extends AppCompatActivity {
                         }
 
                         acceptOrder(reason);
+                        NotificationUtil.stopSound();
                         dialog.dismiss();
                     }
                 });
@@ -212,6 +214,7 @@ public class OrderNotification extends AppCompatActivity {
                         }
 
                         rejectOrder(reason);
+                        NotificationUtil.stopSound();
                         dialog.dismiss();
                     }
                 });
@@ -235,8 +238,11 @@ public class OrderNotification extends AppCompatActivity {
                             .show();
                     // Start Delivery Boy Countdown
                     startDeliveryBoySchedular(exptectedTime);
+                    removeActionNeededOrder();
                     cancelOrderTimer.cancel();
                 }
+                Intent homeActivity = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(homeActivity);
                 finish();
             }
 
@@ -248,6 +254,11 @@ public class OrderNotification extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void removeActionNeededOrder(){
+        OrderItem orderItem = new OrderItem(Integer.valueOf(totalPay), Arrays.asList(orderItems),userId,orderId);
+        LocalDB.saveActionNeededOrder(getApplicationContext(),orderItem,"remove");
     }
 
     private void rejectOrder(String cancelReason) {
@@ -263,6 +274,9 @@ public class OrderNotification extends AppCompatActivity {
                     Toasty.success(getApplicationContext(), "Order Rejected", Toasty.LENGTH_SHORT)
                             .show();
                     cancelOrderTimer.cancel();
+                    removeActionNeededOrder();
+                    Intent homeActivity = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(homeActivity);
                     finish();
                 }
             }
@@ -278,11 +292,14 @@ public class OrderNotification extends AppCompatActivity {
 
     private void startDeliveryBoySchedular(String totalTime) {
         int waitingTime = Integer.parseInt(totalTime.split("m")[0]) - 15;
+        Log.i(TAG, "startDeliveryBoySchedular: waiting time" + waitingTime);
 
         if (waitingTime <= 0) {
             assignDeliveryBoy();
             return;
         }
+
+        waitingTime = waitingTime * 60 * 1000;
 
         new CountDownTimer(waitingTime, waitingTime / 2) {
             @Override
@@ -292,6 +309,7 @@ public class OrderNotification extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                Log.i(TAG, "onFinish: delivery sathi ko dal do");
                 assignDeliveryBoy();
             }
         }.start();

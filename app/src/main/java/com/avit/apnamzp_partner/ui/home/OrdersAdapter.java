@@ -2,6 +2,7 @@ package com.avit.apnamzp_partner.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +28,7 @@ import java.util.List;
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersViewHolder>{
 
     public interface NextStepInterface {
-        void updateOrderStatus(String orderId, int newOrderStatus);
+        void updateOrderStatus(String orderId, int newOrderStatus, boolean shopReceivedPayment);
         void openOrderDetailsFragment(OrderItem orderItem);
     }
 
@@ -65,14 +67,19 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         }
         else if(curr.getOrderStatus() == OrderStatus.ORDER_READY){
             holder.orderDeliveryStatus.setText("Ready");
-            holder.orderNextActionButton.setText("send for delivery");
+            if(curr.getBillingDetails().getDeliveryService()){
+                holder.orderNextActionButton.setText("send for delivery");
+            }
+            else {
+                holder.orderNextActionButton.setText("Recieved By Customer");
+            }
         }
         else if(curr.getOrderStatus() == OrderStatus.ORDER_COMPLETED){
             holder.orderDeliveryStatus.setText("Completed");
             holder.orderNextActionButton.setVisibility(View.GONE);
         }
 
-        holder.orderId.setText("Order Id: #" + curr.get_id().substring(0,5));
+        holder.orderId.setText("Order Id: #" + curr.get_id().substring(curr.get_id().length()-5));
 
         // TODO: Change Behaviour & Text of the Next action button
         if(curr.getBillingDetails().getDeliveryService()) {
@@ -97,6 +104,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         holder.orderTotalPrice.setText("Total Amount: ₹" + curr.getTotalReceivingAmount());
 
+        if(curr.getPaid()){
+            holder.orderPaymentStatus.setText("ONLINE");
+        }
+        else {
+            holder.orderPaymentStatus.setText("COD");
+        }
+
         holder.orderNextActionButton.setCheckable(true);
         holder.orderNextActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +122,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
                     orderStatus = 4;
                 }
 
-                nextStepInterface.updateOrderStatus(curr.get_id(),orderStatus);
+                if(orderStatus == 4){
+                    showPaymentReceivedDialog(curr.get_id(),orderStatus);
+                }
+                else {
+                    nextStepInterface.updateOrderStatus(curr.get_id(),orderStatus,false);
+                }
+
                 orderItemList.remove(position);
                 notifyDataSetChanged();
             }
@@ -134,6 +154,27 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
                 popupMenu.show();
             }
         });
+
+    }
+
+    private void showPaymentReceivedDialog(String orderId,int orderStatus){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogTheme);
+        builder.setTitle("Payment Received For This Order ?");
+
+        builder.setPositiveButton("Received", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                nextStepInterface.updateOrderStatus(orderId,orderStatus,true);
+            }
+        });
+        builder.setNegativeButton("Not Received", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                nextStepInterface.updateOrderStatus(orderId,orderStatus,false);
+            }
+        });
+
+        builder.show();
 
     }
 
@@ -166,6 +207,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             orderTotalPrice = itemView.findViewById(R.id.order_total_price);
             orderDeliveryStatus = itemView.findViewById(R.id.order_delivery_status);
             appliedOfferView = itemView.findViewById(R.id.applied_offer);
+            orderPaymentStatus = itemView.findViewById(R.id.order_payment_status);
 
             orderNextActionButton = itemView.findViewById(R.id.order_next_action_button);
             moreActionsButton = itemView.findViewById(R.id.more_action_button);

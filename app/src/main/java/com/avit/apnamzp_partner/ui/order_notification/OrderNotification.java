@@ -60,7 +60,7 @@ public class OrderNotification extends AppCompatActivity {
     private String TAG = "OrderNotifications";
     private Gson gson;
     private ShopItemData[] orderItems;
-    private String userId, orderId, totalPay;
+    private String userId, orderId, totalPay, isDeliveryService;
     private CountDownTimer cancelOrderTimer;
 
     @Override
@@ -93,6 +93,7 @@ public class OrderNotification extends AppCompatActivity {
         userId = getIntent().getStringExtra("userId");
         orderId = getIntent().getStringExtra("orderId");
         totalPay = getIntent().getStringExtra("totalAmount");
+        isDeliveryService = getIntent().getStringExtra("isDeliveryService");
         orderItems = gson.fromJson(getIntent().getStringExtra("orderItems"), ShopItemData[].class);
 
         totalPriceView.setText("Total ₹" + totalPay);
@@ -237,7 +238,10 @@ public class OrderNotification extends AppCompatActivity {
                     Toasty.success(getApplicationContext(), "Order Accepted Successfully", Toasty.LENGTH_SHORT)
                             .show();
                     // Start Delivery Boy Countdown
-                    startDeliveryBoySchedular(exptectedTime);
+                    if(isDeliveryService.equals("true")){
+                        startDeliveryBoySchedular(exptectedTime);
+                    }
+
                     removeActionNeededOrder();
                     cancelOrderTimer.cancel();
                 }

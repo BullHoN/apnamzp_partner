@@ -66,18 +66,26 @@ public class OrderDetailsFragment extends Fragment {
         setText(binding.receivingAmount,orderItem.getTotalReceivingAmount(),false);
 
         // order details
-//        if(orderItem.getAssignedDeliveryBoy() == null || orderItem.getSpecialInstructions().length() == 0){
-//            binding.specialInstruction.setText("No Special Instructions");
-//        }
-//        else {
-//            binding.specialInstruction.setText(orderItem.getSpecialInstructions());
-//        }
+        if(orderItem.getSpecialInstructions() == null || orderItem.getSpecialInstructions().length() == 0){
+            binding.specialInstruction.setText("No Special Instructions");
+        }
+        else {
+            binding.specialInstruction.setText(orderItem.getSpecialInstructions());
+        }
+
+        binding.callCustomer.setText("CALL +91" + orderItem.getUserId());
+        binding.callCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         if(orderItem.getBillingDetails().getDeliveryService()){
             binding.orderDeliveryType.setText("Delivery Service");
         }
         else {
-            binding.orderDeliveryType.setText("Self Service");
+            binding.orderDeliveryType.setText("Self Pickup");
         }
 
         binding.orderPlacedAt.setText(orderItem.getCreatedAt().toLocaleString());

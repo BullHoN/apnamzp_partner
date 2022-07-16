@@ -102,7 +102,7 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
     }
 
     @Override
-    public void updateOrderStatus(String orderId, int newOrderStatus) {
+    public void updateOrderStatus(String orderId, int newOrderStatus, boolean shopReceivedPayment) {
 
     }
 

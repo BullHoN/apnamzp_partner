@@ -230,19 +230,21 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
     }
 
     @Override
-    public void updateOrderStatus(String orderId, int newOrderStatus) {
+    public void updateOrderStatus(String orderId, int newOrderStatus, boolean shopReceivedPayment) {
         Log.i(TAG, "updateOrderStatus: " + orderId + " " + newOrderStatus);
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        Call<ResponseBody> call = networkApi.updateOrderStatus(orderId,newOrderStatus);
+        Call<ResponseBody> call = networkApi.updateOrderStatus(orderId,newOrderStatus,shopReceivedPayment);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 binding.progressBar.setVisibility(View.INVISIBLE);
+                Toasty.success(getContext(),"Chaanges Saved",Toasty.LENGTH_SHORT)
+                        .show();
             }
 
             @Override

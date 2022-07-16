@@ -33,7 +33,7 @@ public interface NetworkApi {
                                        @Query("ordersDateString") String ordersDateString);
 
     @POST("/partner/order/updateStatus")
-    Call<ResponseBody> updateOrderStatus(@Query("orderId") String orderId, @Query("orderStatus") int orderStatus);
+    Call<ResponseBody> updateOrderStatus(@Query("orderId") String orderId, @Query("orderStatus") int orderStatus,@Query("shopReceivedPayment") boolean shopReceivedPayment);
 
     @POST("/partner/assignDeliveryBoy")
     Call<NetworkResponse> assignDeliveryBoy(@Query("orderId") String orderId,@Query("latitude") String latitude,@Query("longitude") String longitude);

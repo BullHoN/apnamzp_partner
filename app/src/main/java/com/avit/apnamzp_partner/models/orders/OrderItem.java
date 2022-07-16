@@ -30,6 +30,30 @@ public class OrderItem {
     private Date createdAt;
     private int orderType;
     private String assignedDeliveryBoy;
+    private boolean paymentReceivedToShop;
+
+    public OrderItem(int itemTotal, int totalTaxesAndPackingCharge, int deliveryCharge, int totalDiscount, int totalPay, Boolean isDeliveryService, String specialInstructions, Boolean isPaid, List<ShopItemData> orderItems, String userId, DeliveryAddress deliveryAddress, int offerDiscountedAmount, String offerCode, BillingDetails billingDetails, String _id, int orderStatus, Date createdAt, int orderType, String assignedDeliveryBoy, boolean paymentReceivedToShop) {
+        this.itemTotal = itemTotal;
+        this.totalTaxesAndPackingCharge = totalTaxesAndPackingCharge;
+        this.deliveryCharge = deliveryCharge;
+        this.totalDiscount = totalDiscount;
+        this.totalPay = totalPay;
+        this.isDeliveryService = isDeliveryService;
+        this.specialInstructions = specialInstructions;
+        this.isPaid = isPaid;
+        this.orderItems = orderItems;
+        this.userId = userId;
+        this.deliveryAddress = deliveryAddress;
+        this.offerDiscountedAmount = offerDiscountedAmount;
+        this.offerCode = offerCode;
+        this.billingDetails = billingDetails;
+        this._id = _id;
+        this.orderStatus = orderStatus;
+        this.createdAt = createdAt;
+        this.orderType = orderType;
+        this.assignedDeliveryBoy = assignedDeliveryBoy;
+        this.paymentReceivedToShop = paymentReceivedToShop;
+    }
 
     public OrderItem(int itemTotal, int totalTaxesAndPackingCharge, int deliveryCharge, int totalDiscount, int totalPay, Boolean isDeliveryService, String specialInstructions, Boolean isPaid, List<ShopItemData> orderItems, String userId, DeliveryAddress deliveryAddress, int offerDiscountedAmount, String offerCode, BillingDetails billingDetails, String _id, int orderStatus, Date createdAt, int orderType, String assignedDeliveryBoy) {
         this.itemTotal = itemTotal;
@@ -79,6 +103,10 @@ public class OrderItem {
         this.orderItems = orderItems;
         this.userId = userId;
         this._id = _id;
+    }
+
+    public boolean isPaymentReceivedToShop() {
+        return paymentReceivedToShop;
     }
 
     public boolean isFreeDelivery(){

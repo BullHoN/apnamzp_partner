@@ -26,6 +26,7 @@ import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -56,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        FirebaseCrashlytics.getInstance().setUserId(LocalDB.getPartnerDetails(getApplicationContext()).getPhoneNo());
 
 //        Intent intent = new Intent(getApplicationContext(),OrderNotification.class);
 //        startActivity(intent);

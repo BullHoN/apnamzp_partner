@@ -105,6 +105,10 @@ public class OrderItem {
         this._id = _id;
     }
 
+    public void setIsDeliveryServiceForActionNeededOrders(boolean isDeliveryService){
+        this.billingDetails = new BillingDetails(isDeliveryService);
+    }
+
     public boolean isPaymentReceivedToShop() {
         return paymentReceivedToShop;
     }

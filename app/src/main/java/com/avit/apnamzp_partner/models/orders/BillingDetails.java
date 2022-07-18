@@ -6,6 +6,10 @@ public class BillingDetails {
     private String taxPercentage;
     private Boolean isDeliveryService;
 
+    public BillingDetails(Boolean isDeliveryService) {
+        this.isDeliveryService = isDeliveryService;
+    }
+
     public BillingDetails(int deliveryCharge, int itemTotal, int offerDiscountedAmount, int totalDiscount, int totalTaxesAndPackingCharge, int itemsOnTheWayTotalCost, int totalPay, int freeDeliveryPrice, String taxPercentage, Boolean isDeliveryService) {
         this.deliveryCharge = deliveryCharge;
         this.itemTotal = itemTotal;

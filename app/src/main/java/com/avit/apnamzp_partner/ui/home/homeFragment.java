@@ -166,7 +166,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                 intent.putExtra("orderId", actionNeededOrderItemShowPage.get_id());
                 intent.putExtra("totalAmount", String.valueOf(actionNeededOrderItemShowPage.getItemTotal()));
                 intent.putExtra("orderItems", gson.toJson(actionNeededOrderItemShowPage.getOrderItems()));
-
+                intent.putExtra("isDeliveryService", String.valueOf(actionNeededOrderItemShowPage.getBillingDetails().getDeliveryService()));
 
                 startActivity(intent);
 

@@ -70,6 +70,8 @@ public class NotificationService extends FirebaseMessagingService {
             List<ShopItemData> orderItemsList = Arrays.asList(orderItemsArray);
 
             OrderItem actionNeededOrderItem = new OrderItem(Integer.valueOf(totalAmount),orderItemsList,userId,orderId);
+            actionNeededOrderItem.setIsDeliveryServiceForActionNeededOrders(isDeliveryService.equals("true"));
+
             LocalDB.saveActionNeededOrder(getApplicationContext(),actionNeededOrderItem, "add");
 
             handleNewOrderNotification(orderItems,orderId,userId,totalAmount,isDeliveryService);

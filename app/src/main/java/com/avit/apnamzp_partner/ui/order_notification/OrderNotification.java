@@ -29,6 +29,7 @@ import com.avit.apnamzp_partner.models.orders.OrderItemsJsonConversion;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -233,6 +234,14 @@ public class OrderNotification extends AppCompatActivity {
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getApplicationContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 NetworkResponse networkResponse = response.body();
                 if (networkResponse.getStatus()) {
                     Toasty.success(getApplicationContext(), "Order Accepted Successfully", Toasty.LENGTH_SHORT)
@@ -273,6 +282,14 @@ public class OrderNotification extends AppCompatActivity {
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+               if(!response.isSuccessful()){
+                   NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                   Toasty.error(getApplicationContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                           .show();
+                   return;
+               }
+
                 NetworkResponse networkResponse = response.body();
                 if (networkResponse.getStatus()) {
                     Toasty.success(getApplicationContext(), "Order Rejected", Toasty.LENGTH_SHORT)
@@ -329,6 +346,7 @@ public class OrderNotification extends AppCompatActivity {
         assignDBoy.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
                 Toasty.success(getApplicationContext(),"Delivery Boy is Assigned",Toasty.LENGTH_SHORT)
                         .show();
             }

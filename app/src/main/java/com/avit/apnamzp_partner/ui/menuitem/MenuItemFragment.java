@@ -28,6 +28,7 @@ import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.models.shop.ShopPricingData;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.bumptech.glide.Glide;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.github.drjacky.imagepicker.constant.ImageProvider;
@@ -230,6 +231,14 @@ public class MenuItemFragment extends Fragment {
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 Toasty.success(getContext(),"Update Successfull", Toasty.LENGTH_SHORT)
                         .show();
                 binding.loading.setVisibility(View.GONE);
@@ -259,6 +268,14 @@ public class MenuItemFragment extends Fragment {
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 Toasty.success(getContext(), "Updated Successfully", Toasty.LENGTH_SHORT)
                         .show();
             }

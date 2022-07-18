@@ -31,6 +31,7 @@ import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 
@@ -203,6 +204,14 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 NetworkResponse networkResponse = response.body();
                 if (networkResponse.getStatus()) {
                     Toasty.error(getContext(), "Order " + orderItem.get_id() + "was rejected due to inactivity", Toasty.LENGTH_SHORT)
@@ -237,18 +246,26 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        Call<ResponseBody> call = networkApi.updateOrderStatus(orderId,newOrderStatus,shopReceivedPayment);
+        Call<NetworkResponse> call = networkApi.updateOrderStatus(orderId,newOrderStatus,shopReceivedPayment);
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<NetworkResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 binding.progressBar.setVisibility(View.INVISIBLE);
                 Toasty.success(getContext(),"Chaanges Saved",Toasty.LENGTH_SHORT)
                         .show();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
                 Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_LONG);
             }
         });

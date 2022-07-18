@@ -25,7 +25,7 @@ import retrofit2.http.Query;
 
 public interface NetworkApi {
     String SERVER_URL = "http://192.168.63.85:5000/";
-//    String SERVER_URL = "https://546b-2409-4063-2109-67d5-d1b4-465b-c713-8c3e.ngrok.io";
+//    String SERVER_URL = "https://482c-2409-4063-2109-67d5-8589-6b8a-35ff-e19.ngrok.io";
 
     @GET("/partner/getOrders")
     Call<List<OrderItem>> getAllOrders(@Query("shopCategory") String shopCategory,
@@ -33,7 +33,7 @@ public interface NetworkApi {
                                        @Query("ordersDateString") String ordersDateString);
 
     @POST("/partner/order/updateStatus")
-    Call<ResponseBody> updateOrderStatus(@Query("orderId") String orderId, @Query("orderStatus") int orderStatus,@Query("shopReceivedPayment") boolean shopReceivedPayment);
+    Call<NetworkResponse> updateOrderStatus(@Query("orderId") String orderId, @Query("orderStatus") int orderStatus,@Query("shopReceivedPayment") boolean shopReceivedPayment);
 
     @POST("/partner/assignDeliveryBoy")
     Call<NetworkResponse> assignDeliveryBoy(@Query("orderId") String orderId,@Query("latitude") String latitude,@Query("longitude") String longitude);
@@ -42,7 +42,7 @@ public interface NetworkApi {
     Call<NetworkResponse> login(@Body LoginPostData loginPostData);
 
     @POST("/user_routes/updateFCM")
-    Call<ResponseBody> updateFcmToken(@Body ShopPartner shopPartner);
+    Call<NetworkResponse> updateFcmToken(@Body ShopPartner shopPartner);
 
     @GET("/partner/accept_order")
     Call<NetworkResponse> acceptOrder(@Query("order_id") String order_id,@Query("user_id") String user_id,@Query("expected_time") String exptectedTime);

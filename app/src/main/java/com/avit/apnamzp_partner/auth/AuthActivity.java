@@ -20,6 +20,7 @@ import com.avit.apnamzp_partner.models.user.LoginPostData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.avit.apnamzp_partner.utils.ValidateInput;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
@@ -97,6 +98,13 @@ public class AuthActivity extends AppCompatActivity {
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getApplicationContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
 
                 if(response.body().isSuccess()){
                     Log.i(TAG, "onResponse: " + response.body().getData());

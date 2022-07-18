@@ -5,9 +5,11 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.offer.OfferItem;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 
 import java.util.List;
 
@@ -32,6 +34,14 @@ public class OffersViewModel extends ViewModel {
         call.enqueue(new Callback<List<OfferItem>>() {
             @Override
             public void onResponse(Call<List<OfferItem>> call, Response<List<OfferItem>> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(context,errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 offersListMutableLiveData.setValue(response.body());
             }
 

@@ -19,10 +19,12 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.avit.apnamzp_partner.db.LocalDB;
+import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -37,6 +39,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.net.NetPermission;
 
+import es.dmoral.toasty.Toasty;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -134,15 +137,23 @@ public class HomeActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Call<ResponseBody> call = networkApi.updateFcmToken(shopPartner);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<NetworkResponse> call = networkApi.updateFcmToken(shopPartner);
+        call.enqueue(new Callback<NetworkResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.i(TAG, "onResponse: FCM ID TAG UPDATED");
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getApplicationContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+                Log.i(TAG, "onResponse: updated");
+
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure: Error while updating fcmID",t);
             }
         });

@@ -22,6 +22,7 @@ import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
@@ -57,7 +58,7 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
         binding.loading.playAnimation();
 
         shopItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();
-        viewModel.getCategoriesFromServer(shopItemsId);
+        viewModel.getCategoriesFromServer(getContext(),shopItemsId);
 
         viewModel.getShopCategoryDataMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<ShopCategoryData>>() {
             @Override
@@ -111,6 +112,14 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 Toasty.success(getContext(),"Added Successfully",Toasty.LENGTH_SHORT)
                         .show();
             }
@@ -139,6 +148,6 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
     public void onResume() {
         super.onResume();
         shopItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();
-        viewModel.getCategoriesFromServer(shopItemsId);
+        viewModel.getCategoriesFromServer(getContext(),shopItemsId);
     }
 }

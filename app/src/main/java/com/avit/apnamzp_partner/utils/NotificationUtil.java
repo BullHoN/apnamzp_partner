@@ -8,6 +8,7 @@ import android.os.Build;
 
 import com.avit.apnamzp_partner.R;
 
+import java.io.IOException;
 import java.util.List;
 
 public class NotificationUtil {
@@ -47,11 +48,14 @@ public class NotificationUtil {
         }
 
         mediaPlayer.start();
+
     }
 
     public static void stopSound(){
         if(mediaPlayer != null){
             mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 

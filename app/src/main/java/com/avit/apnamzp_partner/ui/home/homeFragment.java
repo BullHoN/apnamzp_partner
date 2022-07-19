@@ -54,6 +54,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
     private OrdersAdapter ordersAdapter;
     private Gson gson;
     private List<OrderItem> actionNeededOrders;
+    private ShopPartner shopPartner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +70,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         binding.orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
         binding.orderItemsRecyclerView.setAdapter(ordersAdapter);
 
-        ShopPartner shopPartner = LocalDB.getPartnerDetails(getContext());
+        shopPartner = LocalDB.getPartnerDetails(getContext());
 
         viewModel.getOrders(getContext(),shopPartner.getShopId(), shopPartner.getShopType(), OrderStatus.ORDER_PREPARING,1);
         viewModel.getOrderItemsMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<OrderItem>>() {
@@ -138,7 +139,59 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             }
         });
 
+        setShopStatus();
+
+        binding.shopStatusContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shopPartner.setOpen(!shopPartner.isOpen());
+                changeOrderStatus(shopPartner.getPhoneNo(),!shopPartner.isOpen());
+                LocalDB.savePartnerDetails(getContext(),shopPartner);
+                setShopStatus();
+            }
+        });
+
         return root;
+    }
+
+    private void changeOrderStatus(String phoneNo,boolean isOpen){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<NetworkResponse> call = networkApi.changeShopStatus(phoneNo,isOpen);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+            }
+        });
+
+    }
+
+    private void setShopStatus(){
+        if(!shopPartner.isOpen()){
+            binding.shopStatusContainer.setBackgroundColor(getResources().getColor(R.color.successColor));
+            binding.shopStatusImage.setImageResource(R.drawable.ic_open);
+            binding.shopStatusButton.setText("Shop Opened");
+            binding.shopStatusButton.setTextColor(getResources().getColor(R.color.successColor));
+        }
+        else {
+            binding.shopStatusContainer.setBackgroundColor(getResources().getColor(R.color.failure));
+            binding.shopStatusImage.setImageResource(R.drawable.ic_closed);
+            binding.shopStatusButton.setText("Shop Closed");
+            binding.shopStatusButton.setTextColor(getResources().getColor(R.color.failure));
+        }
     }
 
     private void showAllActionRequiredOrders(){

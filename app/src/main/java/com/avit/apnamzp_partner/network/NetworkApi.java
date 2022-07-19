@@ -73,4 +73,7 @@ public interface NetworkApi {
     @POST("/partner/offers")
     Call<NetworkResponse> putOffer(@Body OfferItem offerItem);
 
+    @POST("/partner/changeShopStatus")
+    Call<NetworkResponse> changeShopStatus(@Query("phoneNo") String phoneNo,@Query("isOpen") boolean isOpen);
+
 }

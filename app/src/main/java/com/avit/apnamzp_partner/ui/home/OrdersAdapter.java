@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -58,6 +59,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         holder.ordersItemRecyclerView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
         holder.ordersItemRecyclerView.setAdapter(orderItemsAdapter);
 
+
+        if(curr.getSpecialInstructions() != null && curr.getSpecialInstructions().length() > 0){
+            holder.specialInstructionsContainer.setVisibility(View.VISIBLE);
+            holder.specialInstructions.setText("Special Instructions: " + curr.getSpecialInstructions());
+        }
+
 //        1 -> preparing, 2 -> ready, 3 -> delivered
         // TODO: Change Button Text
         holder.orderNextActionButton.setVisibility(View.VISIBLE);
@@ -88,6 +95,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         else{
             holder.orderDeliveryType.setText("Takeaway");
         }
+
+
 
         Log.i(TAG, "onBindViewHolder: " + curr.isShopOfferApplied());
         Log.i(TAG, "onBindViewHolder: " + curr.getOfferCode());
@@ -193,9 +202,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         public RecyclerView ordersItemRecyclerView;
         public TextView orderId, orderDeliveryType, orderDeliveryStatus, orderTotalPrice, orderPaymentStatus
-                , orderArrivalTime, appliedOfferView;
+                , orderArrivalTime, appliedOfferView, specialInstructions;
         public MaterialButton orderNextActionButton;
         public ImageButton moreActionsButton;
+        public LinearLayout specialInstructionsContainer;
 
         public OrdersViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -211,6 +221,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
             orderNextActionButton = itemView.findViewById(R.id.order_next_action_button);
             moreActionsButton = itemView.findViewById(R.id.more_action_button);
+
+            specialInstructionsContainer = itemView.findViewById(R.id.special_instruction_container);
+            specialInstructions = itemView.findViewById(R.id.special_instruction);
 
         }
     }

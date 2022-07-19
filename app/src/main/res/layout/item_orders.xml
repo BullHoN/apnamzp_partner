@@ -98,6 +98,32 @@
             android:layout_height="2dp" />
 
         <LinearLayout
+            android:paddingVertical="5dp"
+            android:visibility="gone"
+            android:paddingHorizontal="12dp"
+            android:id="@+id/special_instruction_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/special_instruction"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:text="Special Instructions: test instruction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <View
+            android:background="@color/secondaryColor"
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <LinearLayout
             android:padding="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

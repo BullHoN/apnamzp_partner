@@ -41,7 +41,11 @@
         android:id="@+id/menuItemFragment"
         android:name="com.avit.apnamzp_partner.ui.menuitem.MenuItemFragment"
         android:label="fragment_menu_item"
-        tools:layout="@layout/fragment_menu_item" />
+        tools:layout="@layout/fragment_menu_item" >
+        <action
+            android:id="@+id/action_menuItemFragment_to_menuItemsFragment"
+            app:destination="@id/menuItemsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/dashboardFragment2"
         android:name="com.avit.apnamzp_partner.ui.dashboard.DashboardFragment"

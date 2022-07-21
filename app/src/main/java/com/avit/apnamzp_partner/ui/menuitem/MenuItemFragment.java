@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -169,6 +170,12 @@ public class MenuItemFragment extends Fragment {
                 String discount = binding.itemDiscount.getText().toString();
                 String packigingCharge = binding.itemPackegingCharge.getText().toString();
 
+                if(shopItemData.getPricings().size() == 0){
+                    Toasty.error(getContext(),"Please Add Pricing Details",Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
                 // TODO: Validation
 
                 shopItemData.setName(itemName);
@@ -243,6 +250,7 @@ public class MenuItemFragment extends Fragment {
                         .show();
                 binding.loading.setVisibility(View.GONE);
                 binding.saveChangesButton.setEnabled(true);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_menuItemFragment_to_menuItemsFragment);
             }
 
             @Override

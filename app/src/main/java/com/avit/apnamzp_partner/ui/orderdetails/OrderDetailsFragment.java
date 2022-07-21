@@ -95,7 +95,7 @@ public class OrderDetailsFragment extends Fragment {
             binding.assignedDeliveryBoy.setText("Not Yet Assigned");
         }
         else {
-            binding.assignedDeliveryBoy.setText("Delivery Sathi Number: " + orderItem.getAssignedDeliveryBoy());
+            binding.assignedDeliveryBoy.setText("+91" + orderItem.getAssignedDeliveryBoy());
         }
 
 

@@ -91,27 +91,6 @@ public class ManageFragment extends Fragment {
 
         binding.shopTaxPercentage.setText(shopPartner.getTaxPercentage());
 
-        if(shopPartner.isOpen()){
-            changeShopStatusToOpen();
-        }
-        else {
-            changeShopStatusToClosed();
-        }
-
-        binding.shopStatusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(shopPartner.isOpen()){
-                    changeShopStatusToClosed();
-                    shopPartner.setOpen(false);
-                }
-                else {
-                    changeShopStatusToOpen();
-                    shopPartner.setOpen(true);
-                }
-            }
-        });
-
         bannerImagePickerLauncher =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (ActivityResult result) -> {
                     if (result.getResultCode() == RESULT_OK) {
@@ -225,20 +204,5 @@ public class ManageFragment extends Fragment {
                     }
                 }));
     }
-
-    private void changeShopStatusToOpen(){
-        binding.shopStatusContainer.setBackgroundResource(R.color.successColor);
-        binding.shopStatusImage.setImageResource(R.drawable.ic_open);
-        binding.shopStatusButton.setText("SHOP OPENED");
-        binding.shopStatusButton.setTextColor(getResources().getColor(R.color.successColor));
-    }
-
-    private void changeShopStatusToClosed(){
-        binding.shopStatusContainer.setBackgroundResource(R.color.errorColor);
-        binding.shopStatusImage.setImageResource(R.drawable.ic_closed);
-        binding.shopStatusButton.setText("SHOP CLOSED");
-        binding.shopStatusButton.setTextColor(getResources().getColor(R.color.errorColor));
-    }
-
 
 }

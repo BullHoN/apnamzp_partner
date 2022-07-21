@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentMenuItemsBinding;
@@ -108,6 +109,10 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
+        binding.loading.setVisibility(View.VISIBLE);
+        binding.loading.setAnimation(R.raw.categories_loading_animation);
+        binding.loading.playAnimation();
+
         Call<NetworkResponse> call = networkApi.addNewCategory(shopItemsId, new ShopCategoryData(categoryName));
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
@@ -122,6 +127,9 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
 
                 Toasty.success(getContext(),"Added Successfully",Toasty.LENGTH_SHORT)
                         .show();
+
+                binding.loading.setVisibility(View.GONE);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.menuItemsFragment);
             }
 
             @Override

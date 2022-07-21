@@ -37,6 +37,10 @@ public class OffersFragment extends Fragment implements OffersAdapter.deleteOffe
 
         gson = new Gson();
 
+        binding.loading.setAnimation(R.raw.offers_loading);
+        binding.loading.playAnimation();
+        binding.loading.setVisibility(View.VISIBLE);
+
         viewModel.getDataFromServer(getContext(), LocalDB.getPartnerDetails(getContext()).getName());
 
         binding.offersList.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
@@ -47,6 +51,24 @@ public class OffersFragment extends Fragment implements OffersAdapter.deleteOffe
             @Override
             public void onChanged(List<OfferItem> offerItems) {
                 offersAdapter.changeValues(offerItems);
+                binding.loading.setVisibility(View.GONE);
+
+                if(offerItems.size() == 0){
+                    binding.emptyView.setVisibility(View.VISIBLE);
+                    binding.emptyView.setAnimation(R.raw.no_orders_animation);
+                    binding.emptyView.playAnimation();
+                }
+                else {
+                    binding.emptyView.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        binding.addNewOffer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.offerFragment);
             }
         });
 

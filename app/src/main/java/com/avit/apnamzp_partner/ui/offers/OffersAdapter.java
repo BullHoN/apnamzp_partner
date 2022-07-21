@@ -44,6 +44,8 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
         OfferItem offerItem = offerItemList.get(position);
         String offerType = offerItem.getOfferType();
 
+
+
         if (offerType.equals("percent")) {
             holder.discountTypeView.setText(offerItem.getDiscountPercentage() + "% Discount");
 

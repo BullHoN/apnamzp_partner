@@ -31,6 +31,42 @@ public class OfferItem {
         this.discountAmount = discountAmount;
     }
 
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setOfferType(String offerType) {
+        this.offerType = offerType;
+    }
+
+    public void setApnaMzpDiscount(Boolean apnaMzpDiscount) {
+        isApnaMzpDiscount = apnaMzpDiscount;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public void setDiscountAbove(String discountAbove) {
+        this.discountAbove = discountAbove;
+    }
+
+    public void setDiscountPercentage(String discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public void setMaxDiscount(String maxDiscount) {
+        this.maxDiscount = maxDiscount;
+    }
+
+    public void setDiscountAmount(String discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
     public String get_id() {
         return _id;
     }

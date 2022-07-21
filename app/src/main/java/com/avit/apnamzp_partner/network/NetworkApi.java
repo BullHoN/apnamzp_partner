@@ -16,6 +16,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -24,8 +25,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
-//    String SERVER_URL = "http://192.168.63.85:5000/";
-    String SERVER_URL = "https://f1e8-2409-4063-2109-67d5-adc6-a700-acc-dc59.ngrok.io";
+    String SERVER_URL = "http://192.168.63.85:5000/";
+//    String SERVER_URL = "https://f1e8-2409-4063-2109-67d5-adc6-a700-acc-dc59.ngrok.io";
 
     @GET("/partner/getOrders")
     Call<List<OrderItem>> getAllOrders(@Query("shopCategory") String shopCategory,
@@ -75,5 +76,8 @@ public interface NetworkApi {
 
     @POST("/partner/changeShopStatus")
     Call<NetworkResponse> changeShopStatus(@Query("phoneNo") String phoneNo,@Query("isOpen") boolean isOpen);
+
+    @DELETE("/partner/offer/{offer_id}")
+    Call<NetworkResponse> deleteOffer(@Path("offer_id") String offerId);
 
 }

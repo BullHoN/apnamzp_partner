@@ -23,6 +23,8 @@ import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.ui.home.OrdersAdapter;
+import com.avit.apnamzp_partner.utils.PrettyStrings;
+import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 
 import java.text.ParseException;
@@ -39,6 +41,7 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
     private ShopPartner shopPartner;
     private String TAG = "DashboardFragment";
     private OrdersAdapter ordersAdapter;
+    private String selectedDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,8 +53,9 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
 
         Date todayDate = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        selectedDate = simpleDateFormat.format(todayDate);
 
-        viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), 6,simpleDateFormat.format(todayDate),1);
+        viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), 6,simpleDateFormat.format(todayDate),1,false);
 
         binding.orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
         ordersAdapter = new OrdersAdapter(getContext(),new ArrayList<>(),this);
@@ -62,6 +66,9 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
             public void onChanged(List<OrderItem> orderItems) {
                 ordersAdapter.replaceItems(orderItems);
                 binding.loading.setVisibility(View.GONE);
+
+                binding.ordersEarning.setText(PrettyStrings.getCostInINR(getTotalEarnings(orderItems)));
+                binding.totalOrders.setText(String.valueOf(orderItems.size()));
 
                 if(orderItems.size() == 0){
                     binding.emptyOrdersView.setVisibility(View.VISIBLE);
@@ -89,16 +96,37 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
                 }
 
                 String dateString = year + "-" + monthString + "-" + dateOfMonthString;
+                selectedDate = dateString;
 
                 binding.loading.setVisibility(View.VISIBLE);
                 binding.loading.setAnimation(R.raw.searching_orders_animation);
                 binding.loading.playAnimation();
 
-                viewModel.getOrders(getContext(),shopPartner.getShopId(),shopPartner.getShopType(),6,dateString,1);
+                viewModel.getOrders(getContext(),shopPartner.getShopId(),shopPartner.getShopType(),6,dateString,1,false);
+            }
+        });
+
+        binding.ordersFilter.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                if(R.id.daily_filter == checkedId){
+
+                }
+                else if(R.id.monthly_filter == checkedId){
+                    viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), 6,selectedDate,1,true);
+                }
             }
         });
 
         return binding.getRoot();
+    }
+
+    private int getTotalEarnings(List<OrderItem> orderItems){
+        int sum = 0;
+        for(OrderItem orderItem : orderItems){
+            sum += orderItem.getTotalReceivingAmount();
+        }
+        return sum;
     }
 
     @Override

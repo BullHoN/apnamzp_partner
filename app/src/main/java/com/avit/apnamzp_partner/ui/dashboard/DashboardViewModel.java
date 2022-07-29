@@ -35,11 +35,11 @@ public class DashboardViewModel extends ViewModel {
         return mutableOrderItemsLiveData;
     }
 
-    public void getOrders(Context context, String shopId, String shopCategory, int orderStatus,String date, int pageNumber){
+    public void getOrders(Context context, String shopId, String shopCategory, int orderStatus,String date, int pageNumber, boolean isMonthly){
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Call<List<OrderItem>> call = networkApi.getAllOrders(shopCategory,shopId,orderStatus,date);
+        Call<List<OrderItem>> call = networkApi.getAllOrders(shopCategory,shopId,orderStatus,date,isMonthly);
         call.enqueue(new Callback<List<OrderItem>>() {
             @Override
             public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {

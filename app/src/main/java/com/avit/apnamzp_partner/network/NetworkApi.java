@@ -26,12 +26,12 @@ import retrofit2.http.Query;
 
 public interface NetworkApi {
     String SERVER_URL = "http://192.168.63.85:5000/";
-//    String SERVER_URL = "https://f1e8-2409-4063-2109-67d5-adc6-a700-acc-dc59.ngrok.io";
+//    String SERVER_URL = "https://bd4a-2409-4063-2109-67d5-38dc-6602-cf16-7f07.ngrok.io";
 
     @GET("/partner/getOrders")
     Call<List<OrderItem>> getAllOrders(@Query("shopCategory") String shopCategory,
                                        @Query("shopId") String shopId, @Query("orderStatus") int orderStatus,
-                                       @Query("ordersDateString") String ordersDateString);
+                                       @Query("ordersDateString") String ordersDateString, @Query("isMonthly") boolean isMonthly);
 
     @POST("/partner/order/updateStatus")
     Call<NetworkResponse> updateOrderStatus(@Query("orderId") String orderId, @Query("orderStatus") int orderStatus,@Query("shopReceivedPayment") boolean shopReceivedPayment);

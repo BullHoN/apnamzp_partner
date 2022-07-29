@@ -16,7 +16,37 @@
             android:orientation="vertical"
             android:padding="12dp">
 
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_below="@id/shop_status_container"
+                android:paddingHorizontal="12dp"
+                android:id="@+id/orders_filter"
+                app:singleLine="true"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:chipSpacingHorizontal="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/daily_filter"
+                    android:text="Daily"
+                    android:checked="true"
+                    style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/monthly_filter"
+                    android:text="Monthly"
+                    style="@style/My_Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.chip.ChipGroup>
+
             <TextView
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -41,6 +71,82 @@
                 android:text="Orders"
                 android:textColor="@color/primaryColor"
                 android:textSize="22sp" />
+
+            <LinearLayout
+                android:id="@+id/orders_stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true" >
+
+                    <LinearLayout
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textSize="18sp"
+                            android:text="Order's Earnings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/orders_earning"
+                            android:textSize="18sp"
+                            android:textColor="@color/successColor"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="₹0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true" >
+
+                    <LinearLayout
+                        android:padding="12dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textSize="18sp"
+                            android:text="Tota Orders"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/total_orders"
+                            android:textSize="18sp"
+                            android:textColor="@color/successColor"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:nestedScrollingEnabled="false"

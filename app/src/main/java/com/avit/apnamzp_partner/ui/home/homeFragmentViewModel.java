@@ -36,7 +36,7 @@ public class homeFragmentViewModel extends ViewModel {
         Date todayDate = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        Call<List<OrderItem>> call = networkApi.getAllOrders(shopCategory,shopId,orderStatus,simpleDateFormat.format(todayDate));
+        Call<List<OrderItem>> call = networkApi.getAllOrders(shopCategory,shopId,orderStatus,simpleDateFormat.format(todayDate),false);
         call.enqueue(new Callback<List<OrderItem>>() {
             @Override
             public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {

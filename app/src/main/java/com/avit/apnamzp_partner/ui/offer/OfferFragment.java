@@ -105,9 +105,12 @@ public class OfferFragment extends Fragment {
         binding.saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String discountPercentage, maxDiscount, discountAmount;
+                String discountPercentage, maxDiscount, discountAmount, discountAbove;
 
                 // TODO: Validation
+
+                discountAbove = binding.discountAbove.getText().toString();
+                offerItem.setDiscountAbove(discountAbove);
 
                 if(offerItem.getOfferType().equals("flat")){
                     discountAmount = binding.discountAmount.getText().toString();

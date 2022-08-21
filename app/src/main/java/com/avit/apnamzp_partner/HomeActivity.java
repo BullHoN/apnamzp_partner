@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
 //        toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-//        checkOverlayPermission();
+        checkOverlayPermission();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
@@ -184,7 +184,6 @@ public class HomeActivity extends AppCompatActivity {
                                 }
                             })
                             .setIcon(android.R.drawable.ic_dialog_info)
-                            .setCancelable(false)
                             .show();
                 }
                 else {
@@ -198,7 +197,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkOverlayPermission();
+//        checkOverlayPermission();
         registerReceiver(receiver,intentFilter);
     }
 

@@ -66,8 +66,6 @@ public class ManageFragment extends Fragment {
 
         shopPartner = LocalDB.getPartnerDetails(getContext());
 
-        // TODO: Add a get route to get the shop data from server
-
         if(shopPartner.getBannerImage() != null && shopPartner.getBannerImage().length() > 0){
             Glide.with(getContext())
                     .load(shopPartner.getBannerImage())
@@ -76,6 +74,8 @@ public class ManageFragment extends Fragment {
 
         binding.shopName.setText(shopPartner.getName());
         binding.shopType.setText(shopPartner.getShopType());
+
+        if(shopPartner.getFssaiCode() != null) binding.fssaiLicence.setText(shopPartner.getFssaiCode());
 
         binding.shopTagline.setText(shopPartner.getTagLine());
 
@@ -116,13 +116,18 @@ public class ManageFragment extends Fragment {
         binding.saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tagline, minOrderPrice, minFreeDeliveryPrice, taxPercentage;
+                String tagline, minOrderPrice, minFreeDeliveryPrice, taxPercentage, fssaiCode;
                 tagline = binding.shopTagline.getText().toString();
                 minOrderPrice = binding.shopMinOrderPrice.getText().toString();
                 minFreeDeliveryPrice = binding.shopMinFreeDeliveryPrice.getText().toString();
                 taxPercentage = binding.shopTaxPercentage.getText().toString();
+                fssaiCode = binding.fssaiLicence.getText().toString();
 
                 // TODO: Validation on everything
+
+                if(fssaiCode != null && fssaiCode.length() > 0){
+                    shopPartner.setFssaiCode(fssaiCode);
+                }
 
                 shopPartner.setTagLine(tagline);
                 shopPartner.setPricingDetails(new ShopPrices(minOrderPrice,minFreeDeliveryPrice));

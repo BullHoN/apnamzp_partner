@@ -157,6 +157,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             public void onChanged(ShopPartner shopPartnerStatus) {
                 shopPartner.setOpen(shopPartnerStatus.isOpen());
                 shopPartner.setBannerImage(shopPartnerStatus.getBannerImage());
+                shopPartner.setFssaiCode(shopPartnerStatus.getFssaiCode());
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
                 setShopStatus();
             }

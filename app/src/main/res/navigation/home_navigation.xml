@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.avit.apnamzp_partner.ui.home.homeFragment"
-        android:label="fragment_home"
+        android:label="Your Orders"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_orderDetailsFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/menuItemsFragment"
         android:name="com.avit.apnamzp_partner.ui.menuitems.menuItemsFragment"
-        android:label="fragment_menu_items"
+        android:label="Your Menu"
         tools:layout="@layout/fragment_menu_items" >
         <action
             android:id="@+id/action_menuItemsFragment_to_categoryItemsFragment"
@@ -26,12 +26,12 @@
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.avit.apnamzp_partner.ui.orderdetails.OrderDetailsFragment"
-        android:label="fragment_order_details"
+        android:label="Order Details"
         tools:layout="@layout/fragment_order_details" />
     <fragment
         android:id="@+id/categoryItemsFragment"
         android:name="com.avit.apnamzp_partner.ui.categoryitems.CategoryItemsFragment"
-        android:label="fragment_category_items"
+        android:label="Your Categories"
         tools:layout="@layout/fragment_category_items" >
         <action
             android:id="@+id/action_categoryItemsFragment_to_menuItemFragment"
@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/menuItemFragment"
         android:name="com.avit.apnamzp_partner.ui.menuitem.MenuItemFragment"
-        android:label="fragment_menu_item"
+        android:label="Menu Item"
         tools:layout="@layout/fragment_menu_item" >
         <action
             android:id="@+id/action_menuItemFragment_to_menuItemsFragment"
@@ -49,17 +49,17 @@
     <fragment
         android:id="@+id/dashboardFragment2"
         android:name="com.avit.apnamzp_partner.ui.dashboard.DashboardFragment"
-        android:label="fragment_dashboard"
+        android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/manageFragment"
         android:name="com.avit.apnamzp_partner.ui.manage.ManageFragment"
-        android:label="fragment_manage"
+        android:label="Manage Shop"
         tools:layout="@layout/fragment_manage" />
     <fragment
         android:id="@+id/offersFragment"
         android:name="com.avit.apnamzp_partner.ui.offers.OffersFragment"
-        android:label="fragment_offers"
+        android:label="Offers"
         tools:layout="@layout/fragment_offers" >
         <action
             android:id="@+id/action_offersFragment_to_offerFragment"
@@ -68,6 +68,6 @@
     <fragment
         android:id="@+id/offerFragment"
         android:name="com.avit.apnamzp_partner.ui.offer.OfferFragment"
-        android:label="fragment_offer"
+        android:label="Offer"
         tools:layout="@layout/fragment_offer" />
 </navigation>

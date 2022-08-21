@@ -25,7 +25,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
-    String SERVER_URL = "http://192.168.138.85:5000/";
+    String SERVER_URL = "http://192.168.196.85:5000";
 //    String SERVER_URL = "https://apnamzp.in/";
 
     @GET("/partner/getOrders")
@@ -79,5 +79,8 @@ public interface NetworkApi {
 
     @DELETE("/partner/offer/{offer_id}")
     Call<NetworkResponse> deleteOffer(@Path("offer_id") String offerId);
+
+    @GET("/partner/shopStatus/{id}")
+    Call<ShopPartner> getShopStatus(@Path("id") String shopId);
 
 }

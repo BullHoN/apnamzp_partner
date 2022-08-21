@@ -6,9 +6,12 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,10 +26,44 @@ import retrofit2.Retrofit;
 public class homeFragmentViewModel extends ViewModel {
 
     private MutableLiveData<List<OrderItem>> orderItemsMutableLiveData;
+    private MutableLiveData<ShopPartner> mutableShopPartnerLiveData;
     private String TAG = "homeFragment";
 
     public homeFragmentViewModel(){
+        mutableShopPartnerLiveData = new MutableLiveData<>();
         orderItemsMutableLiveData = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<ShopPartner> getMutableShopPartnerLiveData() {
+        return mutableShopPartnerLiveData;
+    }
+
+    public void getShopStatus(Context context, String shopId){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<ShopPartner> call = networkApi.getShopStatus(shopId);
+        call.enqueue(new Callback<ShopPartner>() {
+            @Override
+            public void onResponse(Call<ShopPartner> call, Response<ShopPartner> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(context,errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+                mutableShopPartnerLiveData.setValue(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<ShopPartner> call, Throwable t) {
+                Toasty.error(context,t.getMessage(),Toasty.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
     }
 
     public void getOrders(Context context,String shopId, String shopCategory, int orderStatus, int pageNumber){

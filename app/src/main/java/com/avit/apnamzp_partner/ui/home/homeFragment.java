@@ -71,6 +71,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         binding.orderItemsRecyclerView.setAdapter(ordersAdapter);
 
         shopPartner = LocalDB.getPartnerDetails(getContext());
+        viewModel.getShopStatus(getContext(),shopPartner.getShopId());
 
         viewModel.getOrders(getContext(),shopPartner.getShopId(), shopPartner.getShopType(), OrderStatus.ORDER_PREPARING,1);
         viewModel.getOrderItemsMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<OrderItem>>() {
@@ -146,6 +147,16 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             public void onClick(View view) {
                 shopPartner.setOpen(!shopPartner.isOpen());
                 changeOrderStatus(shopPartner.getPhoneNo(),!shopPartner.isOpen());
+                LocalDB.savePartnerDetails(getContext(),shopPartner);
+                setShopStatus();
+            }
+        });
+
+        viewModel.getMutableShopPartnerLiveData().observe(getViewLifecycleOwner(), new Observer<ShopPartner>() {
+            @Override
+            public void onChanged(ShopPartner shopPartnerStatus) {
+                shopPartner.setOpen(shopPartnerStatus.isOpen());
+                shopPartner.setBannerImage(shopPartnerStatus.getBannerImage());
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
                 setShopStatus();
             }

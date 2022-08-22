@@ -195,13 +195,13 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         if(!shopPartner.isOpen()){
             binding.shopStatusContainer.setBackgroundColor(getResources().getColor(R.color.successColor));
             binding.shopStatusImage.setImageResource(R.drawable.ic_open);
-            binding.shopStatusButton.setText("Shop Opened");
+            binding.shopStatusButton.setText("Close Shop");
             binding.shopStatusButton.setTextColor(getResources().getColor(R.color.successColor));
         }
         else {
             binding.shopStatusContainer.setBackgroundColor(getResources().getColor(R.color.failure));
             binding.shopStatusImage.setImageResource(R.drawable.ic_closed);
-            binding.shopStatusButton.setText("Shop Closed");
+            binding.shopStatusButton.setText("Open Shop");
             binding.shopStatusButton.setTextColor(getResources().getColor(R.color.failure));
         }
     }

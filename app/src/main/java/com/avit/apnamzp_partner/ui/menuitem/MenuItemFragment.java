@@ -138,6 +138,7 @@ public class MenuItemFragment extends Fragment {
 
                 // TODO: Validation
 
+
                 shopItemData.addPricing(priceType,price);
                 editablePricingAdapter.updateItemsPricingList(shopItemData.getPricings());
 
@@ -181,6 +182,14 @@ public class MenuItemFragment extends Fragment {
                 shopItemData.setName(itemName);
                 shopItemData.setDiscount(discount);
                 shopItemData.setTaxOrPackigingPrice(packigingCharge);
+
+                if(discount.length() == 0){
+                    shopItemData.setDiscount("0");
+                }
+
+                if(packigingCharge.length() == 0){
+                    shopItemData.setTaxOrPackigingPrice("0");
+                }
 
                 String shopMenuItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();
 //                saveChangesToServer(shopMenuItemsId, categoryName);

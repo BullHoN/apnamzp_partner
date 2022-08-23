@@ -71,7 +71,6 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         binding.orderItemsRecyclerView.setAdapter(ordersAdapter);
 
         shopPartner = LocalDB.getPartnerDetails(getContext());
-        viewModel.getShopStatus(getContext(),shopPartner.getShopId());
 
         viewModel.getOrders(getContext(),shopPartner.getShopId(), shopPartner.getShopType(), OrderStatus.ORDER_PREPARING,1);
         viewModel.getOrderItemsMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<OrderItem>>() {
@@ -140,13 +139,13 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             }
         });
 
-        setShopStatus();
 
         binding.shopStatusContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shopPartner.setOpen(!shopPartner.isOpen());
+                binding.shopStatusContainer.setVisibility(View.GONE);
                 changeOrderStatus(shopPartner.getPhoneNo(),!shopPartner.isOpen());
+                shopPartner.setOpen(!shopPartner.isOpen());
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
                 setShopStatus();
             }
@@ -155,9 +154,13 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         viewModel.getMutableShopPartnerLiveData().observe(getViewLifecycleOwner(), new Observer<ShopPartner>() {
             @Override
             public void onChanged(ShopPartner shopPartnerStatus) {
+
                 shopPartner.setOpen(shopPartnerStatus.isOpen());
                 shopPartner.setBannerImage(shopPartnerStatus.getBannerImage());
                 shopPartner.setFssaiCode(shopPartnerStatus.getFssaiCode());
+                shopPartner.setTagLine(shopPartnerStatus.getTagLine());
+
+                binding.shopStatusContainer.setVisibility(View.GONE);
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
                 setShopStatus();
             }
@@ -192,7 +195,9 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
     }
 
     private void setShopStatus(){
-        if(!shopPartner.isOpen()){
+        binding.shopStatusContainer.setVisibility(View.VISIBLE);
+
+        if(shopPartner.isOpen()){
             binding.shopStatusContainer.setBackgroundColor(getResources().getColor(R.color.successColor));
             binding.shopStatusImage.setImageResource(R.drawable.ic_open);
             binding.shopStatusButton.setText("Close Shop");
@@ -351,5 +356,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
     @Override
     public void onResume() {
         super.onResume();
+        binding.shopStatusContainer.setVisibility(View.GONE);
+        viewModel.getShopStatus(getContext(),shopPartner.getShopId());
     }
 }

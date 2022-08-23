@@ -38,6 +38,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_below="@id/actionNeededContainer"
             android:id="@+id/shop_status_container"
             android:paddingHorizontal="12dp"

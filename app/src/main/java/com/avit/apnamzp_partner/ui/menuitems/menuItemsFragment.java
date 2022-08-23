@@ -153,6 +153,65 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
     }
 
     @Override
+    public void deleteCategory(ShopCategoryData shopCategoryData) {
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<NetworkResponse> call = networkApi.editCategories("delete",shopCategoryData.getCategoryName(),shopItemsId,null);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+                NetworkResponse successResponse = response.body();
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.menuItemsFragment);
+
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+    }
+
+    @Override
+    public void editCategoryName(ShopCategoryData shopCategoryData, String newCategoryName) {
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<NetworkResponse> call = networkApi.editCategories("edit",shopCategoryData.getCategoryName(),shopItemsId,newCategoryName);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.menuItemsFragment);
+
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         shopItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();

@@ -45,6 +45,10 @@
         <action
             android:id="@+id/action_menuItemFragment_to_menuItemsFragment"
             app:destination="@id/menuItemsFragment" />
+        <action
+            android:id="@+id/action_menuItemFragment_pop_including_categoryItemsFragment"
+            app:popUpTo="@id/categoryItemsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment2"

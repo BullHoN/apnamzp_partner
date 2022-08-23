@@ -89,6 +89,8 @@ public class MenuItemFragment extends Fragment {
             binding.isAvailable.setChecked(shopItemData.getAvailable());
 
             binding.itemName.setText(shopItemData.getName());
+            binding.itemName.setEnabled(false);
+
             binding.itemDiscount.setText(shopItemData.getDiscount());
             binding.itemPackegingCharge.setText(shopItemData.getTaxOrPackigingPrice());
         }
@@ -97,6 +99,7 @@ public class MenuItemFragment extends Fragment {
             shopItemData = new ShopItemData();
             binding.title.setText("Add New Menu Item");
             binding.saveChangesButton.setText("Add Item");
+            binding.removeItem.setVisibility(View.GONE);
         }
 
         itemPickingLauncher =
@@ -137,7 +140,15 @@ public class MenuItemFragment extends Fragment {
                 String price = binding.price.getText().toString();
 
                 // TODO: Validation
+                if(priceType.length() == 0){
+                    binding.priceType.setError("Please Enter Valid Price Type");
+                    return;
+                }
 
+                if(price.length() == 0){
+                    binding.price.setError("Please Enter Valid Price");
+                    return;
+                }
 
                 shopItemData.addPricing(priceType,price);
                 editablePricingAdapter.updateItemsPricingList(shopItemData.getPricings());
@@ -199,11 +210,24 @@ public class MenuItemFragment extends Fragment {
                 binding.loading.setAnimation(R.raw.upload_animation);
                 binding.loading.playAnimation();
 
-                putMenuItemToServer(shopMenuItemsId,categoryName);
+                putMenuItemToServer(shopMenuItemsId,categoryName,false);
             }
         });
 
 
+        binding.removeItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String shopMenuItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();
+
+                binding.loading.setVisibility(View.VISIBLE);
+                binding.saveChangesButton.setEnabled(false);
+                binding.loading.setAnimation(R.raw.upload_animation);
+                binding.loading.playAnimation();
+
+                putMenuItemToServer(shopMenuItemsId,categoryName,true);
+            }
+        });
 
         return binding.getRoot();
     }
@@ -227,7 +251,7 @@ public class MenuItemFragment extends Fragment {
                 }));
     }
 
-    private void putMenuItemToServer(String shopMenuItemsId, String categoryName){
+    private void putMenuItemToServer(String shopMenuItemsId, String categoryName,boolean deleteItem){
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
@@ -243,7 +267,7 @@ public class MenuItemFragment extends Fragment {
 
         RequestBody someData = RequestBody.create(MediaType.parse("application/json"),gson.toJson(shopItemData));
 
-        Call<NetworkResponse> call = networkApi.putMenuItem(shopMenuItemsId,categoryName,isNewMenuItem,imagePart,someData);
+        Call<NetworkResponse> call = networkApi.putMenuItem(deleteItem,shopMenuItemsId,categoryName,isNewMenuItem,imagePart,someData);
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {

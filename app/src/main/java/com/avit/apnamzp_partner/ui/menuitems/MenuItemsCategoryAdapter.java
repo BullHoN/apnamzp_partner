@@ -1,5 +1,6 @@
 package com.avit.apnamzp_partner.ui.menuitems;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCategoryAdapter.MenuItemsCategoriesViewHolder>{
 
     public interface CategoriesActions {
         void openCategoryMenuItems(ShopCategoryData shopCategoryData);
+        void deleteCategory(ShopCategoryData shopCategoryData);
+        void editCategoryName(ShopCategoryData shopCategoryData, String newCategoryName);
     }
 
     private List<ShopCategoryData> shopCategoryData;
@@ -48,6 +55,47 @@ public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCate
             @Override
             public void onClick(View view) {
                 categoriesActions.openCategoryMenuItems(curr);
+            }
+        });
+
+        holder.openMenuItemsForCategoryView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                openEditDialog(curr);
+                return true;
+            }
+        });
+
+    }
+
+    private void openEditDialog(ShopCategoryData shopCategoryData){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_category,null,false);
+
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextInputEditText newCategoryNameView = view.findViewById(R.id.new_category_name);
+        newCategoryNameView.setText(shopCategoryData.getCategoryName());
+
+        MaterialButton saveChanges = view.findViewById(R.id.save_changes_button);
+        saveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String newCategoryName = newCategoryNameView.getText().toString();
+                categoriesActions.editCategoryName(shopCategoryData,newCategoryName);
+                dialog.dismiss();
+            }
+        });
+
+        MaterialButton deleteButton = view.findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                categoriesActions.deleteCategory(shopCategoryData);
+                dialog.dismiss();
             }
         });
 

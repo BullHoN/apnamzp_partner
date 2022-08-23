@@ -25,8 +25,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
-//    String SERVER_URL = "http://192.168.196.85:5000";
-    String SERVER_URL = "https://apnamzp.in/";
+    String SERVER_URL = "http://192.168.31.85:5000";
+//    String SERVER_URL = "https://apnamzp.in/";
 
     @GET("/partner/getOrders")
     Call<List<OrderItem>> getAllOrders(@Query("shopCategory") String shopCategory,
@@ -59,7 +59,7 @@ public interface NetworkApi {
 
     @Multipart
     @POST("/partner/update/menuitem")
-    Call<NetworkResponse> putMenuItem(@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName,@Query("isNewItem") boolean isNewItem,@Part MultipartBody.Part itemImagePart, @Part("shopItemData") RequestBody shopItemData);
+    Call<NetworkResponse> putMenuItem(@Query("deleteItem") boolean deleteItem,@Query("shopItemsId") String shopItemsId, @Query("categoryName") String categoryName,@Query("isNewItem") boolean isNewItem,@Part MultipartBody.Part itemImagePart, @Part("shopItemData") RequestBody shopItemData);
 
     @POST("/partner/createNewCategory")
     Call<NetworkResponse> addNewCategory(@Query("shopItemsId") String shopItemsId, @Body ShopCategoryData shopCategoryData);
@@ -82,5 +82,9 @@ public interface NetworkApi {
 
     @GET("/partner/shopStatus/{id}")
     Call<ShopPartner> getShopStatus(@Path("id") String shopId);
+
+    @POST("/partner/editcategory")
+    Call<NetworkResponse> editCategories(@Query("action") String query, @Query("categoryName") String categoryName,
+                                         @Query("shopItemsId") String shopItemsId, @Query("newCategoryName") String newCategoryName);
 
 }

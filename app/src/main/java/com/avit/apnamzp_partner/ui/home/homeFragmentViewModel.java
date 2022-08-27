@@ -27,15 +27,48 @@ public class homeFragmentViewModel extends ViewModel {
 
     private MutableLiveData<List<OrderItem>> orderItemsMutableLiveData;
     private MutableLiveData<ShopPartner> mutableShopPartnerLiveData;
+    private MutableLiveData<List<OrderItem>> actionNeededLiveData;
     private String TAG = "homeFragment";
 
     public homeFragmentViewModel(){
         mutableShopPartnerLiveData = new MutableLiveData<>();
         orderItemsMutableLiveData = new MutableLiveData<>();
+        actionNeededLiveData = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<List<OrderItem>> getActionNeededLiveData() {
+        return actionNeededLiveData;
     }
 
     public MutableLiveData<ShopPartner> getMutableShopPartnerLiveData() {
         return mutableShopPartnerLiveData;
+    }
+
+    public void getActionNeeded(Context context, String shopId){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<List<OrderItem>> call = networkApi.getActionNeededOrders(shopId);
+        call.enqueue(new Callback<List<OrderItem>>() {
+            @Override
+            public void onResponse(Call<List<OrderItem>> call, Response<List<OrderItem>> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(context,errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+                actionNeededLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<OrderItem>> call, Throwable t) {
+                Toasty.error(context,t.getMessage(),Toasty.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
     }
 
     public void getShopStatus(Context context, String shopId){

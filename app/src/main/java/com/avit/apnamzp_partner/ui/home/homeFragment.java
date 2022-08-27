@@ -118,26 +118,38 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
            }
        });
 
-       // ACTION NEEDED ORDERS
-        actionNeededOrders = LocalDB.getActionNeededOrders(getContext());
-        Log.i(TAG, "onCreateView: " + gson.toJson(actionNeededOrders));
+       viewModel.getActionNeeded(getContext(), shopPartner.getShopId());
 
-        if(actionNeededOrders.size() == 0){
-            binding.actionNeededContainer.setVisibility(View.GONE);
-        }
-        else {
-            binding.alertActionOrdersAnimation.setAnimation(R.raw.alert_animation);
-            binding.alertActionOrdersAnimation.playAnimation();
+       viewModel.getActionNeededLiveData().observe(getViewLifecycleOwner(), new Observer<List<OrderItem>>() {
+           @Override
+           public void onChanged(List<OrderItem> orderItems) {
 
-            rejectAllPendingOrder();
-        }
+               actionNeededOrders = orderItems;
 
-        binding.actionNeededContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAllActionRequiredOrders();
-            }
-        });
+               if(actionNeededOrders.size() == 0){
+                   binding.actionNeededContainer.setVisibility(View.GONE);
+               }
+               else {
+                   binding.alertActionOrdersAnimation.setAnimation(R.raw.alert_animation);
+                   binding.alertActionOrdersAnimation.playAnimation();
+
+                   rejectAllPendingOrder();
+               }
+
+               binding.actionNeededContainer.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+                       showAllActionRequiredOrders();
+                   }
+               });
+           }
+       });
+
+       //  ACTION NEEDED ORDERS
+//        actionNeededOrders = LocalDB.getActionNeededOrders(getContext());
+//        Log.i(TAG, "onCreateView: " + gson.toJson(actionNeededOrders));
+
+
 
 
         binding.shopStatusContainer.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +171,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                 shopPartner.setBannerImage(shopPartnerStatus.getBannerImage());
                 shopPartner.setFssaiCode(shopPartnerStatus.getFssaiCode());
                 shopPartner.setTagLine(shopPartnerStatus.getTagLine());
+                shopPartner.setPricingDetails(shopPartnerStatus.getPricingDetails());
 
                 binding.shopStatusContainer.setVisibility(View.GONE);
                 LocalDB.savePartnerDetails(getContext(),shopPartner);

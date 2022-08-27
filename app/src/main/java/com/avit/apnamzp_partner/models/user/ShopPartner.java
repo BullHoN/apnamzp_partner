@@ -71,6 +71,8 @@ public class ShopPartner {
         this.shopType = shopType;
     }
 
+
+
     public void setFssaiCode(String fssaiCode) {
         this.fssaiCode = fssaiCode;
     }

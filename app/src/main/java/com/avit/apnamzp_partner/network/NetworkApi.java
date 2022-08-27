@@ -25,7 +25,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
-    String SERVER_URL = "http://192.168.31.85:5000";
+    String SERVER_URL = "http://192.168.133.85:5000";
 //    String SERVER_URL = "https://apnamzp.in/";
 
     @GET("/partner/getOrders")
@@ -86,5 +86,8 @@ public interface NetworkApi {
     @POST("/partner/editcategory")
     Call<NetworkResponse> editCategories(@Query("action") String query, @Query("categoryName") String categoryName,
                                          @Query("shopItemsId") String shopItemsId, @Query("newCategoryName") String newCategoryName);
+
+    @GET("/partner/actionNeededOrders/{shopId}")
+    Call<List<OrderItem>> getActionNeededOrders(@Path("shopId") String shopId);
 
 }

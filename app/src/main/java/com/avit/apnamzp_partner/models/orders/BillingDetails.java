@@ -1,12 +1,26 @@
 package com.avit.apnamzp_partner.models.orders;
 
 public class BillingDetails {
-    private int  deliveryCharge, itemTotal, offerDiscountedAmount, totalDiscount, totalTaxesAndPackingCharge, itemsOnTheWayTotalCost ,totalPay;
+    private int  deliveryCharge, itemTotal, offerDiscountedAmount, totalDiscount, totalTaxesAndPackingCharge, itemsOnTheWayTotalCost ,totalPay, processingFee;
     private int freeDeliveryPrice;
     private String taxPercentage;
     private Boolean isDeliveryService;
 
     public BillingDetails(Boolean isDeliveryService) {
+        this.isDeliveryService = isDeliveryService;
+    }
+
+    public BillingDetails(int deliveryCharge, int itemTotal, int offerDiscountedAmount, int totalDiscount, int totalTaxesAndPackingCharge, int itemsOnTheWayTotalCost, int totalPay, int processingFee, int freeDeliveryPrice, String taxPercentage, Boolean isDeliveryService) {
+        this.deliveryCharge = deliveryCharge;
+        this.itemTotal = itemTotal;
+        this.offerDiscountedAmount = offerDiscountedAmount;
+        this.totalDiscount = totalDiscount;
+        this.totalTaxesAndPackingCharge = totalTaxesAndPackingCharge;
+        this.itemsOnTheWayTotalCost = itemsOnTheWayTotalCost;
+        this.totalPay = totalPay;
+        this.processingFee = processingFee;
+        this.freeDeliveryPrice = freeDeliveryPrice;
+        this.taxPercentage = taxPercentage;
         this.isDeliveryService = isDeliveryService;
     }
 
@@ -44,6 +58,10 @@ public class BillingDetails {
         this.itemsOnTheWayTotalCost = itemsOnTheWayTotalCost;
         this.totalPay = totalPay;
         this.isDeliveryService = isDeliveryService;
+    }
+
+    public int getProcessingFee() {
+        return processingFee;
     }
 
     public int getFreeDeliveryPrice() {

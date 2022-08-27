@@ -128,12 +128,14 @@ public class OrderItem {
     public int getTotalReceivingAmount(){
         int totalReceivingAmount = 0;
         if(!isShopOfferApplied()){
-            totalReceivingAmount =  billingDetails.getItemTotal() + billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount();
+            totalReceivingAmount =  billingDetails.getItemTotal() +
+                    billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount();
         }
         else {
-            totalReceivingAmount =  billingDetails.getItemTotal() +  billingDetails.getTotalTaxesAndPackingCharge()  - billingDetails.getTotalDiscount() - billingDetails.getOfferDiscountedAmount();
+            totalReceivingAmount =  billingDetails.getItemTotal() +  billingDetails.getTotalTaxesAndPackingCharge()
+                    - billingDetails.getTotalDiscount() - billingDetails.getOfferDiscountedAmount();
         }
-
+        
         if(isFreeDelivery()){
             totalReceivingAmount -= billingDetails.getDeliveryCharge();
         }

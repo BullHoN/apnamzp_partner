@@ -113,11 +113,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         holder.orderTotalPrice.setText("Total Amount: ₹" + curr.getTotalReceivingAmount());
 
-        if(curr.getPaid()){
-            holder.orderPaymentStatus.setText("ONLINE");
+        if(curr.isPaymentReceivedToShop()){
+            holder.orderPaymentStatus.setText("RECEIVED");
         }
         else {
-            holder.orderPaymentStatus.setText("COD");
+            holder.orderPaymentStatus.setText("NOT RECEIVED");
+            holder.orderPaymentStatus.setBackgroundColor(context.getResources().getColor(R.color.failure));
         }
 
         holder.orderNextActionButton.setCheckable(true);

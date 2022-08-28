@@ -38,7 +38,31 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/self_pickup_container" >
+
+                        <TextView
+                            android:textSize="18sp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textColor="@color/failure"
+                            android:text="This is a Self Pick Up Order Please Confirm With Customer Before Accepting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/call_customer"
+                            android:text="Call Customer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
                     <TextView
+                        android:layout_marginTop="8dp"
                         android:textSize="18sp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="Order Items"

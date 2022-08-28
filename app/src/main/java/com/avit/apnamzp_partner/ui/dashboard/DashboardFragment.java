@@ -142,6 +142,6 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
         Bundle bundle = new Bundle();
         bundle.putString("orderItem",orderItemsString);
 
-        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_orderDetailsFragment,bundle);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_dashboardFragment2_to_orderDetailsFragment,bundle);
     }
 }

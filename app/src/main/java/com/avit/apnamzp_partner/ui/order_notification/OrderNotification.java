@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -30,7 +31,9 @@ import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.utils.ErrorUtils;
+import com.avit.apnamzp_partner.utils.InfoConstats;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
@@ -54,7 +57,7 @@ public class OrderNotification extends AppCompatActivity {
 
     private long waitTime = 1000 * 60 * 5;
     private CircularProgressIndicator waitTimeProgressBar;
-    private LinearLayout acceptOrderButton, rejectOrderButton;
+    private LinearLayout acceptOrderButton, rejectOrderButton, selfPickUpContainer;
     private TextView reamingTimeTextview;
     private int minutes = 4;
     private int seconds = 60;
@@ -62,6 +65,7 @@ public class OrderNotification extends AppCompatActivity {
     private Gson gson;
     private ShopItemData[] orderItems;
     private String userId, orderId, totalPay, isDeliveryService;
+    private MaterialButton callCustomerButton;
     private CountDownTimer cancelOrderTimer;
 
     @Override
@@ -89,6 +93,8 @@ public class OrderNotification extends AppCompatActivity {
         reamingTimeTextview = findViewById(R.id.remaining_time);
         acceptOrderButton = findViewById(R.id.accept_order_button);
         rejectOrderButton = findViewById(R.id.reject_order_button);
+        selfPickUpContainer = findViewById(R.id.self_pickup_container);
+        callCustomerButton = findViewById(R.id.call_customer);
 
         gson = new Gson();
         userId = getIntent().getStringExtra("userId");
@@ -96,6 +102,19 @@ public class OrderNotification extends AppCompatActivity {
         totalPay = getIntent().getStringExtra("totalAmount");
         isDeliveryService = getIntent().getStringExtra("isDeliveryService");
         orderItems = gson.fromJson(getIntent().getStringExtra("orderItems"), ShopItemData[].class);
+
+        if(!isDeliveryService.equals("true")){
+            selfPickUpContainer.setVisibility(View.VISIBLE);
+            callCustomerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent callingIntent = new Intent();
+                    callingIntent.setAction(Intent.ACTION_DIAL);
+                    callingIntent.setData(Uri.parse("tel: " + userId));
+                    startActivity(callingIntent);
+                }
+            });
+        }
 
         totalPriceView.setText("Total ₹" + totalPay);
 

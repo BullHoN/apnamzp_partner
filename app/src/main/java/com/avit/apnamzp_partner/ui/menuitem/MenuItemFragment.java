@@ -2,6 +2,7 @@ package com.avit.apnamzp_partner.ui.menuitem;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,12 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TimePicker;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentMenuItemBinding;
 import com.avit.apnamzp_partner.databinding.FragmentMenuItemsBinding;
 import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
+import com.avit.apnamzp_partner.models.shop.ItemAvailableTimings;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.models.shop.ShopPricingData;
 import com.avit.apnamzp_partner.network.NetworkApi;
@@ -34,6 +37,8 @@ import com.bumptech.glide.Glide;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.github.drjacky.imagepicker.constant.ImageProvider;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +65,7 @@ public class MenuItemFragment extends Fragment {
     private EditablePricingAdapter editablePricingAdapter;
     private boolean isNewMenuItem;
     private ActivityResultLauncher<Intent> itemPickingLauncher;
+    private MaterialTimePicker fromTime, endTime;
     private String TAG = "MenuItemFragment";
 
     @Override
@@ -174,6 +180,90 @@ public class MenuItemFragment extends Fragment {
             }
         });
 
+        if(shopItemData.getAvailableTimings() != null){
+            binding.fromTime.setText(shopItemData.getAvailableTimings().getFrom());
+            binding.toTime.setText(shopItemData.getAvailableTimings().getTo());
+        }
+
+        fromTime = new MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(7)
+                .setTitleText("Select From Time")
+                .build();
+
+        fromTime.addOnPositiveButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(fromTime.getHour() > 12){
+                    int hour = fromTime.getHour() - 12;
+                    String time = String.format("%02d",hour) + ":" + String.format("%02d",fromTime.getMinute()) + " " + "PM";
+                    binding.fromTime.setText(time);
+                }
+                else if(fromTime.getHour() == 12){
+                    String time = String.format("%02d",fromTime.getHour()) + ":" + String.format("%02d",fromTime.getMinute()) + " " + "PM";
+                    binding.fromTime.setText(time);
+                }
+                else {
+                    String time = String.format("%02d",fromTime.getHour()) + ":" + String.format("%02d",fromTime.getMinute()) + " " + "AM";
+                    binding.fromTime.setText(time);
+                }
+            }
+        });
+
+        fromTime.addOnNegativeButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.fromTime.setText("N/A");
+            }
+        });
+
+        endTime = new MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(7)
+                .setTitleText("Select End Time")
+                .build();
+
+        endTime.addOnPositiveButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(endTime.getHour() > 12){
+                    int hour = endTime.getHour() - 12;
+                    String time = String.format("%02d",hour) + ":" + String.format("%02d",endTime.getMinute()) + " " + "PM";
+                    binding.toTime.setText(time);
+                }
+                else if(endTime.getHour() == 12){
+                    String time = String.format("%02d",endTime.getHour()) + ":" + String.format("%02d",endTime.getMinute()) + " " + "PM";
+                    binding.toTime.setText(time);
+                }
+                else {
+                    String time = String.format("%02d",endTime.getHour()) + ":" + String.format("%02d",endTime.getMinute()) + " " + "AM";
+                    binding.toTime.setText(time);
+                }
+            }
+        });
+
+        endTime.addOnNegativeButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.toTime.setText("N/A");
+            }
+        });
+
+
+        binding.fromTimeContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fromTime.show(getActivity().getSupportFragmentManager(),"From Time");
+            }
+        });
+
+        binding.endTimeContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                endTime.show(getActivity().getSupportFragmentManager(),"End Time");
+            }
+        });
+
         binding.saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +290,15 @@ public class MenuItemFragment extends Fragment {
 
                 if(packigingCharge.length() == 0){
                     shopItemData.setTaxOrPackigingPrice("0");
+                }
+
+
+                if(!binding.fromTime.getText().equals("N/A") &&
+                    !binding.toTime.getText().equals("N/A")){
+                    shopItemData.setAvailableTimings(new ItemAvailableTimings(binding.fromTime.getText().toString(),
+                            binding.toTime.getText().toString()));
+                }else {
+                    shopItemData.setAvailableTimings(null);
                 }
 
                 String shopMenuItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();

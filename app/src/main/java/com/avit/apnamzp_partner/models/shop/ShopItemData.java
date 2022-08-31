@@ -13,6 +13,20 @@ public class ShopItemData {
     public String discount;
     public Boolean available;
     private Boolean isVeg;
+    private ItemAvailableTimings availableTimings;
+
+    public ShopItemData(String name, String _id, List<ShopPricingData> pricings, String imageURL, int quantity, String taxOrPackigingPrice, String discount, Boolean available, Boolean isVeg, ItemAvailableTimings availableTimings) {
+        this.name = name;
+        this._id = _id;
+        this.pricings = pricings;
+        this.imageURL = imageURL;
+        this.quantity = quantity;
+        this.taxOrPackigingPrice = taxOrPackigingPrice;
+        this.discount = discount;
+        this.available = available;
+        this.isVeg = isVeg;
+        this.availableTimings = availableTimings;
+    }
 
     public ShopItemData(){
         pricings = new ArrayList<>();
@@ -27,6 +41,14 @@ public class ShopItemData {
         this.name = name;
         this.pricings = pricings;
         this.imageURL = imageURL;
+    }
+
+    public void setAvailableTimings(ItemAvailableTimings availableTimings) {
+        this.availableTimings = availableTimings;
+    }
+
+    public ItemAvailableTimings getAvailableTimings() {
+        return availableTimings;
     }
 
     public void setName(String name) {

@@ -290,7 +290,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
 
                 if(!response.isSuccessful()){
                     NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
-                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_SHORT)
+                    Toasty.error(getContext(),errorResponse.getDesc()+"",Toasty.LENGTH_SHORT)
                             .show();
                     return;
                 }

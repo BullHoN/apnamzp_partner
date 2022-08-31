@@ -2,12 +2,14 @@ package com.avit.apnamzp_partner.ui.categoryitems;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -64,4 +66,12 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsAdap
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_categoryItemsFragment_to_menuItemFragment,bundle);
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.i(TAG, "onOptionsItemSelected: " + item.getItemId());
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

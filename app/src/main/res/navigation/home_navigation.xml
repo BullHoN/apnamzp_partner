@@ -21,7 +21,10 @@
         tools:layout="@layout/fragment_menu_items" >
         <action
             android:id="@+id/action_menuItemsFragment_to_categoryItemsFragment"
-            app:destination="@id/categoryItemsFragment" />
+            app:destination="@id/categoryItemsFragment"
+            app:popUpTo="@id/menuItemsFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/orderDetailsFragment"
@@ -35,7 +38,10 @@
         tools:layout="@layout/fragment_category_items" >
         <action
             android:id="@+id/action_categoryItemsFragment_to_menuItemFragment"
-            app:destination="@id/menuItemFragment" />
+            app:destination="@id/menuItemFragment"
+            app:popUpTo="@id/menuItemsFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/menuItemFragment"
@@ -44,9 +50,8 @@
         tools:layout="@layout/fragment_menu_item" >
         <action
             android:id="@+id/action_menuItemFragment_to_menuItemsFragment"
-            app:destination="@id/menuItemsFragment" />
-        <action
-            android:id="@+id/action_menuItemFragment_pop_including_categoryItemsFragment"
+            app:destination="@id/menuItemsFragment"
+            app:launchSingleTop="true"
             app:popUpTo="@id/categoryItemsFragment"
             app:popUpToInclusive="true" />
     </fragment>

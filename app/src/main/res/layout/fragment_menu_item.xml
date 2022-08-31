@@ -98,6 +98,91 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_marginTop="12dp"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/from_time_container"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp" >
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:text="From Time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/from_time"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textSize="18sp"
+                            android:text="N/A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/end_time_container"
+                    android:layout_weight="1"
+                    app:cardUseCompatPadding="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp" >
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:text="End Time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/to_time"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textSize="18sp"
+                            android:text="N/A"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:visibility="gone"
+                android:id="@+id/action_available_timings_button"
+                android:text="Remove Available Timings"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/failure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:textSize="16sp"
                 android:layout_marginTop="12dp"
@@ -151,6 +236,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:nestedScrollingEnabled="false"
                 android:id="@+id/item_pricing_recyclerview"
                 android:layout_width="match_parent"
                 tools:itemCount="2"

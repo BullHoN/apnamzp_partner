@@ -72,6 +72,10 @@ public class ManageFragment extends Fragment {
                     .into(binding.bannerImage);
         }
 
+        if(shopPartner.getShopTimings() != null){
+            binding.shopTimings.setText(shopPartner.getShopTimings());
+        }
+
         binding.shopName.setText(shopPartner.getName());
         binding.shopType.setText(shopPartner.getShopType());
 
@@ -116,12 +120,13 @@ public class ManageFragment extends Fragment {
         binding.saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tagline, minOrderPrice, minFreeDeliveryPrice, taxPercentage, fssaiCode;
+                String tagline, minOrderPrice, minFreeDeliveryPrice, taxPercentage, fssaiCode, shopTimings;
                 tagline = binding.shopTagline.getText().toString();
                 minOrderPrice = binding.shopMinOrderPrice.getText().toString();
                 minFreeDeliveryPrice = binding.shopMinFreeDeliveryPrice.getText().toString();
                 taxPercentage = binding.shopTaxPercentage.getText().toString();
                 fssaiCode = binding.fssaiLicence.getText().toString();
+                shopTimings = binding.shopTimings.getText().toString();
 
                 // TODO: Validation on everything
 
@@ -132,6 +137,7 @@ public class ManageFragment extends Fragment {
                 shopPartner.setTagLine(tagline);
                 shopPartner.setPricingDetails(new ShopPrices(minOrderPrice,minFreeDeliveryPrice));
                 shopPartner.setTaxPercentage(taxPercentage);
+                shopPartner.setShopTimings(shopTimings);
 
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
 

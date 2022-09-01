@@ -172,6 +172,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                 shopPartner.setFssaiCode(shopPartnerStatus.getFssaiCode());
                 shopPartner.setTagLine(shopPartnerStatus.getTagLine());
                 shopPartner.setPricingDetails(shopPartnerStatus.getPricingDetails());
+                shopPartner.setShopTimings(shopPartnerStatus.getShopTimings());
 
                 binding.shopStatusContainer.setVisibility(View.GONE);
                 LocalDB.savePartnerDetails(getContext(),shopPartner);

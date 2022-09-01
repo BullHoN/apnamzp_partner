@@ -14,6 +14,24 @@ public class ShopPartner {
     private boolean isOpen;
     private String shopItemsId;
     private String fssaiCode;
+    private String shopTimings;
+
+    public ShopPartner(String phoneNo, String fcmId, String shopId, String shopType, String tagLine, ShopPrices pricingDetails, ShopAddressData addressData, String bannerImage, String taxPercentage, String name, boolean isOpen, String shopItemsId, String fssaiCode, String shopTimings) {
+        this.phoneNo = phoneNo;
+        this.fcmId = fcmId;
+        this.shopId = shopId;
+        this.shopType = shopType;
+        this.tagLine = tagLine;
+        this.pricingDetails = pricingDetails;
+        this.addressData = addressData;
+        this.bannerImage = bannerImage;
+        this.taxPercentage = taxPercentage;
+        this.name = name;
+        this.isOpen = isOpen;
+        this.shopItemsId = shopItemsId;
+        this.fssaiCode = fssaiCode;
+        this.shopTimings = shopTimings;
+    }
 
     public ShopPartner(String phoneNo, String fcmId, String shopId, String shopType, String tagLine, ShopPrices pricingDetails, ShopAddressData addressData, String bannerImage, String taxPercentage, String name, boolean isOpen, String shopItemsId, String fssaiCode) {
         this.phoneNo = phoneNo;
@@ -71,7 +89,13 @@ public class ShopPartner {
         this.shopType = shopType;
     }
 
+    public void setShopTimings(String shopTimings) {
+        this.shopTimings = shopTimings;
+    }
 
+    public String getShopTimings() {
+        return shopTimings;
+    }
 
     public void setFssaiCode(String fssaiCode) {
         this.fssaiCode = fssaiCode;

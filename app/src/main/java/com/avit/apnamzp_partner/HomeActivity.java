@@ -16,10 +16,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
@@ -28,6 +31,7 @@ import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
 import com.avit.apnamzp_partner.utils.ErrorUtils;
+import com.avit.apnamzp_partner.utils.InfoConstats;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -58,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private BroadcastReceiver receiver;
     private IntentFilter intentFilter;
-    private String TAG = "HomeActivity";
+    private String TAG = "HomeActivitys";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,5 +223,39 @@ public class HomeActivity extends AppCompatActivity {
         }else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.contact_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void call(){
+        String phoneNo = InfoConstats.CALLING_NUMBER;
+        Intent callingIntent = new Intent();
+        callingIntent.setAction(Intent.ACTION_DIAL);
+        callingIntent.setData(Uri.parse("tel: " + phoneNo));
+        startActivity(callingIntent);
+    }
+
+    private void openWhatsapp(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        String mobileNumber = InfoConstats.WHATSAPP_NUMBER;
+        intent.setData(Uri.parse("http://api.whatsapp.com/send?phone="+"+91"+mobileNumber + "&text="+ ""));
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.call){
+            call();
+        }
+        else if(item.getItemId() == R.id.whatsapp){
+            openWhatsapp();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

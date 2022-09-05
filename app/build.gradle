@@ -11,8 +11,8 @@ android {
         applicationId "com.avit.apnamzp_partner"
         minSdk 23
         targetSdk 31
-        versionCode 4
-        versionName "1.03"
+        versionCode 5
+        versionName "1.04"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildFeatures {

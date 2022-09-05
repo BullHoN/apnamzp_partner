@@ -128,7 +128,7 @@
                             android:textColor="@color/black"
                             android:fontFamily="@font/roboto_medium"
                             android:textSize="18sp"
-                            android:text="Tota Orders"
+                            android:text="Total Orders"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 

@@ -267,7 +267,7 @@ public class OrderNotification extends AppCompatActivity {
                             .show();
                     // Start Delivery Boy Countdown
                     if(isDeliveryService.equals("true")){
-                        startDeliveryBoySchedular(exptectedTime);
+//                        startDeliveryBoySchedular(exptectedTime);
                     }
 
                     removeActionNeededOrder();

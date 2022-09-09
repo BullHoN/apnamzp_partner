@@ -70,6 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         FirebaseCrashlytics.getInstance().setUserId(LocalDB.getPartnerDetails(getApplicationContext()).getPhoneNo());
+        FirebaseMessaging.getInstance().subscribeToTopic("apnamzp_partner");
 
 //        Intent intent = new Intent(getApplicationContext(),OrderNotification.class);
 //        startActivity(intent);

@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,12 +21,14 @@ import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
+import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class NotificationService extends FirebaseMessagingService {
 
@@ -33,6 +36,7 @@ public class NotificationService extends FirebaseMessagingService {
     public static final String CHANNEL_OFFERS_ID = "OffersChannel";
     public static final String CHANNEL_NEWS_ID = "NewsChannel";
     private NotificationManagerCompat notificationManager;
+    private static int NEWS_NOTIFICATION_ID = 1;
     private String TAG = "NotificationService";
 
     @Override
@@ -77,8 +81,12 @@ public class NotificationService extends FirebaseMessagingService {
             handleNewOrderNotification(orderItems,orderId,userId,totalAmount,isDeliveryService);
 
         }
-
-
+        else {
+            String title = remoteMessage.getData().get("title");
+            String desc = remoteMessage.getData().get("desc");
+            String image = remoteMessage.getData().get("imageUrl");
+            showNewsNotification(title,desc,image);
+        }
 
     }
 
@@ -164,7 +172,72 @@ public class NotificationService extends FirebaseMessagingService {
 
     }
 
-    private void showNewsNotification(){
+    private void showNewsNotification(String title, String desc, String imageUrl){
+        Intent homeActivityIntent = new Intent(getApplicationContext(),HomeActivity.class);
+        homeActivityIntent.setAction("com.avit.apnamzp_news_notification");
+
+
+        PendingIntent pendingIntent = null;
+        if (android.os.Build.VERSION.SDK_INT >= 31) {
+            pendingIntent = PendingIntent.getActivity
+                    (this, 0, homeActivityIntent, PendingIntent.FLAG_IMMUTABLE);
+        }
+        else
+        {
+            pendingIntent =  PendingIntent.getActivity
+                    (this,0,homeActivityIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_OFFERS_ID)
+                .setContentTitle(title)
+                .setSmallIcon(R.drawable.removed_bg_main_icon)
+                .setContentText(desc)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(desc)
+                )
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setAutoCancel(true)
+                .build();
+
+
+        if(imageUrl != null){
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = Glide.with(getApplicationContext())
+                        .asBitmap()
+                        .load(imageUrl)
+                        .submit()
+                        .get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_OFFERS_ID)
+                    .setContentTitle(title)
+                    .setSmallIcon(R.drawable.removed_bg_main_icon)
+                    .setContentText(desc)
+                    .setStyle(new NotificationCompat.BigPictureStyle()
+                            .bigLargeIcon(null)
+                            .bigPicture(bitmap)
+                    )
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                    .setAutoCancel(true)
+                    .build();
+        }
+
+        if(NEWS_NOTIFICATION_ID > 1073741824){
+            NEWS_NOTIFICATION_ID = 0;
+        }
+
+        notificationManager.notify(NEWS_NOTIFICATION_ID++,notification);
 
     }
 

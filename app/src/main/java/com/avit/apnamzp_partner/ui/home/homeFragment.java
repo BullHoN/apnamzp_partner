@@ -130,6 +130,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                    binding.actionNeededContainer.setVisibility(View.GONE);
                }
                else {
+                   binding.actionNeededContainer.setVisibility(View.VISIBLE);
                    binding.alertActionOrdersAnimation.setAnimation(R.raw.alert_animation);
                    binding.alertActionOrdersAnimation.playAnimation();
 

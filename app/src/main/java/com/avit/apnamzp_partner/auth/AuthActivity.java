@@ -21,6 +21,7 @@ import com.avit.apnamzp_partner.models.user.LoginPostData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.ui.registernewshowform.RegisterNewShopActivity;
 import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.avit.apnamzp_partner.utils.InfoConstats;
 import com.avit.apnamzp_partner.utils.ValidateInput;
@@ -62,11 +63,8 @@ public class AuthActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNo = InfoConstats.CALLING_NUMBER;
-                Intent callingIntent = new Intent();
-                callingIntent.setAction(Intent.ACTION_DIAL);
-                callingIntent.setData(Uri.parse("tel: " + phoneNo));
-                startActivity(callingIntent);
+                Intent registerNewShopIntent = new Intent(getApplicationContext(), RegisterNewShopActivity.class);
+                startActivity(registerNewShopIntent);
             }
         });
 

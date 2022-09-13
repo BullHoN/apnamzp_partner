@@ -202,6 +202,7 @@ public class OrderNotification extends AppCompatActivity {
 
                         acceptOrder(reason);
                         NotificationUtil.stopSound();
+                        NotificationUtil.stopVibration();
                         dialog.dismiss();
                     }
                 });
@@ -236,6 +237,7 @@ public class OrderNotification extends AppCompatActivity {
 
                         rejectOrder(reason);
                         NotificationUtil.stopSound();
+                        NotificationUtil.stopVibration();
                         dialog.dismiss();
                     }
                 });

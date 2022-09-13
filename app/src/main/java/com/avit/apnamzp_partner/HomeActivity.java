@@ -1,6 +1,7 @@
 package com.avit.apnamzp_partner;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,6 +20,8 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -141,6 +144,16 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 })
                 .check();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void vibrationTest(){
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = {500, 800};
+        VibrationEffect vibrationEffect = VibrationEffect.createWaveform(pattern,1);
+        vibrator.cancel();
+        vibrator.vibrate(vibrationEffect);
 
     }
 

@@ -5,6 +5,7 @@ import com.avit.apnamzp_partner.models.offer.OfferItem;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
+import com.avit.apnamzp_partner.models.shop.ShopRegistrationPostData;
 import com.avit.apnamzp_partner.models.user.LoginPostData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 
@@ -89,5 +90,8 @@ public interface NetworkApi {
 
     @GET("/partner/actionNeededOrders/{shopId}")
     Call<List<OrderItem>> getActionNeededOrders(@Path("shopId") String shopId);
+
+    @POST("/partner/register-form")
+    Call<NetworkResponse> sendRegisterForm(@Body ShopRegistrationPostData shopRegistrationPostData);
 
 }

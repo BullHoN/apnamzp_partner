@@ -93,6 +93,7 @@ public class NotificationService extends FirebaseMessagingService {
     private void handleNewOrderNotification(String orderItems,String orderId,String userId,String totalAmount, String isDeliveryService){
 
             NotificationUtil.playSound(getApplicationContext());
+            NotificationUtil.startVibration(getApplicationContext());
             Intent intent = new Intent(getApplicationContext(),OrderNotification.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

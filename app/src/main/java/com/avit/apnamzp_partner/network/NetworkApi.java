@@ -3,6 +3,7 @@ package com.avit.apnamzp_partner.network;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.offer.OfferItem;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.shop.ReviewData;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.models.shop.ShopRegistrationPostData;
@@ -93,5 +94,8 @@ public interface NetworkApi {
 
     @POST("/partner/register-form")
     Call<NetworkResponse> sendRegisterForm(@Body ShopRegistrationPostData shopRegistrationPostData);
+
+    @GET("/reviews")
+    Call<List<ReviewData>> getReviews(@Query("shopName") String shopId);
 
 }

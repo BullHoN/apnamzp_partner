@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:weightSum="1"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:background="@drawable/circle_back"
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp" >
+
+            <TextView
+                android:id="@+id/initial_view"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:text="V"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_marginLeft="12dp"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/nameView"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Vaibhav Bhardwaj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.willy.ratingbar.ScaleRatingBar
+                android:id="@+id/ratingsBar"
+                app:srb_scrollable="false"
+                app:srb_clickable="false"
+                app:srb_clearRatingEnabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srb_starWidth="20dp"
+                app:srb_starHeight="20dp"
+                app:srb_numStars="5" />
+
+            <TextView
+                android:id="@+id/reviewBody"
+                android:text="All My life you stop by me when no one else was ever behind me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

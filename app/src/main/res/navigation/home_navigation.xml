@@ -79,4 +79,9 @@
         android:name="com.avit.apnamzp_partner.ui.offer.OfferFragment"
         android:label="Offer"
         tools:layout="@layout/fragment_offer" />
+    <fragment
+        android:id="@+id/reviewsFragment"
+        android:name="com.avit.apnamzp_partner.ui.reviews.ReviewsFragment"
+        android:label="fragment_reviews"
+        tools:layout="@layout/fragment_reviews" />
 </navigation>

@@ -31,6 +31,7 @@ import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.ui.order_notification.OrderNotification;
+import com.avit.apnamzp_partner.utils.CheckNetwork;
 import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
@@ -65,6 +66,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         gson = new Gson();
 
         View root = binding.getRoot();
+        CheckNetwork.isConnectedToInternet(getContext());
 
         ordersAdapter = new OrdersAdapter(getContext(),new ArrayList<>(),this);
         binding.orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));

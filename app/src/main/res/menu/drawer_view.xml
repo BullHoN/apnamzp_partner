@@ -28,6 +28,7 @@
             android:title="Offers" />
 
         <item
+            android:icon="@drawable/ic_baseline_edit_24"
             android:id="@+id/reviewsFragment"
             android:title="Reviews" />
 

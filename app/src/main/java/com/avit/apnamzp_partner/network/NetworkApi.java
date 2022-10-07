@@ -27,8 +27,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
-//    String SERVER_URL = "http://192.168.1.3:5000";
-    String SERVER_URL = "https://apnamzp.in/";
+    String SERVER_URL = "http://192.168.1.4:5000";
+//    String SERVER_URL = "https://apnamzp.in/";
 
     @GET("/partner/getOrders")
     Call<List<OrderItem>> getAllOrders(@Query("shopCategory") String shopCategory,

@@ -81,6 +81,9 @@ public class NotificationService extends FirebaseMessagingService {
             handleNewOrderNotification(orderItems,orderId,userId,totalAmount,isDeliveryService);
 
         }
+        else if(notificationType.equals("review_created")){
+            showReviewsNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("desc"));
+        }
         else {
             String title = remoteMessage.getData().get("title");
             String desc = remoteMessage.getData().get("desc");
@@ -169,7 +172,38 @@ public class NotificationService extends FirebaseMessagingService {
         notificationManager.notify(1,notification);
     }
 
-    private void showOffersNotification(){
+    private void showReviewsNotification(String title, String desc){
+        Intent homeActivityIntent = new Intent(getApplicationContext(),HomeActivity.class);
+        homeActivityIntent.setAction("com.avit.apnamzp_partner_review_created");
+
+
+        PendingIntent pendingIntent = null;
+        if (android.os.Build.VERSION.SDK_INT >= 31) {
+            pendingIntent = PendingIntent.getActivity
+                    (this, 0, homeActivityIntent, PendingIntent.FLAG_IMMUTABLE);
+        }
+        else
+        {
+            pendingIntent =  PendingIntent.getActivity
+                    (this,0,homeActivityIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_OFFERS_ID)
+                .setContentTitle(title)
+                .setSmallIcon(R.drawable.removed_bg_main_icon)
+                .setContentText(desc)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setAutoCancel(true)
+                .build();
+
+
+        if(NEWS_NOTIFICATION_ID > 1073741824){
+            NEWS_NOTIFICATION_ID = 0;
+        }
+
+        notificationManager.notify(NEWS_NOTIFICATION_ID++,notification);
 
     }
 

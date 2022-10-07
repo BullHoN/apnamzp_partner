@@ -145,6 +145,11 @@ public class HomeActivity extends AppCompatActivity {
                 })
                 .check();
 
+        if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equals("com.avit.apnamzp_partner_review_created")){
+            navController.navigate(R.id.reviewsFragment);
+        }
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -371,6 +371,11 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
     }
 
     @Override
+    public void cancelOrder(String orderId, String reason) {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         binding.shopStatusContainer.setVisibility(View.GONE);

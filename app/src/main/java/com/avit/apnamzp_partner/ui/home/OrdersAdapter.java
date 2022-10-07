@@ -31,6 +31,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     public interface NextStepInterface {
         void updateOrderStatus(String orderId, int newOrderStatus, boolean shopReceivedPayment);
         void openOrderDetailsFragment(OrderItem orderItem);
+        void cancelOrder(String orderId, String reason);
     }
 
     private Context context;
@@ -156,6 +157,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
                         if(menuItem.getItemId() == R.id.more_order_info){
                             nextStepInterface.openOrderDetailsFragment(curr);
                         }
+
+//                        else if(menuItem.getItemId() == R.id.cancel_order){
+//
+//                        }
 
                         return false;
                     }

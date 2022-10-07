@@ -3,4 +3,8 @@
     <item
         android:id="@+id/more_order_info"
         android:title="Complete Order Info" />
+
+<!--    <item-->
+<!--        android:id="@+id/cancel_order"-->
+<!--        android:title="Cancel Order" />-->
 </menu>

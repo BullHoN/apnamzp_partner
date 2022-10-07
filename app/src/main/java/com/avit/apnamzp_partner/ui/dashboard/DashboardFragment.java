@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 
 import com.avit.apnamzp_partner.R;
@@ -42,6 +44,8 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
     private String TAG = "DashboardFragment";
     private OrdersAdapter ordersAdapter;
     private String selectedDate;
+    private String months[] = {"January","February","March","April","May","June","July","August","September"
+            ,"Ocotober","November","December"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,19 +110,47 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
             }
         });
 
+        // spinner setup
+        ArrayAdapter ad = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,months);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.monthsSpinner.setAdapter(ad);
+
+        binding.monthsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                Date temp = new Date(todayDate.getYear(),pos,1);
+                viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), 6, simpleDateFormat.format(temp), 1,true);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         binding.ordersFilter.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
+                clearData();
                 if(R.id.daily_filter == checkedId){
-
+                    binding.chooseMessage.setText("Select Date for Viewing Orders");
+                    binding.calenderView.setVisibility(View.VISIBLE);
                 }
                 else if(R.id.monthly_filter == checkedId){
-                    viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), 6,selectedDate,1,true);
+                    binding.chooseMessage.setText("Select Months for Viewing Orders");
+                    binding.calenderView.setVisibility(View.GONE);
                 }
             }
         });
 
         return binding.getRoot();
+    }
+
+    private void clearData(){
+        binding.ordersEarning.setText(PrettyStrings.getCostInINR(0));
+        binding.totalOrders.setText("0");
+        ordersAdapter.replaceItems(new ArrayList<>());
     }
 
     private int getTotalEarnings(List<OrderItem> orderItems){
@@ -143,5 +175,10 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
         bundle.putString("orderItem",orderItemsString);
 
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_dashboardFragment2_to_orderDetailsFragment,bundle);
+    }
+
+    @Override
+    public void cancelOrder(String orderId, String reason) {
+
     }
 }

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".ui.subscription.SubscriptionFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.jama.carouselview.CarouselView
+                android:id="@+id/banner_carousel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:indicatorSelectedColor="@color/secondaryColor"
+                app:resource="@layout/image_carousel_item"
+                app:setAutoPlay="true"
+                app:setAutoPlayDelay="5000"
+                app:spacing="0" />
+
+
+            <TextView
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:text="Our Plans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/plans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="12dp"
+                android:textColor="@color/primaryColor"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:text="Your Current Plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true" >
+
+                <LinearLayout
+                    android:padding="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="From"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:textColor="@color/primaryColor"
+                                android:textSize="18sp"
+                                android:id="@+id/from_date"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="From"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="To"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:textColor="@color/failure"
+                                android:textSize="18sp"
+                                android:id="@+id/end_date"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="0"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true" >
+
+                <LinearLayout
+                    android:padding="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+
+                    <TextView
+                        android:id="@+id/total_earnings"
+                        android:textSize="18sp"
+                        android:text="Total Sales: 0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:id="@+id/expected_pay"
+                        android:textColor="@color/success"
+                        android:fontFamily="@font/roboto_bold"
+                        android:textSize="20sp"
+                        android:layout_marginTop="5dp"
+                        android:text="Expected Pay: 0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pay_button"
+                android:text="Pay Now !!"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+        </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/subscription_loading"
+            android:layout_centerInParent="true"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
+
+    </RelativeLayout>
+
+</ScrollView>

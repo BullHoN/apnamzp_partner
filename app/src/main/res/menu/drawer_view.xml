@@ -32,5 +32,10 @@
             android:id="@+id/reviewsFragment"
             android:title="Reviews" />
 
+        <item
+            android:icon="@drawable/ic_baseline_diamond_24"
+            android:id="@+id/subscriptionFragment"
+            android:title="Subscription" />
+
     </group>
 </menu>

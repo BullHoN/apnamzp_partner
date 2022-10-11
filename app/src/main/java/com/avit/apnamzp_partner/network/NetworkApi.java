@@ -7,6 +7,8 @@ import com.avit.apnamzp_partner.models.shop.ReviewData;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.avit.apnamzp_partner.models.shop.ShopRegistrationPostData;
+import com.avit.apnamzp_partner.models.subscription.BannerData;
+import com.avit.apnamzp_partner.models.subscription.Subscription;
 import com.avit.apnamzp_partner.models.user.LoginPostData;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 
@@ -97,5 +99,11 @@ public interface NetworkApi {
 
     @GET("/reviews")
     Call<List<ReviewData>> getReviews(@Query("shopName") String shopId);
+
+    @GET("/partner/subscription/banner_images")
+    Call<List<BannerData>> getSubscriptionBannerImages();
+
+    @GET("/partner/subscription/{shopId}")
+    Call<Subscription> getSubscription(@Path("shopId") String shopId);
 
 }

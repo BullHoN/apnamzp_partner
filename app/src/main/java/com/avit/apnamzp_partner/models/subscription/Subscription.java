@@ -15,6 +15,14 @@ public class Subscription {
     private boolean isFree;
     private int totalEarning;
     private List<SubscriptionPricings> subscriptionPricings;
+    private String paymentId;
+    private int amount;
+
+    public Subscription(String id, String paymentId, int amount){
+        this.id = id;
+        this.paymentId  = paymentId;
+        this.amount = amount;
+    }
 
     public Subscription(String id, boolean isPaid, Date startDate, Date endDate, boolean isFree, int totalEarning, List<SubscriptionPricings> subscriptionPricings) {
         this.id = id;
@@ -24,6 +32,14 @@ public class Subscription {
         this.isFree = isFree;
         this.totalEarning = totalEarning;
         this.subscriptionPricings = subscriptionPricings;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
     }
 
     public int getTotalEarning() {

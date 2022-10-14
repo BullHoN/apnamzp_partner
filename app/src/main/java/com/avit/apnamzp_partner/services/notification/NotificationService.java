@@ -82,7 +82,10 @@ public class NotificationService extends FirebaseMessagingService {
 
         }
         else if(notificationType.equals("review_created")){
-            showReviewsNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("desc"));
+            showReviewsNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("desc"),null);
+        }
+        else if(notificationType.toLowerCase().contains("subscription")){
+            showReviewsNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("desc"),"subscription");
         }
         else {
             String title = remoteMessage.getData().get("title");
@@ -172,9 +175,15 @@ public class NotificationService extends FirebaseMessagingService {
         notificationManager.notify(1,notification);
     }
 
-    private void showReviewsNotification(String title, String desc){
+    private void showReviewsNotification(String title, String desc, String type){
         Intent homeActivityIntent = new Intent(getApplicationContext(),HomeActivity.class);
-        homeActivityIntent.setAction("com.avit.apnamzp_partner_review_created");
+
+        if(type != null){
+            homeActivityIntent.setAction("com.avit.apnamzp_partner_subscription");
+        }
+        else {
+            homeActivityIntent.setAction("com.avit.apnamzp_partner_review_created");
+        }
 
 
         PendingIntent pendingIntent = null;

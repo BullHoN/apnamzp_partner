@@ -1,7 +1,11 @@
 package com.avit.apnamzp_partner.ui.subscription;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,10 +23,12 @@ import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.subscription.BannerData;
 import com.avit.apnamzp_partner.models.subscription.Subscription;
 import com.avit.apnamzp_partner.models.subscription.SubscriptionPricings;
+import com.avit.apnamzp_partner.ui.payment.PaymentActivity;
 import com.avit.apnamzp_partner.utils.PrettyStrings;
 import com.bumptech.glide.Glide;
 import com.jama.carouselview.CarouselViewListener;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -38,12 +44,6 @@ public class SubscriptionFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentSubscriptionBinding.inflate(inflater,container,false);
         viewModel = new ViewModelProvider(this).get(SubscriptionViewModel.class);
-
-        viewModel.getSubscriptionImages(getContext());
-        viewModel.getActiveSubscription(getContext(), LocalDB.getPartnerDetails(getContext()).getShopId());
-        setUpBannerImages();
-        setUpCurrentValidPlan();
-
 
         return binding.getRoot();
     }
@@ -75,6 +75,15 @@ public class SubscriptionFragment extends Fragment {
             public void onChanged(Subscription subscription) {
                 currentSubscription = subscription;
 
+                if(subscription.getId() == null){
+                    binding.noSubscriptionText.setVisibility(View.VISIBLE);
+                    binding.currPlansContainer.setVisibility(View.GONE);
+                    setUpPlans(subscription.getSubscriptionPricings());
+                    binding.loading.setVisibility(View.GONE);
+
+                    return;
+                }
+
                 binding.fromDate.setText(currentSubscription.getStartDate().toLocaleString().split(" ")[0]);
                 binding.endDate.setText(currentSubscription.getEndDate().toLocaleString().split(" ")[0]);
 
@@ -94,14 +103,58 @@ public class SubscriptionFragment extends Fragment {
                     binding.expectedPay.setText("Expected Pay: " + PrettyStrings.getCostInINR(currPricing.getAmount()));
                 }
 
+                Date currDate = new Date();
+                if(currDate.compareTo(subscription.getEndDate()) > 0 && !subscription.isFree()){
+                    binding.payButton.setVisibility(View.VISIBLE);
+                    shopPayNowDialog();
+                }
+
                 setUpPlans(subscription.getSubscriptionPricings());
                 binding.loading.setVisibility(View.GONE);
 
+                binding.payButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openPaymentActivity();
+                    }
+                });
             }
         });
     }
 
+    private void openPaymentActivity(){
+        Intent intent = new Intent(getContext(),PaymentActivity.class);
+        intent.putExtra("subscriptionId", currentSubscription.getId());
+        intent.putExtra("amount", currPricing.getAmount());
+        intent.putExtra("shopId", LocalDB.getPartnerDetails(getContext()).getShopId());
+
+        startActivity(intent);
+    }
+
+    private void shopPayNowDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Your Payment is Due For This Month");
+
+        builder.setPositiveButton("Pay Now", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                openPaymentActivity();
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+
     private void setUpPlans(List<SubscriptionPricings> pricings){
+        binding.plans.removeAllViewsInLayout();
         for(SubscriptionPricings subs : pricings){
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_plan,null,false);
 
@@ -120,6 +173,18 @@ public class SubscriptionFragment extends Fragment {
 
             binding.plans.addView(view);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        binding.loading.setVisibility(View.VISIBLE);
+        viewModel.getSubscriptionImages(getContext());
+        viewModel.getActiveSubscription(getContext(), LocalDB.getPartnerDetails(getContext()).getShopId());
+        setUpBannerImages();
+        setUpCurrentValidPlan();
+
     }
 
 }

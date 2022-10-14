@@ -149,6 +149,9 @@ public class HomeActivity extends AppCompatActivity {
             navController.navigate(R.id.reviewsFragment);
         }
 
+        if(getIntent() != null && getIntent().getAction() != null && getIntent().getAction().equals("com.avit.apnamzp_partner_subscription")){
+            navController.navigate(R.id.subscriptionFragment);
+        }
 
     }
 

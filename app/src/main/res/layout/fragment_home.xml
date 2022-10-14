@@ -14,6 +14,33 @@
 
         <LinearLayout
             android:visibility="gone"
+            android:id="@+id/subscription_expired_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/failure"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Your Subscription is Expired !!"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/subscription_alert_animation"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:lottie_loop="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/subscription_expired_container"
+            android:visibility="gone"
             android:id="@+id/actionNeededContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,44 +105,44 @@
         </LinearLayout>
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/orders_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/shop_status_container"
             android:paddingHorizontal="12dp"
-            android:id="@+id/orders_filter"
-            app:singleLine="true"
-            app:singleSelection="true"
-            app:selectionRequired="true"
             app:chipSpacingHorizontal="24dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/all_filter"
-                android:text="All"
                 style="@style/My_Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="All" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/preparing_filter"
-                android:text="Preparing"
-                android:checked="true"
                 style="@style/My_Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Preparing" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/ready_filter"
-                android:text="Ready"
                 style="@style/My_Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Ready" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/completed_filter"
-                android:text="Completed"
                 style="@style/My_Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Completed" />
 
         </com.google.android.material.chip.ChipGroup>
 

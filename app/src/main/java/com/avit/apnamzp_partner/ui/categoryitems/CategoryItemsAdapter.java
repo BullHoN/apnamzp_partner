@@ -16,6 +16,7 @@ import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryItemsAdapter extends RecyclerView.Adapter<CategoryItemsAdapter.CategoryItemsViewHolder>{
@@ -24,7 +25,7 @@ public class CategoryItemsAdapter extends RecyclerView.Adapter<CategoryItemsAdap
         void openEditFragment(ShopItemData shopItemData);
     }
 
-    private List<ShopItemData> shopItemDataList;
+    private List<ShopItemData> shopItemDataList, allItemsList;
     private Context context;
     private CategoryItemsActions categoryItemsActions;
 
@@ -32,6 +33,7 @@ public class CategoryItemsAdapter extends RecyclerView.Adapter<CategoryItemsAdap
         this.shopItemDataList = shopItemDataList;
         this.context = context;
         this.categoryItemsActions = categoryItemsActions;
+        this.allItemsList = shopItemDataList;
     }
 
     @NonNull
@@ -76,6 +78,17 @@ public class CategoryItemsAdapter extends RecyclerView.Adapter<CategoryItemsAdap
 
     }
 
+    public void filterItems(String query){
+        List<ShopItemData> filteredList = new ArrayList<>();
+        for(ShopItemData shopItemData : allItemsList){
+            if(shopItemData.getName().toLowerCase().contains(query)){
+                filteredList.add(shopItemData);
+            }
+        }
+
+        shopItemDataList = filteredList;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {

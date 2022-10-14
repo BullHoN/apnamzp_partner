@@ -3,6 +3,7 @@ package com.avit.apnamzp_partner.ui.categoryitems;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,6 +50,19 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsAdap
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("categoryName", shopCategoryData.getCategoryName());
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_categoryItemsFragment_to_menuItemFragment,bundle1);
+            }
+        });
+
+        binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                categoryItemsAdapter.filterItems(query);
+                return false;
             }
         });
 

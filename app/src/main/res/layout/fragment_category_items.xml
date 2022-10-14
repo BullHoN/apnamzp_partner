@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.amar.library.ui.StickyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:isScrollContainer="true"
+    app:stickyHeader="@id/header"
     tools:context=".ui.categoryitems.CategoryItemsFragment">
 
     <RelativeLayout
@@ -13,8 +15,9 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:isScrollContainer="false"
+            android:background="@color/white"
             android:padding="12dp"
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -28,13 +31,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_bar"
+                android:focusedByDefault="true"
+                app:queryHint="Search Category Items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <View
                 android:layout_marginTop="8dp"
                 android:background="@color/primaryColor"
                 android:layout_width="match_parent"
                 android:layout_height="2dp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/header"
+            android:isScrollContainer="false"
+            android:paddingHorizontal="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
             <androidx.recyclerview.widget.RecyclerView
+                android:nestedScrollingEnabled="false"
                 android:isScrollContainer="false"
                 android:id="@+id/category_items_recyclerview"
                 android:layout_marginTop="24dp"
@@ -54,4 +75,4 @@
 
     </RelativeLayout>
 
-</ScrollView>
+</com.amar.library.ui.StickyScrollView>

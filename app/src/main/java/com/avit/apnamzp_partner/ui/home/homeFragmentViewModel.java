@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.subscription.Subscription;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
@@ -28,12 +29,18 @@ public class homeFragmentViewModel extends ViewModel {
     private MutableLiveData<List<OrderItem>> orderItemsMutableLiveData;
     private MutableLiveData<ShopPartner> mutableShopPartnerLiveData;
     private MutableLiveData<List<OrderItem>> actionNeededLiveData;
+    private MutableLiveData<Subscription> subscriptionMutableLiveData;
     private String TAG = "homeFragment";
 
     public homeFragmentViewModel(){
         mutableShopPartnerLiveData = new MutableLiveData<>();
         orderItemsMutableLiveData = new MutableLiveData<>();
         actionNeededLiveData = new MutableLiveData<>();
+        subscriptionMutableLiveData = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<Subscription> getSubscriptionMutableLiveData() {
+        return subscriptionMutableLiveData;
     }
 
     public MutableLiveData<List<OrderItem>> getActionNeededLiveData() {
@@ -42,6 +49,33 @@ public class homeFragmentViewModel extends ViewModel {
 
     public MutableLiveData<ShopPartner> getMutableShopPartnerLiveData() {
         return mutableShopPartnerLiveData;
+    }
+
+    public void getActiveSubscription(Context context, String shopId){
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<Subscription> call = networkApi.getSubscription(shopId);
+        call.enqueue(new Callback<Subscription>() {
+            @Override
+            public void onResponse(Call<Subscription> call, Response<Subscription> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(context,errorResponse.getDesc(),Toasty.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+
+                subscriptionMutableLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Subscription> call, Throwable t) {
+                Toasty.error(context,t.getMessage(),Toasty.LENGTH_LONG)
+                        .show();
+            }
+        });
+
     }
 
     public void getActionNeeded(Context context, String shopId){

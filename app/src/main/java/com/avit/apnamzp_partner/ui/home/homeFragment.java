@@ -27,6 +27,7 @@ import com.avit.apnamzp_partner.db.LocalDB;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
 import com.avit.apnamzp_partner.models.orders.OrderStatus;
+import com.avit.apnamzp_partner.models.subscription.Subscription;
 import com.avit.apnamzp_partner.models.user.ShopPartner;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
@@ -38,6 +39,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -180,6 +182,29 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                 binding.shopStatusContainer.setVisibility(View.GONE);
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
                 setShopStatus();
+            }
+        });
+
+        viewModel.getSubscriptionMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Subscription>() {
+            @Override
+            public void onChanged(Subscription subscription) {
+
+                Date currDate = new Date();
+                if(subscription.getId() != null && currDate.compareTo(subscription.getEndDate()) > 0){
+                    binding.subscriptionExpiredContainer.setVisibility(View.VISIBLE);
+                    binding.subscriptionAlertAnimation.setAnimation(R.raw.alert_animation);
+                    binding.subscriptionAlertAnimation.playAnimation();
+
+                    binding.subscriptionExpiredContainer.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Navigation.findNavController(binding.getRoot()).navigate(R.id.subscriptionFragment);
+                        }
+                    });
+                }
+                else {
+                    binding.subscriptionExpiredContainer.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -380,5 +405,6 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         super.onResume();
         binding.shopStatusContainer.setVisibility(View.GONE);
         viewModel.getShopStatus(getContext(),shopPartner.getShopId());
+        viewModel.getActiveSubscription(getContext(),LocalDB.getPartnerDetails(getContext()).getShopId());
     }
 }

@@ -3,6 +3,8 @@ package com.avit.apnamzp_partner.network;
 import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.offer.OfferItem;
 import com.avit.apnamzp_partner.models.orders.OrderItem;
+import com.avit.apnamzp_partner.models.payment.OnlinePaymentOrderIdPostData;
+import com.avit.apnamzp_partner.models.payment.PaymentMetadata;
 import com.avit.apnamzp_partner.models.shop.ReviewData;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
 import com.avit.apnamzp_partner.models.shop.ShopItemData;
@@ -105,5 +107,11 @@ public interface NetworkApi {
 
     @GET("/partner/subscription/{shopId}")
     Call<Subscription> getSubscription(@Path("shopId") String shopId);
+
+    @POST("/partner/payment/subscription-payment-id")
+    Call<PaymentMetadata> getOrderPaymentId(@Body OnlinePaymentOrderIdPostData postData);
+
+    @POST("/partner/payment/checkout")
+    Call<NetworkResponse> checkout(@Body Subscription subscription);
 
 }

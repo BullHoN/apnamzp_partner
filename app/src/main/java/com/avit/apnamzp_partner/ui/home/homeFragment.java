@@ -181,7 +181,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
 
                 binding.shopStatusContainer.setVisibility(View.GONE);
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
-                setShopStatus();
+//                setShopStatus();
             }
         });
 
@@ -190,7 +190,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             public void onChanged(Subscription subscription) {
 
                 Date currDate = new Date();
-                if(subscription.getId() != null && currDate.compareTo(subscription.getEndDate()) > 0){
+                if(subscription.getId() != null && currDate.compareTo(subscription.getEndDate()) > 0 && !subscription.isFree()){
                     binding.subscriptionExpiredContainer.setVisibility(View.VISIBLE);
                     binding.subscriptionAlertAnimation.setAnimation(R.raw.alert_animation);
                     binding.subscriptionAlertAnimation.playAnimation();
@@ -203,6 +203,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                     });
                 }
                 else {
+                    setShopStatus();
                     binding.subscriptionExpiredContainer.setVisibility(View.GONE);
                 }
             }

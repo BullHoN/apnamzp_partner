@@ -179,6 +179,7 @@ public class SubscriptionFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        binding.payButton.setVisibility(View.GONE);
         binding.loading.setVisibility(View.VISIBLE);
         viewModel.getSubscriptionImages(getContext());
         viewModel.getActiveSubscription(getContext(), LocalDB.getPartnerDetails(getContext()).getShopId());

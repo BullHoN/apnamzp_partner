@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.models.shop.ShopCategoryData;
+import com.avit.apnamzp_partner.models.shop.ShopItemData;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -23,19 +25,22 @@ import es.dmoral.toasty.Toasty;
 public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCategoryAdapter.MenuItemsCategoriesViewHolder>{
 
     public interface CategoriesActions {
-        void openCategoryMenuItems(ShopCategoryData shopCategoryData);
+        void openCategoryMenuItems(ShopCategoryData shopCategoryData, String query);
         void deleteCategory(ShopCategoryData shopCategoryData);
         void editCategoryName(ShopCategoryData shopCategoryData, String newCategoryName);
     }
 
-    private List<ShopCategoryData> shopCategoryData;
+    private List<ShopCategoryData> shopCategoryData, allShopCategoryData;
     private Context context;
     private CategoriesActions categoriesActions;
+    private String query;
 
     public MenuItemsCategoryAdapter(List<ShopCategoryData> shopCategoryData, Context context, CategoriesActions categoriesActions) {
         this.shopCategoryData = shopCategoryData;
         this.context = context;
         this.categoriesActions = categoriesActions;
+        this.allShopCategoryData = shopCategoryData;
+        this.query = "";
     }
 
     @NonNull
@@ -54,7 +59,7 @@ public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCate
         holder.openMenuItemsForCategoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                categoriesActions.openCategoryMenuItems(curr);
+                categoriesActions.openCategoryMenuItems(curr,query);
             }
         });
 
@@ -108,6 +113,24 @@ public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCate
 
     public void updateItems(List<ShopCategoryData> newShopCategoryData){
         this.shopCategoryData = newShopCategoryData;
+        this.allShopCategoryData = newShopCategoryData;
+        notifyDataSetChanged();
+    }
+
+    public void searchItems(String query){
+        this.query = query;
+        List<ShopCategoryData> filteredCategoryData = new ArrayList<>();
+
+        for(ShopCategoryData categoryData : allShopCategoryData){
+            for(ShopItemData shopItemData : categoryData.getShopItemDataList()){
+                if(shopItemData.getName().toLowerCase().contains(query.toLowerCase())){
+                    filteredCategoryData.add(categoryData);
+                    break;
+                }
+            }
+        }
+
+        shopCategoryData = filteredCategoryData;
         notifyDataSetChanged();
     }
 

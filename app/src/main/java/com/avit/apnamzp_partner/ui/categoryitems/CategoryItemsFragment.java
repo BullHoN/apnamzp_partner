@@ -35,6 +35,8 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsAdap
 
         Bundle bundle = getArguments();
         String shopCategoryDataString = bundle.getString("shopCategoryData");
+        String query = bundle.getString("query");
+
 
         gson = new Gson();
         shopCategoryData = gson.fromJson(shopCategoryDataString,ShopCategoryData.class);
@@ -43,6 +45,9 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsAdap
         categoryItemsAdapter = new CategoryItemsAdapter(shopCategoryData.getShopItemDataList(),getContext(),this);
         binding.categoryItemsRecyclerview.setAdapter(categoryItemsAdapter);
         binding.categoryItemsRecyclerview.setNestedScrollingEnabled(false);
+
+        categoryItemsAdapter.filterItems(query);
+        binding.searchBar.setQuery(query,false);
 
         binding.addNewMenuItem.setOnClickListener(new View.OnClickListener() {
             @Override

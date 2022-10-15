@@ -3,6 +3,7 @@ package com.avit.apnamzp_partner.ui.menuitems;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentMenuItemsBinding;
@@ -73,6 +73,19 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
             @Override
             public void onClick(View view) {
                 showNewCategoryDialogBox();
+            }
+        });
+
+        binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                adapter.searchItems(query);
+                return false;
             }
         });
 
@@ -142,12 +155,13 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
     }
 
     @Override
-    public void openCategoryMenuItems(ShopCategoryData shopCategoryData) {
+    public void openCategoryMenuItems(ShopCategoryData shopCategoryData, String query) {
         Gson gson = new Gson();
         String shopCategoryDataString = gson.toJson(shopCategoryData);
 
         Bundle bundle = new Bundle();
         bundle.putString("shopCategoryData",shopCategoryDataString);
+        bundle.putString("query",query);
 
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_menuItemsFragment_to_categoryItemsFragment,bundle);
     }

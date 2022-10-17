@@ -114,7 +114,6 @@ public class SubscriptionFragment extends Fragment {
             binding.expectedPay.setText("Expected Pay: Free!! 🎉🎉");
         }
         else {
-            currPricing.setAmount(currPricing.getAmount() - subscription.getNewPlanPrice());
             binding.expectedPay.setText("Expected Pay: " + PrettyStrings.getCostInINR(currPricing.getAmount()));
         }
 

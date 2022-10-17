@@ -103,10 +103,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                binding.progressBar.setVisibility(View.VISIBLE);
                ShopPartner shopPartner =  LocalDB.getPartnerDetails(getContext());
 
-               if(checkedId == R.id.all_filter){
-                   Log.i(TAG, "onCheckedChanged: " + "ALL");
-               }
-               else if(checkedId == R.id.preparing_filter){
+               if(checkedId == R.id.preparing_filter){
                    Log.i(TAG, "onCheckedChanged: " + "Preparing");
                    viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), OrderStatus.ORDER_PREPARING,1);
                }

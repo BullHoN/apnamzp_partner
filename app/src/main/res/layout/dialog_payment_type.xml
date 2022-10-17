@@ -41,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="8dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:id="@+id/continue_service_container"

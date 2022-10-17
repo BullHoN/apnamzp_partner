@@ -11,6 +11,10 @@ public class SubscriptionPricings {
         this.amount = amount;
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public int getFrom() {
         return from;
     }

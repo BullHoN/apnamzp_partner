@@ -114,6 +114,7 @@ public class SubscriptionFragment extends Fragment {
             binding.expectedPay.setText("Expected Pay: Free!! 🎉🎉");
         }
         else {
+            currPricing.setAmount(currPricing.getAmount() - subscription.getNewPlanPrice());
             binding.expectedPay.setText("Expected Pay: " + PrettyStrings.getCostInINR(currPricing.getAmount()));
         }
 
@@ -153,7 +154,7 @@ public class SubscriptionFragment extends Fragment {
         continueServiceCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                int total_payable_amount = currPricing.getAmount();
+                int total_payable_amount = !currentSubscription.isFree() ? currPricing.getAmount() : 0;
                 if(continueServiceCheckbox.isChecked()){
                     total_payable_amount += currentSubscription.getNewPlanPrice();
                 }
@@ -162,7 +163,7 @@ public class SubscriptionFragment extends Fragment {
             }
         });
 
-        int total_payable_amount = currPricing.getAmount();
+        int total_payable_amount = !currentSubscription.isFree() ? currPricing.getAmount() : 0;
         if(continueServiceCheckbox.isChecked()){
             total_payable_amount += currentSubscription.getNewPlanPrice();
         }
@@ -172,7 +173,7 @@ public class SubscriptionFragment extends Fragment {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int total_payable_amount = currPricing.getAmount();
+                int total_payable_amount = !currentSubscription.isFree() ? currPricing.getAmount() : 0;
                 if(continueServiceCheckbox.isChecked()){
                     total_payable_amount += currentSubscription.getNewPlanPrice();
                 }

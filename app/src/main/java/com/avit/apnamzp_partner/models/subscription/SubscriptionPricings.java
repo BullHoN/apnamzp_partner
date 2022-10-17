@@ -5,6 +5,12 @@ public class SubscriptionPricings {
     private int to;
     private int amount;
 
+    public SubscriptionPricings(SubscriptionPricings subscriptionPricings) {
+        this.from = subscriptionPricings.from;
+        this.to = subscriptionPricings.to;
+        this.amount = subscriptionPricings.amount;
+    }
+
     public SubscriptionPricings(int from, int to, int amount) {
         this.from = from;
         this.to = to;

@@ -105,7 +105,7 @@ public class SubscriptionFragment extends Fragment {
 
         for(SubscriptionPricings pricings : currentSubscription.getSubscriptionPricings()){
             if(currentSubscription.getTotalEarning() >= pricings.getFrom() && currentSubscription.getTotalEarning() <= pricings.getTo()){
-                currPricing = pricings;
+                currPricing = new SubscriptionPricings(pricings);
                 break;
             }
         }
@@ -229,9 +229,9 @@ public class SubscriptionFragment extends Fragment {
             LinearLayout plan_container = view.findViewById(R.id.plan_container);
 
             sales_range.setText("Sales Between: " + PrettyStrings.getCostInINR(subs.getFrom()) + " - " + PrettyStrings.getCostInINR(subs.getTo()));
-            payable_amount.setText("Payable Amount: " + PrettyStrings.getCostInINR(subs.getAmount()));
+            payable_amount.setText("Payable Amount: " + PrettyStrings.getCostInINR(subs.getAmount() + currentSubscription.getNewPlanPrice()));
 
-            if(subs == currPricing){
+            if(currentSubscription.getTotalEarning() >= subs.getFrom() && currentSubscription.getTotalEarning() <= subs.getTo()){
                 plan_container.setBackgroundColor(getResources().getColor(R.color.success));
                 sales_range.setTextColor(getResources().getColor(R.color.white));
                 payable_amount.setTextColor(getResources().getColor(R.color.white));

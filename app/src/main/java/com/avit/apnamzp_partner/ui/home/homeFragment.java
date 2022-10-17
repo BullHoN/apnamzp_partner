@@ -178,10 +178,12 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
                 shopPartner.setTagLine(shopPartnerStatus.getTagLine());
                 shopPartner.setPricingDetails(shopPartnerStatus.getPricingDetails());
                 shopPartner.setShopTimings(shopPartnerStatus.getShopTimings());
+                shopPartner.setAllowSubscription(shopPartnerStatus.isAllowSubscription());
 
                 binding.shopStatusContainer.setVisibility(View.GONE);
                 LocalDB.savePartnerDetails(getContext(),shopPartner);
 //                setShopStatus();
+                viewModel.getActiveSubscription(getContext(),LocalDB.getPartnerDetails(getContext()).getShopId());
             }
         });
 
@@ -190,7 +192,7 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
             public void onChanged(Subscription subscription) {
 
                 Date currDate = new Date();
-                if(subscription.getId() != null && currDate.compareTo(subscription.getEndDate()) > 0 && !subscription.isFree()){
+                if(subscription.getId() != null && currDate.compareTo(subscription.getEndDate()) > 0 || (subscription.getId() == null && shopPartner.isAllowSubscription())){
                     binding.subscriptionExpiredContainer.setVisibility(View.VISIBLE);
                     binding.subscriptionAlertAnimation.setAnimation(R.raw.alert_animation);
                     binding.subscriptionAlertAnimation.playAnimation();
@@ -406,6 +408,5 @@ public class homeFragment extends Fragment implements OrdersAdapter.NextStepInte
         super.onResume();
         binding.shopStatusContainer.setVisibility(View.GONE);
         viewModel.getShopStatus(getContext(),shopPartner.getShopId());
-        viewModel.getActiveSubscription(getContext(),LocalDB.getPartnerDetails(getContext()).getShopId());
     }
 }

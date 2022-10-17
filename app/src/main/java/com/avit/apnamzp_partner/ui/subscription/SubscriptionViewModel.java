@@ -38,6 +38,10 @@ public class SubscriptionViewModel extends ViewModel {
         return mutableBannerImagesLiveData;
     }
 
+    public void clearViewModel(){
+        mutableSubscriptionLiveData.setValue(null);
+    }
+
     public void getSubscriptionImages(Context context){
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);

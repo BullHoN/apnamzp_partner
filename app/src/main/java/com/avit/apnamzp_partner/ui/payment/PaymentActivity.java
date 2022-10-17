@@ -32,6 +32,7 @@ public class PaymentActivity extends AppCompatActivity implements PaymentResultL
     private PaymentViewModel viewModel;
     private String subscriptionId, shopId, orderPaymentId;
     private int amount;
+    private boolean createNewPlan;
     private String TAG = "PaymentActivitys";
 
     @Override
@@ -44,6 +45,7 @@ public class PaymentActivity extends AppCompatActivity implements PaymentResultL
         subscriptionId = getIntent().getStringExtra("subscriptionId");
         shopId = getIntent().getStringExtra("shopId");
         amount = getIntent().getIntExtra("amount",0);
+        createNewPlan = getIntent().getBooleanExtra("createNewPlan",false);
 
         viewModel = new ViewModelProvider(this).get(PaymentViewModel.class);
         viewModel.getPaymentId(this, new OnlinePaymentOrderIdPostData(amount,shopId));
@@ -95,7 +97,7 @@ public class PaymentActivity extends AppCompatActivity implements PaymentResultL
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Call<NetworkResponse> call = networkApi.checkout(new Subscription(subscriptionId,paymentId,amount));
+        Call<NetworkResponse> call = networkApi.checkout(new Subscription(subscriptionId,paymentId,amount,createNewPlan));
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {

@@ -17,14 +17,17 @@ public class Subscription {
     private List<SubscriptionPricings> subscriptionPricings;
     private String paymentId;
     private int amount;
+    private int newPlanPrice;
+    private boolean createNewPlan;
 
-    public Subscription(String id, String paymentId, int amount){
+    public Subscription(String id, String paymentId, int amount, boolean createNewPlan){
         this.id = id;
         this.paymentId  = paymentId;
         this.amount = amount;
+        this.createNewPlan = createNewPlan;
     }
 
-    public Subscription(String id, boolean isPaid, Date startDate, Date endDate, boolean isFree, int totalEarning, List<SubscriptionPricings> subscriptionPricings) {
+    public Subscription(String id, boolean isPaid, Date startDate, Date endDate, boolean isFree, int totalEarning, List<SubscriptionPricings> subscriptionPricings, String paymentId, int amount, int newPlanPrice) {
         this.id = id;
         this.isPaid = isPaid;
         this.startDate = startDate;
@@ -32,6 +35,17 @@ public class Subscription {
         this.isFree = isFree;
         this.totalEarning = totalEarning;
         this.subscriptionPricings = subscriptionPricings;
+        this.paymentId = paymentId;
+        this.amount = amount;
+        this.newPlanPrice = newPlanPrice;
+    }
+
+    public boolean isCreateNewPlan() {
+        return createNewPlan;
+    }
+
+    public int getNewPlanPrice() {
+        return newPlanPrice;
     }
 
     public int getAmount() {

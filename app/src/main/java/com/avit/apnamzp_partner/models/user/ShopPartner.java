@@ -15,6 +15,25 @@ public class ShopPartner {
     private String shopItemsId;
     private String fssaiCode;
     private String shopTimings;
+    private boolean allowSubscription;
+
+    public ShopPartner(String phoneNo, String fcmId, String shopId, String shopType, String tagLine, ShopPrices pricingDetails, ShopAddressData addressData, String bannerImage, String taxPercentage, String name, boolean isOpen, String shopItemsId, String fssaiCode, String shopTimings, boolean allowSubscription) {
+        this.phoneNo = phoneNo;
+        this.fcmId = fcmId;
+        this.shopId = shopId;
+        this.shopType = shopType;
+        this.tagLine = tagLine;
+        this.pricingDetails = pricingDetails;
+        this.addressData = addressData;
+        this.bannerImage = bannerImage;
+        this.taxPercentage = taxPercentage;
+        this.name = name;
+        this.isOpen = isOpen;
+        this.shopItemsId = shopItemsId;
+        this.fssaiCode = fssaiCode;
+        this.shopTimings = shopTimings;
+        this.allowSubscription = allowSubscription;
+    }
 
     public ShopPartner(String phoneNo, String fcmId, String shopId, String shopType, String tagLine, ShopPrices pricingDetails, ShopAddressData addressData, String bannerImage, String taxPercentage, String name, boolean isOpen, String shopItemsId, String fssaiCode, String shopTimings) {
         this.phoneNo = phoneNo;
@@ -87,6 +106,14 @@ public class ShopPartner {
         this.phoneNo = phoneNo;
         this.shopId = shopId;
         this.shopType = shopType;
+    }
+
+    public void setAllowSubscription(boolean allowSubscription) {
+        this.allowSubscription = allowSubscription;
+    }
+
+    public boolean isAllowSubscription() {
+        return allowSubscription;
     }
 
     public void setShopTimings(String shopTimings) {

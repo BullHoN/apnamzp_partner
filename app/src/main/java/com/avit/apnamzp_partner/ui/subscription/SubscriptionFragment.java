@@ -38,6 +38,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.jama.carouselview.CarouselViewListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -98,8 +99,10 @@ public class SubscriptionFragment extends Fragment {
             return;
         }
 
-        binding.fromDate.setText(currentSubscription.getStartDate().toLocaleString().split(" ")[0]);
-        binding.endDate.setText(currentSubscription.getEndDate().toLocaleString().split(" ")[0]);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM");
+
+        binding.fromDate.setText(simpleDateFormat.format(currentSubscription.getStartDate()));
+        binding.endDate.setText(simpleDateFormat.format(currentSubscription.getEndDate()));
 
         binding.totalEarnings.setText("Total Sales: " + PrettyStrings.getCostInINR(currentSubscription.getTotalEarning()));
 

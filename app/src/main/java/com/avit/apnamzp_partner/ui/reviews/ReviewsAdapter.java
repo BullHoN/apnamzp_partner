@@ -11,18 +11,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.models.shop.ReviewData;
+import com.google.android.material.button.MaterialButton;
 import com.willy.ratingbar.ScaleRatingBar;
 
 import java.util.List;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsViewHolder>{
 
+    public interface ReviewsActions {
+        void openReviewOrder(String orderId);
+    }
+
     private Context context;
     private List<ReviewData> reviewDataList;
+    private ReviewsActions reviewsActions;
 
-    public ReviewsAdapter(Context context, List<ReviewData> reviewDataList) {
+    public ReviewsAdapter(Context context, List<ReviewData> reviewDataList,ReviewsActions reviewsActions) {
         this.context = context;
         this.reviewDataList = reviewDataList;
+        this.reviewsActions = reviewsActions;
     }
 
     @NonNull
@@ -43,6 +50,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
 
         holder.initialView.setText(String.valueOf(curr.getUserName().charAt(0)));
 
+        holder.showOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reviewsActions.openReviewOrder(curr.getOrderId());
+            }
+        });
+
     }
 
     public void changeData(List<ReviewData> newData){
@@ -59,6 +73,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
 
         public TextView nameView,bodyView,initialView;
         public ScaleRatingBar scaleRatingBarView;
+        public MaterialButton showOrderButton;
 
         public ReviewsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +81,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
             bodyView = itemView.findViewById(R.id.reviewBody);
             scaleRatingBarView = itemView.findViewById(R.id.ratingsBar);
             initialView = itemView.findViewById(R.id.initial_view);
+            showOrderButton = itemView.findViewById(R.id.show_order_button);
         }
     }
 

@@ -171,10 +171,6 @@ public class OrderNotification extends AppCompatActivity {
                         // Accept the order
                         String reason;
                         switch (checkedId) {
-                            case R.id.min10: {
-                                reason = "10min";
-                                break;
-                            }
                             case R.id.min15: {
                                 reason = "15min";
                                 break;
@@ -183,16 +179,16 @@ public class OrderNotification extends AppCompatActivity {
                                 reason = "20min";
                                 break;
                             }
+                            case R.id.min25: {
+                                reason = "25min";
+                                break;
+                            }
                             case R.id.min30: {
                                 reason = "30min";
                                 break;
                             }
-                            case R.id.min40: {
-                                reason = "40min";
-                                break;
-                            }
-                            case R.id.min60: {
-                                reason = "60min";
+                            case R.id.min35: {
+                                reason = "35min";
                                 break;
                             }
                             default: {

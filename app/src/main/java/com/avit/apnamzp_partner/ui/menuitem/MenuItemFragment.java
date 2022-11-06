@@ -99,6 +99,8 @@ public class MenuItemFragment extends Fragment {
 
             binding.itemDiscount.setText(shopItemData.getDiscount());
             binding.itemPackegingCharge.setText(shopItemData.getTaxOrPackigingPrice());
+
+            binding.isBestSeller.setChecked(shopItemData.isBestSeller());
         }
         else {
             isNewMenuItem = true;
@@ -177,6 +179,13 @@ public class MenuItemFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 shopItemData.setAvailable(b);
+            }
+        });
+
+        binding.isBestSeller.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                shopItemData.setBestSeller(b);
             }
         });
 

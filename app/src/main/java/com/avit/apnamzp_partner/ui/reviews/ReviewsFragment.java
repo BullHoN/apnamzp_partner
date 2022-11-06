@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ import com.avit.apnamzp_partner.models.shop.ReviewData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewsFragment extends Fragment {
+public class ReviewsFragment extends Fragment implements ReviewsAdapter.ReviewsActions {
 
     private FragmentReviewsBinding binding;
     private ReviewsAdapter reviewsAdapter;
@@ -33,7 +34,7 @@ public class ReviewsFragment extends Fragment {
 
         viewModel.getReviews(getContext(), LocalDB.getPartnerDetails(getContext()).getShopId());
         binding.shopReviews.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        reviewsAdapter = new ReviewsAdapter(getContext(),new ArrayList<>());
+        reviewsAdapter = new ReviewsAdapter(getContext(),new ArrayList<>(),this);
         binding.shopReviews.setAdapter(reviewsAdapter);
 
 
@@ -45,5 +46,14 @@ public class ReviewsFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void openReviewOrder(String orderId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("orderId",orderId);
+
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_reviewsFragment_to_orderDetailsFragment,bundle);
+
     }
 }

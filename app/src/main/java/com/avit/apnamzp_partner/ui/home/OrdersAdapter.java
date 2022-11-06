@@ -86,10 +86,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             holder.orderDeliveryStatus.setText("Completed");
             holder.orderNextActionButton.setVisibility(View.GONE);
         }
+        else if(curr.getOrderStatus() == OrderStatus.ORDER_CANCELLED){
+            holder.orderDeliveryStatus.setText("Cancelled");
+            holder.orderNextActionButton.setVisibility(View.GONE);
+            holder.orderPaymentStatus.setText("Cancelled");
+            holder.orderPaymentStatus.setBackgroundColor(context.getResources().getColor(R.color.failure));
+        }
 
         holder.orderId.setText("Order Id: #" + curr.get_id().substring(curr.get_id().length()-5));
 
-        // TODO: Change Behaviour & Text of the Next action button
+        // Change Behaviour & Text of the Next action button
         if(curr.getBillingDetails().getDeliveryService()) {
             holder.orderDeliveryType.setText("Delivery");
         }
@@ -114,12 +120,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         holder.orderTotalPrice.setText("Total Amount: ₹" + curr.getTotalReceivingAmount());
 
-        if(curr.isPaymentReceivedToShop()){
-            holder.orderPaymentStatus.setText("RECEIVED");
-        }
-        else {
-            holder.orderPaymentStatus.setText("NOT RECEIVED");
-            holder.orderPaymentStatus.setBackgroundColor(context.getResources().getColor(R.color.failure));
+        if(curr.getOrderStatus() != OrderStatus.ORDER_CANCELLED){
+            if(curr.isPaymentReceivedToShop()){
+                holder.orderPaymentStatus.setText("RECEIVED");
+            }
+            else {
+                holder.orderPaymentStatus.setText("NOT RECEIVED");
+                holder.orderPaymentStatus.setBackgroundColor(context.getResources().getColor(R.color.failure));
+            }
         }
 
         holder.orderNextActionButton.setCheckable(true);

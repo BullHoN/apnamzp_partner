@@ -14,8 +14,10 @@ public class ShopItemData {
     public Boolean available;
     private Boolean isVeg;
     private ItemAvailableTimings availableTimings;
+    private boolean isBestSeller;
 
-    public ShopItemData(String name, String _id, List<ShopPricingData> pricings, String imageURL, int quantity, String taxOrPackigingPrice, String discount, Boolean available, Boolean isVeg, ItemAvailableTimings availableTimings) {
+
+    public ShopItemData(String name, String _id, List<ShopPricingData> pricings, String imageURL, int quantity, String taxOrPackigingPrice, String discount, Boolean available, Boolean isVeg, ItemAvailableTimings availableTimings, boolean isBestSeller) {
         this.name = name;
         this._id = _id;
         this.pricings = pricings;
@@ -26,6 +28,15 @@ public class ShopItemData {
         this.available = available;
         this.isVeg = isVeg;
         this.availableTimings = availableTimings;
+        this.isBestSeller = isBestSeller;
+    }
+
+    public boolean isBestSeller() {
+        return isBestSeller;
+    }
+
+    public void setBestSeller(boolean bestSeller) {
+        isBestSeller = bestSeller;
     }
 
     public ShopItemData(){

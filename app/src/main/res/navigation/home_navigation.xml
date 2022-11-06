@@ -84,7 +84,11 @@
         android:id="@+id/reviewsFragment"
         android:name="com.avit.apnamzp_partner.ui.reviews.ReviewsFragment"
         android:label="Reviews"
-        tools:layout="@layout/fragment_reviews" />
+        tools:layout="@layout/fragment_reviews" >
+        <action
+            android:id="@+id/action_reviewsFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/subscriptionFragment"
         android:name="com.avit.apnamzp_partner.ui.subscription.SubscriptionFragment"

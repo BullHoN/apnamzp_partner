@@ -126,6 +126,9 @@ public class OrderItem {
     }
 
     public int getTotalReceivingAmount(){
+
+        if(orderStatus == 7) return 0;
+
         int totalReceivingAmount = 0;
         if(!isShopOfferApplied()){
             totalReceivingAmount =  billingDetails.getItemTotal() +

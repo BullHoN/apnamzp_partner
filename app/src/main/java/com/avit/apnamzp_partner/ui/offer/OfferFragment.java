@@ -127,6 +127,8 @@ public class OfferFragment extends Fragment {
                     offerItem.setCode(generateCode());
                 }
 
+                offerItem.setShopId(LocalDB.getPartnerDetails(getContext()).getShopId());
+
                 saveToServer();
             }
         });

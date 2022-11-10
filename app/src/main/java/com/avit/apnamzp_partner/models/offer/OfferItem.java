@@ -6,6 +6,7 @@ public class OfferItem {
     private String offerType;
     private Boolean isApnaMzpDiscount;
     private String shopName;
+    private String shopId;
     private String discountAbove;
 
     // Type 1: "percent" Discount
@@ -19,6 +20,19 @@ public class OfferItem {
 
     }
 
+    public OfferItem(String _id, String code, String offerType, Boolean isApnaMzpDiscount, String shopName, String shopId, String discountAbove, String discountPercentage, String maxDiscount, String discountAmount) {
+        this._id = _id;
+        this.code = code;
+        this.offerType = offerType;
+        this.isApnaMzpDiscount = isApnaMzpDiscount;
+        this.shopName = shopName;
+        this.shopId = shopId;
+        this.discountAbove = discountAbove;
+        this.discountPercentage = discountPercentage;
+        this.maxDiscount = maxDiscount;
+        this.discountAmount = discountAmount;
+    }
+
     public OfferItem(String _id, String code, String offerType, Boolean isApnaMzpDiscount, String shopName, String discountAbove, String discountPercentage, String maxDiscount, String discountAmount) {
         this._id = _id;
         this.code = code;
@@ -29,6 +43,14 @@ public class OfferItem {
         this.discountPercentage = discountPercentage;
         this.maxDiscount = maxDiscount;
         this.discountAmount = discountAmount;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 
     public void set_id(String _id) {

@@ -41,6 +41,12 @@ public class ReviewsFragment extends Fragment implements ReviewsAdapter.ReviewsA
         viewModel.getMutableReviewsLiveData().observe(getViewLifecycleOwner(), new Observer<List<ReviewData>>() {
             @Override
             public void onChanged(List<ReviewData> reviewData) {
+                if(reviewData.size() == 0){
+                    binding.emptyReviewsView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.emptyReviewsView.setVisibility(View.GONE);
+                }
                 reviewsAdapter.changeData(reviewData);
             }
         });

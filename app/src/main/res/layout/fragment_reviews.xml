@@ -25,6 +25,28 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/empty_reviews_view"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:src="@drawable/ic_empty_rating"
+                android:layout_width="150dp"
+                android:layout_height="150dp" />
+
+            <TextView
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="18sp"
+                android:text="No Reviews Found"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </ScrollView>

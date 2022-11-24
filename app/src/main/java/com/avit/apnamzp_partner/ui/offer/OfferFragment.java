@@ -150,7 +150,7 @@ public class OfferFragment extends Fragment {
         Retrofit retrofit = RetrofitClient.getInstance();
         NetworkApi networkApi = retrofit.create(NetworkApi.class);
 
-        Call<NetworkResponse> call = networkApi.deleteOffer(offerItem.get_id());
+        Call<NetworkResponse> call = networkApi.deleteOffer(offerItem.get_id(),LocalDB.getPartnerDetails(getContext()).getShopId());
         call.enqueue(new Callback<NetworkResponse>() {
             @Override
             public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
@@ -165,7 +165,7 @@ public class OfferFragment extends Fragment {
                 if(successResponse.isSuccess()){
                     Toasty.success(getContext(),"Deleted Successfully",Toasty.LENGTH_SHORT)
                             .show();
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.offersFragment);
+                    Navigation.findNavController(binding.getRoot()).popBackStack();
                 }
                 else{
                     Toasty.error(getContext(),successResponse.getDesc(),Toasty.LENGTH_SHORT)
@@ -201,7 +201,7 @@ public class OfferFragment extends Fragment {
                 if(successResponse.isSuccess()){
                     Toasty.success(getContext(),"Updated Successfully",Toasty.LENGTH_SHORT)
                             .show();
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.offersFragment);
+                    Navigation.findNavController(binding.getRoot()).popBackStack();
                 }
                 else {
                     Toasty.error(getContext(),successResponse.getDesc(),Toasty.LENGTH_SHORT)
@@ -222,7 +222,7 @@ public class OfferFragment extends Fragment {
 
     private String generateCode(){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(shopName.toUpperCase());
+        stringBuilder.append(shopName.toUpperCase().replace(" ",""));
 
         for(int i=0;i<4;i++){
             stringBuilder.append(Math.round(Math.random()*10));

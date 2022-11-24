@@ -31,8 +31,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetworkApi {
-    String SERVER_URL = "http://192.168.1.5:5000";
-//    String SERVER_URL = "https://apnamzp.in/";
+//    String SERVER_URL = "http://192.168.1.3:5000";
+    String SERVER_URL = "https://apnamzp.in/";
 
     @GET("/partner/getOrders")
     Call<List<OrderItem>> getAllOrders(@Query("shopCategory") String shopCategory,
@@ -84,7 +84,7 @@ public interface NetworkApi {
     Call<NetworkResponse> changeShopStatus(@Query("phoneNo") String phoneNo,@Query("isOpen") boolean isOpen);
 
     @DELETE("/partner/offer/{offer_id}")
-    Call<NetworkResponse> deleteOffer(@Path("offer_id") String offerId);
+    Call<NetworkResponse> deleteOffer(@Path("offer_id") String offerId, @Query("shopId") String shopId);
 
     @GET("/partner/shopStatus/{id}")
     Call<ShopPartner> getShopStatus(@Path("id") String shopId);
@@ -116,5 +116,8 @@ public interface NetworkApi {
 
     @GET("/partner/getOrders/{orderId}")
     Call<OrderItem> getOrder(@Path("orderId") String orderId);
+
+    @POST("/partner/offers/set-display-offer")
+    Call<NetworkResponse> setDisplayOffer(@Body OfferItem offerItem);
 
 }

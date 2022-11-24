@@ -20,6 +20,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
     public interface deleteOfferInterface {
         void applyOffer(OfferItem offerItem);
+        void setDisplayOffer(OfferItem offerItem);
     }
 
     private Context context;
@@ -70,6 +71,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
             }
         });
 
+        holder.setDisplayOfferButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                applyOfferInterface.setDisplayOffer(offerItem);
+            }
+        });
 
     }
 
@@ -86,7 +93,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
     class OffersViewHolder extends RecyclerView.ViewHolder {
 
         public TextView discountTypeView, offerConditionsView, codeView;
-        public MaterialButton applyButton;
+        public MaterialButton applyButton, setDisplayOfferButton;
         public ImageView offerImageView;
 
         public OffersViewHolder(@NonNull View itemView) {
@@ -97,6 +104,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.OffersView
 
             applyButton = itemView.findViewById(R.id.removeButton);
             offerImageView = itemView.findViewById(R.id.offerImage);
+
+            setDisplayOfferButton = itemView.findViewById(R.id.setAsDisplay);
+
         }
     }
 

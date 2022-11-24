@@ -16,12 +16,22 @@ import com.airbnb.lottie.L;
 import com.avit.apnamzp_partner.R;
 import com.avit.apnamzp_partner.databinding.FragmentOffersBinding;
 import com.avit.apnamzp_partner.db.LocalDB;
+import com.avit.apnamzp_partner.models.network.NetworkResponse;
 import com.avit.apnamzp_partner.models.offer.OfferItem;
+import com.avit.apnamzp_partner.network.NetworkApi;
+import com.avit.apnamzp_partner.network.RetrofitClient;
+import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.google.gson.Gson;
 
 import java.lang.reflect.GenericSignatureFormatError;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class OffersFragment extends Fragment implements OffersAdapter.deleteOfferInterface{
 
@@ -82,6 +92,36 @@ public class OffersFragment extends Fragment implements OffersAdapter.deleteOffe
         bundle.putString("offferItem",offerItemString);
 
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_offersFragment_to_offerFragment,bundle);
+
+    }
+
+    @Override
+    public void setDisplayOffer(OfferItem offerItem) {
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<NetworkResponse> call = networkApi.setDisplayOffer(offerItem);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+
+                Toasty.success(getContext(),"Added Successfully",Toasty.LENGTH_SHORT)
+                        .show();
+
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_LONG)
+                        .show();
+            }
+        });
 
     }
 }

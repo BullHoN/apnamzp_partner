@@ -28,6 +28,7 @@ public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCate
         void openCategoryMenuItems(ShopCategoryData shopCategoryData, String query);
         void deleteCategory(ShopCategoryData shopCategoryData);
         void editCategoryName(ShopCategoryData shopCategoryData, String newCategoryName);
+        void turnOffCategory(String categoryName);
     }
 
     private List<ShopCategoryData> shopCategoryData, allShopCategoryData;
@@ -100,6 +101,15 @@ public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCate
             @Override
             public void onClick(View view) {
                 categoriesActions.deleteCategory(shopCategoryData);
+                dialog.dismiss();
+            }
+        });
+
+        MaterialButton turnOffCategoryButton = view.findViewById(R.id.turn_off_category_button);
+        turnOffCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                categoriesActions.turnOffCategory(shopCategoryData.getCategoryName());
                 dialog.dismiss();
             }
         });

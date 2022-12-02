@@ -226,6 +226,38 @@ public class menuItemsFragment extends Fragment implements MenuItemsCategoryAdap
     }
 
     @Override
+    public void turnOffCategory(String categoryName) {
+        Retrofit retrofit = RetrofitClient.getInstance();
+        NetworkApi networkApi = retrofit.create(NetworkApi.class);
+
+        Call<NetworkResponse> call = networkApi.turnOffCategory(shopItemsId,categoryName);
+        call.enqueue(new Callback<NetworkResponse>() {
+            @Override
+            public void onResponse(Call<NetworkResponse> call, Response<NetworkResponse> response) {
+                if(!response.isSuccessful()){
+                    NetworkResponse errorResponse = ErrorUtils.parseErrorResponse(response);
+                    Toasty.error(getContext(),errorResponse.getDesc(),Toasty.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+
+                Toasty.success(getContext(),"Update Successfull",Toasty.LENGTH_LONG)
+                        .show();
+
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.menuItemsFragment);
+
+            }
+
+            @Override
+            public void onFailure(Call<NetworkResponse> call, Throwable t) {
+                Toasty.error(getContext(),t.getMessage(),Toasty.LENGTH_LONG)
+                        .show();
+            }
+        });
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         shopItemsId = LocalDB.getPartnerDetails(getContext()).getShopItemsId();

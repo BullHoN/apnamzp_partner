@@ -35,6 +35,13 @@
         android:layout_height="wrap_content" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/turn_off_category_button"
+        android:text="Turn Off Category"
+        android:backgroundTint="@color/successColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/delete_button"
         android:text="Delete Category"
         android:backgroundTint="@color/failure"

@@ -57,14 +57,14 @@ public class OrderNotification extends AppCompatActivity {
 
     private long waitTime = 1000 * 60 * 5;
     private CircularProgressIndicator waitTimeProgressBar;
-    private LinearLayout acceptOrderButton, rejectOrderButton, selfPickUpContainer;
-    private TextView reamingTimeTextview;
+    private LinearLayout acceptOrderButton, rejectOrderButton, selfPickUpContainer, specialInstructionContainer;
+    private TextView reamingTimeTextview, specialInstructionView;
     private int minutes = 4;
     private int seconds = 60;
     private String TAG = "OrderNotifications";
     private Gson gson;
     private ShopItemData[] orderItems;
-    private String userId, orderId, totalPay, isDeliveryService;
+    private String userId, orderId, totalPay, isDeliveryService, specialInstructions;
     private MaterialButton callCustomerButton;
     private CountDownTimer cancelOrderTimer;
 
@@ -95,6 +95,8 @@ public class OrderNotification extends AppCompatActivity {
         rejectOrderButton = findViewById(R.id.reject_order_button);
         selfPickUpContainer = findViewById(R.id.self_pickup_container);
         callCustomerButton = findViewById(R.id.call_customer);
+        specialInstructionContainer = findViewById(R.id.special_instruction_container);
+        specialInstructionView = findViewById(R.id.special_instruction);
 
         gson = new Gson();
         userId = getIntent().getStringExtra("userId");
@@ -102,6 +104,7 @@ public class OrderNotification extends AppCompatActivity {
         totalPay = getIntent().getStringExtra("totalAmount");
         isDeliveryService = getIntent().getStringExtra("isDeliveryService");
         orderItems = gson.fromJson(getIntent().getStringExtra("orderItems"), ShopItemData[].class);
+        specialInstructions = getIntent().getStringExtra("specialInstructions");
 
         if(!isDeliveryService.equals("true")){
             selfPickUpContainer.setVisibility(View.VISIBLE);
@@ -117,6 +120,11 @@ public class OrderNotification extends AppCompatActivity {
         }
 
         totalPriceView.setText("Total ₹" + totalPay);
+
+        if(specialInstructions != null && specialInstructions.length() > 1){
+            specialInstructionContainer.setVisibility(View.VISIBLE);
+            specialInstructionView.setText(specialInstructions);
+        }
 
         Log.i(TAG, "onCreate: " + getIntent().getStringExtra("orderItems"));
         Log.i(TAG, "onCreate: " + orderItems);

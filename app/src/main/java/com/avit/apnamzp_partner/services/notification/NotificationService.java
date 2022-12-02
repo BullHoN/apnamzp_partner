@@ -62,6 +62,7 @@ public class NotificationService extends FirebaseMessagingService {
             String userId = remoteMessage.getData().get("userId");
             String totalAmount = remoteMessage.getData().get("totalPay");
             String isDeliveryService = remoteMessage.getData().get("isDeliveryService");
+            String specialInstructions = remoteMessage.getData().get("specialInstructions");
 
             Log.i(TAG, "onMessageReceived: " + orderItems);
             Log.i(TAG, "onMessageReceived: " + orderId);
@@ -75,10 +76,11 @@ public class NotificationService extends FirebaseMessagingService {
 
             OrderItem actionNeededOrderItem = new OrderItem(Integer.valueOf(totalAmount),orderItemsList,userId,orderId);
             actionNeededOrderItem.setIsDeliveryServiceForActionNeededOrders(isDeliveryService.equals("true"));
+            actionNeededOrderItem.setSpecialInstructions(specialInstructions);
 
             LocalDB.saveActionNeededOrder(getApplicationContext(),actionNeededOrderItem, "add");
 
-            handleNewOrderNotification(orderItems,orderId,userId,totalAmount,isDeliveryService);
+            handleNewOrderNotification(orderItems,orderId,userId,totalAmount,isDeliveryService,specialInstructions);
 
         }
         else if(notificationType.equals("review_created")){
@@ -96,7 +98,8 @@ public class NotificationService extends FirebaseMessagingService {
 
     }
 
-    private void handleNewOrderNotification(String orderItems,String orderId,String userId,String totalAmount, String isDeliveryService){
+    private void handleNewOrderNotification(String orderItems,String orderId,String
+            userId,String totalAmount, String isDeliveryService, String specialInstructions){
 
             NotificationUtil.playSound(getApplicationContext());
             NotificationUtil.startVibration(getApplicationContext());
@@ -113,6 +116,7 @@ public class NotificationService extends FirebaseMessagingService {
             intent.putExtra("userId",userId);
             intent.putExtra("totalAmount",totalAmount);
             intent.putExtra("isDeliveryService",isDeliveryService);
+            intent.putExtra("specialInstructions",specialInstructions);
 
             startActivity(intent);
 

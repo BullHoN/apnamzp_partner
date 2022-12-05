@@ -5,10 +5,16 @@ import java.util.List;
 public class ShopCategoryData {
     private String categoryName;
     private List<ShopItemData> shopItemDataList;
+    private boolean isCategoryAvailable;
 
-    public ShopCategoryData(String categoryName, List<ShopItemData> shopItemDataList) {
+    public ShopCategoryData(String categoryName, List<ShopItemData> shopItemDataList, boolean isCategoryAvailable) {
         this.categoryName = categoryName;
         this.shopItemDataList = shopItemDataList;
+        this.isCategoryAvailable = isCategoryAvailable;
+    }
+
+    public boolean isCategoryAvailable() {
+        return isCategoryAvailable;
     }
 
     public ShopCategoryData(String categoryName) {

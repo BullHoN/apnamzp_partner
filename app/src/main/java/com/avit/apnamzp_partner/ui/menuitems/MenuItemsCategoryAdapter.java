@@ -106,6 +106,14 @@ public class MenuItemsCategoryAdapter extends RecyclerView.Adapter<MenuItemsCate
         });
 
         MaterialButton turnOffCategoryButton = view.findViewById(R.id.turn_off_category_button);
+
+        if(shopCategoryData.isCategoryAvailable()){
+            turnOffCategoryButton.setText("Turn Off Category");
+        }
+        else {
+            turnOffCategoryButton.setText("Turn On Category");
+        }
+
         turnOffCategoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

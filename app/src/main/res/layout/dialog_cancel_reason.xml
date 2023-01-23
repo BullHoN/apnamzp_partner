@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="12dp"
     android:layout_height="wrap_content">
 
     <TextView
+        android:textSize="18sp"
         android:text="Reason for Canceling Order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cancel_reason_chip_group"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        app:singleSelection="true"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/item_not_available_chip"
+            android:text="Item Not Available"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/high_traffic_chip"
+            android:text="High Traffic Of Order"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/shop_closed_chip"
+            style="@style/My_Widget.MaterialComponents.Chip.Choice"
+            android:text="Shop Closed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:text="Custom Reason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -21,6 +21,7 @@ import com.avit.apnamzp_partner.models.offer.OfferItem;
 import com.avit.apnamzp_partner.network.NetworkApi;
 import com.avit.apnamzp_partner.network.RetrofitClient;
 import com.avit.apnamzp_partner.utils.ErrorUtils;
+import com.avit.apnamzp_partner.utils.ValidateInput;
 import com.google.gson.Gson;
 
 import es.dmoral.toasty.Toasty;
@@ -108,17 +109,38 @@ public class OfferFragment extends Fragment {
                 String discountPercentage, maxDiscount, discountAmount, discountAbove;
 
                 // TODO: Validation
+                if(!ValidateInput.isNumber(binding.discountAbove.getText().toString())){
+                    binding.discountAbove.setError("Enter a valid Number");
+                    return;
+                }
 
                 discountAbove = binding.discountAbove.getText().toString();
                 offerItem.setDiscountAbove(discountAbove);
 
                 if(offerItem.getOfferType().equals("flat")){
                     discountAmount = binding.discountAmount.getText().toString();
+
+                    if(!ValidateInput.isNumber(discountAmount)){
+                        binding.discountAmount.setError("Enter a valid Number");
+                        return;
+                    }
+
                     offerItem.setDiscountAmount(discountAmount);
                 }
                 else {
                     discountPercentage = binding.discountPercentage.getText().toString();
                     maxDiscount = binding.maxDiscount.getText().toString();
+
+                    if(!ValidateInput.isNumber(discountPercentage)){
+                        binding.discountPercentage.setError("Enter a valid Number");
+                        return;
+                    }
+
+                    if(!ValidateInput.isNumber(maxDiscount)){
+                        binding.maxDiscount.setError("Enter a valid Number");
+                        return;
+                    }
+
                     offerItem.setDiscountPercentage(discountPercentage);
                     offerItem.setMaxDiscount(maxDiscount);
                 }
@@ -222,7 +244,13 @@ public class OfferFragment extends Fragment {
 
     private String generateCode(){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(shopName.toUpperCase().replace(" ",""));
+        String shopOfferName = shopName.toUpperCase().replace(" ","");
+        if(shopOfferName.length() <= 4){
+            stringBuilder.append(shopOfferName);
+        }
+        else {
+            stringBuilder.append(shopOfferName.substring(0,5));
+        }
 
         for(int i=0;i<4;i++){
             stringBuilder.append(Math.round(Math.random()*10));

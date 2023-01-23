@@ -34,6 +34,7 @@ import com.avit.apnamzp_partner.utils.ErrorUtils;
 import com.avit.apnamzp_partner.utils.InfoConstats;
 import com.avit.apnamzp_partner.utils.NotificationUtil;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
@@ -225,6 +226,24 @@ public class OrderNotification extends AppCompatActivity {
                 dialog.show();
 
                 TextInputEditText rejectReason = cancelReasonView.findViewById(R.id.reject_reason);
+                ChipGroup cancelReasonChipGroup = cancelReasonView.findViewById(R.id.cancel_reason_chip_group);
+
+                final String[] reasonArr = {"Shop didn't responded"};
+
+                cancelReasonChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(ChipGroup group, int checkedId) {
+                        if(checkedId == R.id.high_traffic_chip){
+                            reasonArr[0] = "High Traffic";
+                        }
+                        else if(checkedId == R.id.item_not_available_chip){
+                            reasonArr[0] = "Item Not Available";
+                        }
+                        else if(checkedId == R.id.shop_closed_chip){
+                            reasonArr[0] = "Shop Closed";
+                        }
+                    }
+                });
 
 
                 LinearLayout rejectButtn = cancelReasonView.findViewById(R.id.reject_order_button);
@@ -232,7 +251,10 @@ public class OrderNotification extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         // reject the upcomming order
-                        String reason = rejectReason.getText().toString();
+                        String reason = rejectReason.getText().toString().length() > 0
+                                ? rejectReason.getText().toString()
+                                : reasonArr[0];
+
                         if (reason.length() < 3) { // TODO: proper validation
                             Toasty.error(getApplicationContext(), "Enter Valid Reason", Toasty.LENGTH_LONG)
                                     .show();

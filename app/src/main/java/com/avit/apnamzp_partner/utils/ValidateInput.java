@@ -9,4 +9,16 @@ public class ValidateInput {
         return true;
     }
 
+    public static boolean isNumber(String str){
+        if(str.length() == 0) return false;
+
+        for(int i=0;i<str.length();i++){
+            if(!Character.isDigit(str.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 }

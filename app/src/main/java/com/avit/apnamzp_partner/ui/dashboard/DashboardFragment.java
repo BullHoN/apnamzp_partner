@@ -41,9 +41,10 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
     private FragmentDashboardBinding binding;
     private DashboardViewModel viewModel;
     private ShopPartner shopPartner;
-    private String TAG = "DashboardFragment";
+    private String TAG = "DashboardFragmentTAG";
     private OrdersAdapter ordersAdapter;
     private String selectedDate;
+    private int selectedYear;
     private String months[] = {"January","February","March","April","May","June","July","August","September"
             ,"Ocotober","November","December"};
 
@@ -110,7 +111,26 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
             }
         });
 
-        // spinner setup
+        // yearly spinner setup
+        String yearsSpinnerArray[] = getYearSpinnerArray();
+        ArrayAdapter adY = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,yearsSpinnerArray);
+        adY.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.yearSpinner.setAdapter(adY);
+
+        binding.yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                selectedYear = Integer.parseInt(yearsSpinnerArray[pos]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // monthly spinner setup
         ArrayAdapter ad = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,months);
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -119,7 +139,8 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
         binding.monthsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                Date temp = new Date(todayDate.getYear(),pos,1);
+                int diff = Integer.parseInt(getCurrYear()) - selectedYear;
+                Date temp = new Date(todayDate.getYear()-diff,pos,1);
                 viewModel.getOrders(getContext(), shopPartner.getShopId(), shopPartner.getShopType(), 6, simpleDateFormat.format(temp), 1,true);
             }
 
@@ -136,15 +157,35 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
                 if(R.id.daily_filter == checkedId){
                     binding.chooseMessage.setText("Select Date for Viewing Orders");
                     binding.calenderView.setVisibility(View.VISIBLE);
+                    binding.monthsSpinner.setVisibility(View.GONE);
+                    binding.yearSpinner.setVisibility(View.GONE);
                 }
                 else if(R.id.monthly_filter == checkedId){
                     binding.chooseMessage.setText("Select Months for Viewing Orders");
                     binding.calenderView.setVisibility(View.GONE);
+                    binding.monthsSpinner.setVisibility(View.VISIBLE);
+                    binding.yearSpinner.setVisibility(View.VISIBLE);
                 }
             }
         });
 
         return binding.getRoot();
+    }
+
+    private String[] getYearSpinnerArray(){
+        selectedYear = Integer.parseInt(getCurrYear());
+        int sizeOfYearArray = selectedYear - 2022 + 1;
+        String[] yearsSpinnerArray = new String[sizeOfYearArray];
+
+        for(int i=selectedYear,j=0;i>=2022;i--,j++){
+            yearsSpinnerArray[j] = String.valueOf(i);
+        }
+
+        return  yearsSpinnerArray;
+    }
+
+    private String getCurrYear(){
+        return selectedDate.split("-")[0];
     }
 
     private void clearData(){
@@ -176,6 +217,7 @@ public class DashboardFragment extends Fragment implements OrdersAdapter.NextSte
 
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_dashboardFragment2_to_orderDetailsFragment,bundle);
     }
+
 
     @Override
     public void cancelOrder(String orderId, String reason) {

@@ -110,7 +110,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         if(curr.isShopOfferApplied()){
             holder.appliedOfferView.setVisibility(View.VISIBLE);
-            holder.appliedOfferView.setText(curr.getOfferCode());
+            holder.appliedOfferView.setText("Offer Applied");
         }
 
         SimpleDateFormat localDate = new SimpleDateFormat("hh:mm a");
